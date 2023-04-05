@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ExpressTPV</string>
+    <string name="total">TOTAL:</string>
+    <string name="precio">(%g€)</string>
+    <string name="articulo_selector">%s:</string>
+    <string name="precio_selector">%g€</string>
+</resources>

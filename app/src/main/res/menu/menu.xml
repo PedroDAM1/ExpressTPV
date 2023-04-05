@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/miCrearArticulo"
+        android:title="Crear Articulo" />
+    <item
+        android:id="@+id/miCrearCategoria"
+        android:title="Crear Categoria" />
+    <item
+        android:id="@+id/miConfiguracion"
+        android:title="Configuracion" />
+</menu>
