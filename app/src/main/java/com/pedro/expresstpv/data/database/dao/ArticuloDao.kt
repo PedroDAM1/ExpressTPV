@@ -5,6 +5,7 @@ import androidx.room.*
 import com.pedro.expresstpv.data.database.entities.ArticuloConCategoriaETipoIva
 import com.pedro.expresstpv.data.database.entities.ArticuloEntity
 
+
 @Dao
 interface ArticuloDao {
     @Insert
@@ -28,6 +29,11 @@ interface ArticuloDao {
     @Query("SELECT * FROM tb_articulo")
     suspend fun getAll(): List<ArticuloEntity>
 
+    @Transaction
     @Query("SELECT * FROM tb_articulo")
     suspend fun getArticuloConCategoriaYTipoIva():List<ArticuloConCategoriaETipoIva>
+
+    @Transaction
+    @Query("SELECT * FROM tb_articulo WHERE id=:id")
+    suspend fun getArticuloConCategoriaYTipoIvaById(id: Int) : ArticuloConCategoriaETipoIva?
 }

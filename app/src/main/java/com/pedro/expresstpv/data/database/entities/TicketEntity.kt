@@ -1,9 +1,7 @@
 package com.pedro.expresstpv.data.database.entities
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
+import com.pedro.expresstpv.domain.model.Ticket
 import java.time.LocalDateTime
 
 @Entity(
@@ -31,4 +29,21 @@ data class TicketEntity(
     @ColumnInfo(defaultValue = "CURRENT_TIMESTAMP")
     val fecha: LocalDateTime = LocalDateTime.now(),
     val total: Double
+)
+
+data class TicketConCierreYMetodoPago(
+    @Embedded
+    val ticketEntity: TicketEntity,
+    @Relation(
+        entity = CierreEntity::class,
+        parentColumn = "num_cierre",
+        entityColumn = "num_cierre"
+    )
+    val cierreEntity: CierreEntity,
+    @Relation(
+        entity = MetodoPagoEntity::class,
+        parentColumn = "id_metodopago",
+        entityColumn = "id"
+    )
+    val metodoPagoEntity: MetodoPagoEntity
 )

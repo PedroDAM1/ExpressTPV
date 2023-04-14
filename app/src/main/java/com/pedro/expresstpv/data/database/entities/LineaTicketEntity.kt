@@ -1,10 +1,6 @@
 package com.pedro.expresstpv.data.database.entities
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
-import com.pedro.expresstpv.data.database.entities.ArticuloEntity
+import androidx.room.*
 
 @Entity(
     tableName = "tb_lineaticket",
@@ -17,6 +13,8 @@ data class LineaTicketEntity(
     val id: Int = 0,
     @ColumnInfo(name = "id_articulo")
     val idArticulo: Int,
+    @ColumnInfo(defaultValue = "num_ticket")
+    val numTicket : Int,
     @ColumnInfo(defaultValue = "")
     val descripcion: String = "",
     @ColumnInfo(defaultValue = "0")
@@ -28,3 +26,23 @@ data class LineaTicketEntity(
     @ColumnInfo(defaultValue = "0.0")
     val total: Double = 0.0
 )
+
+data class LineaTicketConArticuloYTicket(
+    @Embedded
+    val lineaTicketEntity: LineaTicketEntity,
+    @Relation(
+        entity = ArticuloConCategoriaETipoIva::class,
+        parentColumn = "id_articulo",
+        entityColumn = "id"
+    )
+    val articuloConCategoriaETipoIva: ArticuloConCategoriaETipoIva,
+    @Relation(
+        entity = TicketConCierreYMetodoPago::class,
+        parentColumn = "num_ticket",
+        entityColumn = "num_ticket"
+    )
+    val ticketConCierreYMetodoPago: TicketConCierreYMetodoPago
+)
+
+
+

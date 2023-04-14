@@ -1,6 +1,7 @@
 package com.pedro.expresstpv.data.database.dao
 
 import androidx.room.*
+import com.pedro.expresstpv.data.database.entities.TicketConCierreYMetodoPago
 import com.pedro.expresstpv.data.database.entities.TicketEntity
 
 @Dao
@@ -25,4 +26,12 @@ interface TicketDao {
 
     @Query("SELECT * FROM tb_ticket")
     suspend fun getAll(): List<TicketEntity>
+
+    @Transaction
+    @Query("SELECT * FROM tb_ticket WHERE num_ticket:numTicket")
+    suspend fun getTicketConCierreYMetodoPagoById(numTicket: Int) : TicketConCierreYMetodoPago?
+
+    @Transaction
+    @Query("SELECT * FROM tb_ticket")
+    suspend fun getTicketConCierreYMetodoPago() : List<TicketConCierreYMetodoPago>
 }

@@ -8,6 +8,7 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import com.pedro.expresstpv.ExpressTPVApp
 import com.pedro.expresstpv.R
@@ -21,7 +22,7 @@ class VentasActivity() : AppCompatActivity() {
 
     private lateinit var binding : ActivityVentasBinding
 
-    private val ventasViewModel : VentasViewModel by viewModels()
+    private val ventasViewModel by viewModels<VentasViewModel>()
 
     private val context = this
 
@@ -30,10 +31,11 @@ class VentasActivity() : AppCompatActivity() {
         binding = ActivityVentasBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        ventasViewModel.onCreate()
-
-        ventasViewModel.liveDataArticulos.observe(this, Observer {
-            binding.tvExample.text = it[0].articuloEntity.nombre
+        //ventasViewModel.liveDataArticulos.observe(this, Observer {
+          //  binding.tvExample.text = it[0].articuloEntity.nombre
+        //})
+        ventasViewModel.liveDataCategoria.observe(this, Observer {
+            binding.tvExample.text = it.nombre
         })
     }
 

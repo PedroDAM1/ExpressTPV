@@ -1,6 +1,7 @@
 package com.pedro.expresstpv.data.database.dao
 
 import androidx.room.*
+import com.pedro.expresstpv.data.database.entities.LineaTicketConArticuloYTicket
 import com.pedro.expresstpv.data.database.entities.LineaTicketEntity
 
 @Dao
@@ -25,4 +26,12 @@ interface LineaTicketDao {
 
     @Query("SELECT * FROM tb_lineaticket")
     suspend fun getAll(): List<LineaTicketEntity>
+
+    @Transaction
+    @Query("SELECT * FROM tb_lineaticket WHERE id=:id")
+    suspend fun getLineaTicketConArticuloYTicketById(id : Int): LineaTicketConArticuloYTicket?
+
+    @Transaction
+    @Query("SELECT * FROM tb_lineaticket")
+    suspend fun getAllLineaTicketConArticuloYTicket() : List<LineaTicketConArticuloYTicket>
 }

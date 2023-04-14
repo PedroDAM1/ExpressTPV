@@ -1,6 +1,7 @@
 package com.pedro.expresstpv.data.database.entities
 
 import androidx.room.*
+import com.pedro.expresstpv.domain.model.Articulo
 
 @Entity(
     tableName = "tb_articulo",
@@ -21,6 +22,11 @@ data class ArticuloEntity(
     val precio: Double = 0.0
 )
 
+@DatabaseView(
+    "SELECT articulo.*, categoria.*, tipoIva.* FROM articulo " +
+            "INNER JOIN categoria ON articulo.id_categoria = categoria.id " +
+            "INNER JOIN tipoIva ON articulo.id_tipoiva = tipoIva.id"
+)
 data class ArticuloConCategoriaETipoIva(
     @Embedded
     val articuloEntity: ArticuloEntity,
@@ -37,3 +43,4 @@ data class ArticuloConCategoriaETipoIva(
     )
     val tipoIvaEntity: TipoIvaEntity,
 )
+
