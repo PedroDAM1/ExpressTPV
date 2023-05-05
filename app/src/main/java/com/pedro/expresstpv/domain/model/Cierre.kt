@@ -8,8 +8,3 @@ data class Cierre(
     val numCierre : Int = 0,
     val fecha : LocalDateTime = LocalDateTime.now()
 )
-
-fun CierreEntity.toDomain() = Cierre(
-    numCierre = numCierre,
-    fecha = fecha
-)

@@ -5,7 +5,8 @@ import androidx.room.*
 @Entity(
     tableName = "tb_lineaticket",
     foreignKeys = [
-        ForeignKey(entity = ArticuloEntity::class, parentColumns = ["id"], childColumns = ["id_articulo"])
+        ForeignKey(entity = ArticuloEntity::class, parentColumns = ["id"], childColumns = ["id_articulo"]),
+        ForeignKey(entity = TicketEntity::class, parentColumns = ["num_ticket"], childColumns = ["num_ticket"])
     ]
 )
 data class LineaTicketEntity(
@@ -13,7 +14,7 @@ data class LineaTicketEntity(
     val id: Int = 0,
     @ColumnInfo(name = "id_articulo")
     val idArticulo: Int,
-    @ColumnInfo(defaultValue = "num_ticket")
+    @ColumnInfo(name = "num_ticket")
     val numTicket : Int,
     @ColumnInfo(defaultValue = "")
     val descripcion: String = "",
@@ -31,18 +32,36 @@ data class LineaTicketConArticuloYTicket(
     @Embedded
     val lineaTicketEntity: LineaTicketEntity,
     @Relation(
-        entity = ArticuloConCategoriaETipoIva::class,
+        entity = ArticuloEntity::class,
         parentColumn = "id_articulo",
         entityColumn = "id"
     )
-    val articuloConCategoriaETipoIva: ArticuloConCategoriaETipoIva,
+    val articuloEntity: ArticuloEntity,
     @Relation(
-        entity = TicketConCierreYMetodoPago::class,
+        entity = TicketEntity::class,
         parentColumn = "num_ticket",
         entityColumn = "num_ticket"
     )
-    val ticketConCierreYMetodoPago: TicketConCierreYMetodoPago
+    val ticketEntity: TicketEntity
+
 )
+
+//data class LineaTicketConArticuloYTicket(
+//    @Embedded
+//    val lineaTicketEntity: LineaTicketEntity,
+//    @Relation(
+//        entity = ArticuloConCategoriaETipoIva::class,
+//        parentColumn = "id_articulo",
+//        entityColumn = "id"
+//    )
+//    val articuloConCategoriaETipoIva: ArticuloConCategoriaETipoIva,
+//    @Relation(
+//        entity = TicketConCierreYMetodoPago::class,
+//        parentColumn = "numTicket",
+//        entityColumn = "num_ticket"
+//    )
+//    val ticketConCierreYMetodoPago: TicketConCierreYMetodoPago
+//)
 
 
 

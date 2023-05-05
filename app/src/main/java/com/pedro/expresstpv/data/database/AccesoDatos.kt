@@ -21,30 +21,4 @@ abstract class AccesoDatos : RoomDatabase() {
     abstract fun getMetodoPagoDao(): MetodoPagoDao
     abstract fun getTicketDao(): TicketDao
 
-
-    companion object{
-        val TIPOS_IVA = arrayOf(
-            TipoIvaEntity(nombre = "SUPER REDUCIDO", porcentaje = 4.0),
-            TipoIvaEntity(nombre = "REDUCIDO", porcentaje = 10.0),
-            TipoIvaEntity(nombre = "NORMAL", porcentaje = 21.0),
-            TipoIvaEntity(nombre = "EXENTO", porcentaje = 0.0)
-        )
-
-        val METODOS_PAGO = arrayOf(
-            MetodoPagoEntity(nombre = "TARJETA"),
-            MetodoPagoEntity(nombre = "EFECTIVO")
-        )
-
-        val CATEGORIAS = arrayOf(
-            CategoriaEntity(id = 0, nombre = "SIN CATEGORIA")
-        )
-
-        val CIERRES = arrayOf(
-            CierreEntity(numCierre = 0, fecha = LocalDateTime.of(1, 1, 1, 0, 0))
-        )
-
-        val ARTICULO = arrayOf(
-            ArticuloEntity(id= 1, idCategoria = 1, idIva = 1, "BASE", 0.0)
-        )
-    }
 }

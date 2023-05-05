@@ -20,8 +20,9 @@ import java.time.LocalDateTime
     ]
 )
 data class TicketEntity(
+    @PrimaryKey
     @ColumnInfo(name = "num_ticket")
-    @PrimaryKey val numTicket: Int,
+    val numTicket: Int,
     @ColumnInfo(name = "num_cierre")
     val numCierre: Int,
     @ColumnInfo(name = "id_metodopago")
@@ -30,6 +31,7 @@ data class TicketEntity(
     val fecha: LocalDateTime = LocalDateTime.now(),
     val total: Double
 )
+
 
 data class TicketConCierreYMetodoPago(
     @Embedded

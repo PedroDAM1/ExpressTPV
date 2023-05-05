@@ -8,8 +8,3 @@ data class TipoIva(
     val porcentaje : Double
 )
 
-fun TipoIvaEntity.toDomain() = TipoIva(
-    id = id,
-    nombre = nombre,
-    porcentaje = porcentaje
-)

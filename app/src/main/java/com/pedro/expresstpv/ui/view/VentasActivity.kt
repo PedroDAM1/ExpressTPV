@@ -24,19 +24,10 @@ class VentasActivity() : AppCompatActivity() {
 
     private val ventasViewModel by viewModels<VentasViewModel>()
 
-    private val context = this
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityVentasBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        //ventasViewModel.liveDataArticulos.observe(this, Observer {
-          //  binding.tvExample.text = it[0].articuloEntity.nombre
-        //})
-        ventasViewModel.liveDataCategoria.observe(this, Observer {
-            binding.tvExample.text = it.nombre
-        })
     }
 
     /**
@@ -55,7 +46,7 @@ class VentasActivity() : AppCompatActivity() {
         //Vamos al activity para crear los articulos
         when (item.itemId){
             R.id.miCrearArticulo ->{
-                //startActivity(Intent(this, SelectorArticulosActivity::class.java))
+                startActivity(Intent(this, ListaArticulosActivity::class.java))
             }
 
             R.id.miCrearCategoria -> {

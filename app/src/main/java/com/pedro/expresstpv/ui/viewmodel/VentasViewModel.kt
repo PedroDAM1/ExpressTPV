@@ -13,11 +13,6 @@ import javax.inject.Inject
 @HiltViewModel
 class VentasViewModel @Inject constructor(private val articuloDao: ArticuloDao) : ViewModel() {
 
-    val liveDataArticulos = MutableLiveData<List<ArticuloConCategoriaETipoIva>>()
-
-    lateinit var categoria : CategoriaEntity
-
-    val liveDataCategoria = MutableLiveData<CategoriaEntity>()
     init {
         onCreate()
     }

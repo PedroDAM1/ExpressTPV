@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
-        android:allowBackup="true"
         android:name=".ExpressTPVApp"
+        android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -12,6 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ExpressTPV"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.view.CategoriaEditorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.ArticuloEditorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.ListaArticulosActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.view.VentasActivity"
             android:exported="true">

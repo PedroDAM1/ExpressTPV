@@ -28,7 +28,7 @@ interface TicketDao {
     suspend fun getAll(): List<TicketEntity>
 
     @Transaction
-    @Query("SELECT * FROM tb_ticket WHERE num_ticket:numTicket")
+    @Query("SELECT * FROM tb_ticket WHERE num_ticket=:numTicket")
     suspend fun getTicketConCierreYMetodoPagoById(numTicket: Int) : TicketConCierreYMetodoPago?
 
     @Transaction
