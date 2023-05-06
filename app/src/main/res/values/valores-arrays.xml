@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- En estos arrays se cargaran los datos desde la base de datos para mostrarlos en algunos controles -->
+    <string-array name="categorias">
+        <item>Categoria…</item>
+    </string-array>
+
+    <string-array name="tipo_iva">
+        <item>Tipo de iva…</item>
+    </string-array>
+
+</resources>

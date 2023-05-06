@@ -3,13 +3,21 @@ package com.pedro.expresstpv.ui.view
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.widget.SpinnerAdapter
+import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import com.pedro.expresstpv.R
 import com.pedro.expresstpv.databinding.ActivityArticuloEditorBinding
 import com.pedro.expresstpv.domain.model.Categoria
+import com.pedro.expresstpv.ui.viewmodel.ArticuloEditorViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.math.BigDecimal
 import java.math.RoundingMode
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class ArticuloEditorActivity : AppCompatActivity() {
 
     //Bindings
@@ -19,18 +27,24 @@ class ArticuloEditorActivity : AppCompatActivity() {
     private var nombre = ""
     private var precio = 0.0
 
-    @Inject
-    private lateinit var listaCategorias : MutableList<Categoria>
+    private val articuloEditorViewModel : ArticuloEditorViewModel by viewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityArticuloEditorBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        articuloEditorViewModel.onCreate()
+        setListeners()
+        cargarDatosSpinner()
     }
 
+    /**
+     * Inicializamos los listeners de todos los elementos
+     */
     private fun setListeners(){
         binding.btnAceptarArticuloEditor.setOnClickListener {
-
+             recuperarDatos()
         }
         binding.btnCancelarArticuloEditor.setOnClickListener {
 
@@ -53,7 +67,12 @@ class ArticuloEditorActivity : AppCompatActivity() {
     }
 
     private fun cargarDatosSpinner(){
-
+        articuloEditorViewModel.categoriasLiveData.observe(this) { liveData ->
+            binding.spCategoriaArticuloEditor.adapter = ArrayAdapter(this, R.layout.elemento_spinner_textview, liveData.values.toMutableList())
+        }
+        articuloEditorViewModel.tipoIvaLiveData.observe(this) { liveData ->
+            binding.spTipoIvaArticuloEditor.adapter = ArrayAdapter(this, R.layout.elemento_spinner_textview, liveData.values.toMutableList())
+        }
     }
 
 }

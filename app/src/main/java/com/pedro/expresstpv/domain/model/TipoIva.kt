@@ -6,5 +6,9 @@ data class TipoIva(
     val id : Int = 0,
     val nombre : String,
     val porcentaje : Double
-)
+){
+    override fun toString(): String {
+        return nombre
+    }
+}
 
