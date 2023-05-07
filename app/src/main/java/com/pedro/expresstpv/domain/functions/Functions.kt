@@ -33,5 +33,16 @@ class Functions {
                 throw e
             }
         }
+
+        /**
+         * Devuelve el color contrario al pasado por parametro
+         */
+        fun getContrastColor(color: Int): Int {
+            val red = Color.red(color)
+            val green = Color.green(color)
+            val blue = Color.blue(color)
+            val yiq = (red * 299 + green * 587 + blue * 114) / 1000
+            return if (yiq >= 128) Color.BLACK else Color.WHITE
+        }
     }
 }

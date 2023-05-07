@@ -6,7 +6,7 @@ import com.pedro.expresstpv.domain.model.Categoria
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
+
 class CategoriaRepository @Inject constructor(private val categoriaDao: CategoriaDao) : IRepository {
 
     private var categoriasMap = mutableMapOf<Int, Categoria>()

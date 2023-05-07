@@ -50,7 +50,7 @@ class VentasActivity() : AppCompatActivity() {
             }
 
             R.id.miCrearCategoria -> {
-                startActivity(Intent(this, CategoriaEditorActivity::class.java))
+                startActivity(Intent(this, ListaCategoriasActivity::class.java))
             }
 
             R.id.miConfiguracion -> {
