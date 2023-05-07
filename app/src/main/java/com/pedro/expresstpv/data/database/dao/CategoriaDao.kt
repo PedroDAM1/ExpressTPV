@@ -25,4 +25,7 @@ interface CategoriaDao {
 
     @Query("SELECT * FROM tb_categoria")
     suspend fun getAll(): List<CategoriaEntity>
+
+    @Query("SELECT id FROM tb_categoria ORDER BY id DESC LIMIT 1")
+    suspend fun getLastId() : Int
 }

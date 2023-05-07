@@ -1,36 +1,38 @@
 package com.pedro.expresstpv.data.provider
 
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.pedro.expresstpv.data.database.dao.CategoriaDao
 import com.pedro.expresstpv.data.database.entities.CategoriaEntity
 import com.pedro.expresstpv.domain.model.Categoria
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.util.Dictionary
 import javax.inject.Inject
+import javax.inject.Singleton
 
-class CategoriaRepository @Inject constructor(private val categoriaDao: CategoriaDao) {
+@Singleton
+class CategoriaRepository @Inject constructor(private val categoriaDao: CategoriaDao) : IRepository {
 
     private var categoriasMap = mutableMapOf<Int, Categoria>()
 
-    init {
-        // Inicializar las categorias en segundo plano
-        CoroutineScope(Dispatchers.IO).launch {
-            val categorias = categoriaDao.getAll().map { it.toDomain() }
-            categorias.forEach {
-                categoriasMap[it.id] = it
-            }
+    override suspend fun reloadFromDatabase() {
+        val categorias = categoriaDao.getAll().map { it.toDomain() }
+        categorias.forEach {
+            categoriasMap[it.id] = it
         }
     }
 
-    fun getAllCategorias() : MutableMap<Int, Categoria>{
-        // Si ya se cargaron las categorias, devolverlas
-        return categoriasMap
-
+    private suspend fun isMapVacio(){
+        if (categoriasMap.isEmpty()){
+            reloadFromDatabase()
+        }
     }
 
-    fun getCategoriaById(id : Int) : Categoria? {
+    suspend fun getAllCategorias() : MutableMap<Int, Categoria>{
+        isMapVacio()
+
+        return categoriasMap
+    }
+
+    suspend fun getCategoriaById(id : Int) : Categoria? {
+        isMapVacio()
+
         //Si la categoria no existe devolveremos nulo
         if (!categoriasMap.containsKey(id)){
             return null
@@ -38,6 +40,15 @@ class CategoriaRepository @Inject constructor(private val categoriaDao: Categori
             return categoriasMap[id]
         }
     }
+
+    suspend fun insert(categoria : Categoria){
+        categoriaDao.insert(categoria.toEntity())
+        /* Como no tenemos el id hasta que lo insertamos en la bd, lo insertaremos y luego haremos la consulta
+        * Una vez que tengamos el id lo insertaremos en el mapa*/
+        categoriasMap[categoriaDao.getLastId()] = categoria
+    }
+
+
 
 }
 

@@ -5,15 +5,25 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import androidx.activity.viewModels
 import com.pedro.expresstpv.R
 import com.pedro.expresstpv.databinding.ActivityCategoriaEditorBinding
 import com.pedro.expresstpv.domain.functions.Functions
+import com.pedro.expresstpv.ui.viewmodel.ArticuloEditorViewModel
+import com.pedro.expresstpv.ui.viewmodel.CategoriaEditorViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import top.defaults.colorpicker.ColorObserver
 
+@AndroidEntryPoint
 class CategoriaEditorActivity : AppCompatActivity() {
 
+    //Binding
     private lateinit var binding : ActivityCategoriaEditorBinding
 
+    //ViewModel
+    private val viewModel : CategoriaEditorViewModel by viewModels()
+
+    //Atributos
     private var observerColorPicker : ColorObserver? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +34,7 @@ class CategoriaEditorActivity : AppCompatActivity() {
     }
 
     private fun setListeners(){
+        //EditText del color
         binding.etColorCategoriaEditor.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 //Antes de modficar el texto deberemos de subscribirnos
@@ -39,6 +50,47 @@ class CategoriaEditorActivity : AppCompatActivity() {
                 binding.colorPickerCategoriaEditor.subscribe(observerColorPicker)
             }
         })
+
+        //Boton de cancelar
+        binding.btnCancelarCategoriaEditor.setOnClickListener {
+            finish()
+        }
+
+        //Boton de guardar
+        binding.btnAceptarArticuloEditor.setOnClickListener {
+            recogerDatos()
+            finish()
+        }
+    }
+
+    private fun validarDatos() : Boolean{
+        if (binding.etNombreCategoriaEditor.text.toString().isEmpty()){
+            binding.etNombreCategoriaEditor.error = "Debes de rellenar este campo"
+            return false
+        }
+        val textoColor = binding.etColorCategoriaEditor.text.toString()
+        try {
+            //Si el texto no es valido, entonces nos devolvera la excepcion
+            Functions.hexToColorInt(textoColor)
+
+        } catch (e : IllegalArgumentException){
+            binding.etColorCategoriaEditor.error = "El color que has introducido no es válido"
+            return false
+        }
+
+        return true
+    }
+
+    private fun recogerDatos(){
+        // si los datos no son validos automaticamente saldremos sin hacer nada
+        if (!validarDatos()){
+            return
+        }
+        val nombre = binding.etNombreCategoriaEditor.text.toString().trim()
+        val color = binding.etColorCategoriaEditor.text.toString().trim()
+
+        //Le pasamos los datos al viewmodel donde se gestionara lo demas
+        viewModel.guardarDatos(nombre, color)
     }
 
     private fun onTextChangeColor(text : String){
