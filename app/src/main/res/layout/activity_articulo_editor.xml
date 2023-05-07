@@ -9,8 +9,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="100dp"
         android:layout_marginEnd="40dp"
@@ -30,10 +30,11 @@
                 android:id="@+id/etNombreArticuloEditor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="40dp"
                 android:ems="10"
                 android:hint="Nombre..."
                 android:inputType="textPersonName"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -47,6 +48,7 @@
                 android:ems="10"
                 android:hint="Precio..."
                 android:inputType="numberDecimal"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="@+id/etNombreArticuloEditor"
                 app:layout_constraintStart_toStartOf="@+id/etNombreArticuloEditor"
                 app:layout_constraintTop_toBottomOf="@+id/etNombreArticuloEditor" />
@@ -56,7 +58,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="80dp"
                 android:layout_marginEnd="30dp"
                 android:entries="@array/categorias"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -69,7 +71,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="80dp"
                 android:layout_marginEnd="30dp"
                 android:entries="@array/tipo_iva"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -81,14 +83,14 @@
                 android:id="@+id/btnCancelarArticuloEditor"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="75dp"
+                android:layout_marginBottom="20dp"
                 android:backgroundTint="#F44336"
                 android:text="Cancelar"
                 app:cornerRadius="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btnAceptarArticuloEditor"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spTipoIvaArticuloEditor" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <Button
                 android:id="@+id/btnAceptarArticuloEditor"

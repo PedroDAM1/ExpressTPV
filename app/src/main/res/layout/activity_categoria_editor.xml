@@ -4,15 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#C5C5C5"
     tools:context=".ui.view.CategoriaEditorActivity">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/CardViewCategoriaEditor"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="80dp"
         android:layout_marginEnd="40dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="80dp"
         app:cardCornerRadius="16dp"
         app:cardElevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -24,6 +26,115 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <EditText
+                android:id="@+id/etNombreCategoriaEditor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:ems="10"
+                android:hint="Nombre..."
+                android:inputType="textPersonName"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btnCancelarCategoriaEditor"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:backgroundTint="#F44336"
+                android:text="Cancelar"
+                app:cornerRadius="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btnAceptarArticuloEditor"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+            <Button
+                android:id="@+id/btnAceptarArticuloEditor"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#0177D5"
+                android:text="Guardar"
+                app:cornerRadius="12dp"
+                app:layout_constraintBottom_toBottomOf="@+id/btnCancelarCategoriaEditor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/btnCancelarCategoriaEditor"
+                app:layout_constraintTop_toTopOf="@+id/btnCancelarCategoriaEditor" />
+
+            <top.defaults.colorpicker.ColorPickerView
+                android:id="@+id/colorPickerCategoriaEditor"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginBottom="10dp"
+                app:enableBrightness="true"
+                app:layout_constraintBottom_toTopOf="@+id/etColorCategoriaEditor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvSeleccioneColorCategoriaEditor" />
+
+            <TextView
+                android:id="@+id/tvSeleccioneColorCategoriaEditor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Seleccione un color"
+                android:textColor="@color/textViewsColor"
+                android:textSize="16sp"
+                android:textStyle="bold|italic"
+                app:layout_constraintEnd_toEndOf="@+id/etNombreCategoriaEditor"
+                app:layout_constraintStart_toStartOf="@+id/etNombreCategoriaEditor"
+                app:layout_constraintTop_toBottomOf="@+id/etNombreCategoriaEditor" />
+
+            <EditText
+                android:id="@+id/etColorCategoriaEditor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="20dp"
+                android:ems="10"
+                android:hint="#000000"
+                android:inputType="textPersonName"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toTopOf="@+id/btnCancelarCategoriaEditor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tvColorCategoriaEditor"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tvColorCategoriaEditor"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="20dp"
+                android:background="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/etColorCategoriaEditor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/etColorCategoriaEditor"
+                app:layout_constraintTop_toTopOf="@+id/etColorCategoriaEditor" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tvTituloCategoriaEditor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Editor de Categorias"
+        android:textColor="@color/textViewsColor"
+        android:textSize="28sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintBottom_toTopOf="@+id/CardViewCategoriaEditor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

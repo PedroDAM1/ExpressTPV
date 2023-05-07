@@ -1,7 +1,6 @@
 package com.pedro.expresstpv.data.database.entities
 
 import androidx.room.*
-import com.pedro.expresstpv.domain.model.Articulo
 
 @Entity(
     tableName = "tb_articulo",

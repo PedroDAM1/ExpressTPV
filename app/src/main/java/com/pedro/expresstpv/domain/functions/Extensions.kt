@@ -1,12 +1,10 @@
-package com.pedro.expresstpv.domain.extensions
+package com.pedro.expresstpv.domain.functions
 
 import com.pedro.expresstpv.data.database.AccesoDatos
 import com.pedro.expresstpv.data.database.entities.*
 import com.pedro.expresstpv.data.provider.toDomain
 import com.pedro.expresstpv.domain.model.*
-import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import javax.inject.Singleton
 
 
 public class Extensions @Inject constructor(private val db : AccesoDatos) {
