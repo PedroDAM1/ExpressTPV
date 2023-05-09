@@ -1,32 +1,44 @@
 package com.pedro.expresstpv.data.provider
 
+import android.util.Log
 import com.pedro.expresstpv.data.database.dao.CategoriaDao
 import com.pedro.expresstpv.data.database.entities.CategoriaEntity
 import com.pedro.expresstpv.domain.model.Categoria
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
 
-class CategoriaRepository @Inject constructor(private val categoriaDao: CategoriaDao) : IRepository {
+@Singleton
+class CategoriaRepository @Inject constructor(private val categoriaDao: CategoriaDao) {
 
     private var categoriasMap = mutableMapOf<Int, Categoria>()
 
-    override suspend fun reloadFromDatabase() {
-        val categorias = categoriaDao.getAll().map { it.toDomain() }
-        categorias.forEach {
-            categoriasMap[it.id] = it
+    private val _categoriaEntityFlow: Flow<List<CategoriaEntity>> = categoriaDao.getAll()
+
+    val categoriaFlow: Flow<List<Categoria>> = _categoriaEntityFlow
+        .map {
+            it.map { categoria ->
+                categoria.toDomain()
+            }
         }
-    }
+
+//    override suspend fun reloadFromDatabase() {
+//        val categorias = categoriaDao.getAll().map { it.toDomain() }
+//        categorias.forEach {
+//            categoriasMap[it.id] = it
+//        }
+//    }
 
     private suspend fun isMapVacio(){
         if (categoriasMap.isEmpty()){
-            reloadFromDatabase()
+            //reloadFromDatabase()
         }
     }
 
     suspend fun getAllCategorias() : MutableMap<Int, Categoria>{
         isMapVacio()
-
         return categoriasMap
     }
 
@@ -45,9 +57,10 @@ class CategoriaRepository @Inject constructor(private val categoriaDao: Categori
         categoriaDao.insert(categoria.toEntity())
         /* Como no tenemos el id hasta que lo insertamos en la bd, lo insertaremos y luego haremos la consulta
         * Una vez que tengamos el id lo insertaremos en el mapa*/
-        categoriasMap[categoriaDao.getLastId()] = categoria
+        val id = categoriaDao.getLastId()
+        categoriasMap[id] = categoria
+        Log.d("INSERT","Insert: $categoria")
     }
-
 
 
 }
@@ -60,9 +73,10 @@ fun Categoria.toEntity() = CategoriaEntity(
     nombre = nombre,
     color = color
 )
-
 public fun CategoriaEntity.toDomain() = Categoria(
     id = id,
     nombre = nombre,
     color = color
 )
+
+

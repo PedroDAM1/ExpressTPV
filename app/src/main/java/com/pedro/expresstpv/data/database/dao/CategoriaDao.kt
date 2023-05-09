@@ -2,6 +2,7 @@ package com.pedro.expresstpv.data.database.dao
 
 import androidx.room.*
 import com.pedro.expresstpv.data.database.entities.CategoriaEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CategoriaDao {
@@ -24,7 +25,7 @@ interface CategoriaDao {
     suspend fun getById(id: Int): CategoriaEntity?
 
     @Query("SELECT * FROM tb_categoria")
-    suspend fun getAll(): List<CategoriaEntity>
+    fun getAll(): Flow<List<CategoriaEntity>>
 
     @Query("SELECT id FROM tb_categoria ORDER BY id DESC LIMIT 1")
     suspend fun getLastId() : Int
