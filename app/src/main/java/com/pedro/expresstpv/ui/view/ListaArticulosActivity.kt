@@ -27,19 +27,18 @@ import kotlinx.coroutines.launch
 class ListaArticulosActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityListaArticulosBinding
-    //private lateinit var adapter : ListaArticulosAdapter
+    private lateinit var adapter : ListaArticulosAdapter
 
-    //private val viewModel : ListaArticulosViewModel by viewModels()
+    private val viewModel : ListaArticulosViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityListaArticulosBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //setListeners()
-        //setRecycler()
-        //enlazarFlow()
+        setListeners()
+        setRecycler()
+        enlazarFlow()
     }
 
-/*
     private fun setListeners(){
         binding.fabAddArticulo.setOnClickListener{
             startActivity(Intent(this, ArticuloEditorActivity::class.java))
@@ -48,25 +47,26 @@ class ListaArticulosActivity : AppCompatActivity() {
 
     private fun setRecycler(){
         val layoutManager = LinearLayoutManager(this)
-        val adapter = ListaArticulosAdapter()
+        adapter = ListaArticulosAdapter()
 
         binding.rvListaArticulos.layoutManager = layoutManager
         binding.rvListaArticulos.adapter = adapter
     }
 
     private fun enlazarFlow(){
-        lifecycleScope.launch {
-            viewModel._listaArticulos.collect{
-                Log.d("SIZE", it.size.toString())
-                it.forEach { art ->
-                    Log.d("ARTICULOS", art.toString())
+        lifecycleScope.launch (Dispatchers.Main) {
+            Log.d("HILO", "Se ha lanzado un hilo desde la funcion enlazar flow")
+            viewModel._listaArticulos
+                .catch {
+                    Log.d("EXCEPCION", "Hubo una excepcion al cargar el viewModel de la clase ListaArticulo")
                 }
-                adapter.submitList(it)
-            }
+                .collect{
+                    Log.d("SIZE", it.size.toString())
+                    Log.d("ADAPTER", "Subiendo lista al adapter: ${it.size}")
+                    adapter.submitList(it)
+                }
         }
-
     }
-*/
 
 
 }

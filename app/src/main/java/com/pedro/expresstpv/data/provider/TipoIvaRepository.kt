@@ -20,22 +20,34 @@ class TipoIvaRepository @Inject constructor(private val tipoIvaDao: TipoIvaDao){
 
     val tipoIvaFlow : Flow<List<TipoIva>> = _tipoIvaEntityFlow
         .map {
+            Log.d("GET TIPOIVA", "Mapeando el flow desde la base de datos")
             it.map {tipoIva ->
+                Log.d("GET TIPOIVA", "Se esta mapeando el ${tipoIva.id}, ${tipoIva.nombre}, ${tipoIva.porcentaje}")
                 tipoIva.toDomain()
             }
         }
 
-/*
     suspend fun getTipoIvaById(id : Int) : TipoIva?{
         return tipoIvaDao.getById(id)
-            .map { it?.toDomain() }
+            .catch {
+                Log.d("GET TIPOIVA", "Error al intentar obtener el iva con id $id")
+            }
+            .map {
+                Log.d("GET TIPOIVA", "Mapeando el tipoIva al dominio: $it")
+                it?.toDomain()
+            }
             .flowOn(Dispatchers.IO)
+            .first()
+
     }
-*/
 
     fun getTipoIvaByIdFlow(id: Int) : Flow<TipoIva?>{
+        Log.d("GET TIPOIVA", "Obteniendo el flow del iva con id $id")
         return tipoIvaDao.getById(id)
-            .map { it?.toDomain() }
+            .map {
+                Log.d("GET TIPOIVA", "Obteniendo un flow desde getbyid del tipoiva: $it")
+                it?.toDomain()
+            }
             .flowOn(Dispatchers.IO)
     }
 

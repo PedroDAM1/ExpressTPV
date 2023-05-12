@@ -49,7 +49,7 @@ class ArticuloEditorActivity : AppCompatActivity() {
     private fun setListeners(){
         binding.btnAceptarArticuloEditor.setOnClickListener {
             recuperarDatos()
-//            enviarDatos()
+            enviarDatos()
             finish()
         }
         binding.btnCancelarArticuloEditor.setOnClickListener {

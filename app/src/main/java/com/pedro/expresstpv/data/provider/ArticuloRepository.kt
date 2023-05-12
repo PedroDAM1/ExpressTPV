@@ -15,13 +15,14 @@ import javax.inject.Singleton
 @Singleton
 class ArticuloRepository @Inject constructor(private val articuloDao: ArticuloDao, private val categoriaRepository: CategoriaRepository, private val tipoIvaRepository: TipoIvaRepository){
 
-    /*private val _articulosEntityFlow : Flow<List<ArticuloEntity>> = articuloDao.getAll()
+    private val _articulosEntityFlow : Flow<List<ArticuloEntity>> = articuloDao.getAll()
     private val articuloFlow : Flow<List<Articulo>> = _articulosEntityFlow
         .catch {
             Log.d("ERROR", "Error al mapear en el repositorio de articulos: ${it.message}")
         }
         .map {
             it.map { articulo ->
+                Log.d("GET ARTICULO", "Mapeando articulo: $articulo")
                 articuloToDomain(articulo)
             }
         }
@@ -31,32 +32,46 @@ class ArticuloRepository @Inject constructor(private val articuloDao: ArticuloDa
 
     private suspend fun articuloToDomain(art : ArticuloEntity): Articulo{
         var categoria :Categoria? = null
-
-        categoriaRepository.getCategoriaByIdFlow(art.id)
+        categoria = categoriaRepository.getCategoriaById(art.idCategoria)
+        /*categoriaRepository.getCategoriaByIdFlow(art.id)
+            .catch {
+                Log.d("GET ARTICULO", "Hubo un error al intentar obtener la categoria: ${it.message}")
+            }
+            .flowOn(Dispatchers.IO)
             .collect{
                 categoria = it ?: categoriaRepository.getCategoriaById(0)!!
+                Log.d("GET ARTICULO", "Mapeando la categoria: ${categoria?.id} ${categoria?.nombre} ${categoria?.color}")
             }
-
+        Log.d("GET ARTICULO", "Se ha mapeado la categoria")*/
         var tipoIva : TipoIva? = null
-
-        tipoIvaRepository.getTipoIvaByIdFlow(art.id)
+        tipoIva = tipoIvaRepository.getTipoIvaById(art.idIva)
+        /*tipoIvaRepository.getTipoIvaByIdFlow(art.id)
+            .catch {
+                Log.d("GET ARTICULO", "Hubo un error al intentar obtener el tipo iva: ${it.message}")
+            }
+            .flowOn(Dispatchers.IO)
             .collect {
                 tipoIva = it ?: tipoIvaRepository.getTipoIvaById(0)!!
-            }
-
-        return Articulo(
+                Log.d("GET ARTICULO", "Mapeando el tipo de iva: ${tipoIva?.id} ${tipoIva?.nombre} ${tipoIva?.porcentaje}")
+            }*/
+        Log.d("GET ARTICULO", "Se ha mapeado el tipo de iva")
+        val articulo = Articulo(
             id = art.id,
             nombre = art.nombre,
             precio = art.precio,
             categoria = categoria!!,
             tipoIva = tipoIva!!
         )
+        Log.d("GET ARTICULO", "El articulo se ha mapaeado desde la funcion toDomain: $articulo")
+
+        return articulo
     }
 
 
     suspend fun insertarArticulo(articulo : Articulo){
+        Log.d("INSERTANDO ARTICULO", "Se esta insertando el articulo $articulo")
         articuloDao.insert(articulo.toEntity())
-    }*/
+    }
 }
 
 /* ARTICULO */

@@ -19,10 +19,13 @@ class CategoriaRepository @Inject constructor(private val categoriaDao: Categori
 
     val categoriaFlow: Flow<List<Categoria>> = _categoriaEntityFlow
         .map {
-            it.map { categoria ->
+            it.map { categoria  ->
+                Log.d("GET CATEGORIAS", "Mapeando categoria: $categoria")
                 categoria.toDomain()
             }
         }
+
+        .flowOn(Dispatchers.IO)
 
     suspend fun getCategoriaById(id : Int) : Categoria? {
         //Si la categoria no existe devolveremos nulo
@@ -31,11 +34,15 @@ class CategoriaRepository @Inject constructor(private val categoriaDao: Categori
                 it?.toDomain()
             }
             .flowOn(Dispatchers.IO)
-            .singleOrNull()
+            .first {
+                Log.d("GET CATEGORIAS","Obteniendo categoria por id: ${it?.id} ${it?.nombre}, ${it?.color}")
+                it?.id == id
+            }
     }
 
     fun getCategoriaByIdFlow(id : Int): Flow<Categoria?>{
         return categoriaDao.getById(id).map {
+            Log.d("GET CATEGORIA", "Obteniendo flow de categoria por id: ${it?.id} ${it?.nombre}, ${it?.color}")
             it?.toDomain()
         }
             .flowOn(Dispatchers.IO)
@@ -43,7 +50,7 @@ class CategoriaRepository @Inject constructor(private val categoriaDao: Categori
 
     suspend fun insert(categoria : Categoria){
         categoriaDao.insert(categoria.toEntity())
-        Log.d("INSERT","Insert: $categoria")
+        Log.d("INSERT CATEGORIA","Insert: $categoria")
     }
 
 

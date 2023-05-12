@@ -1,5 +1,6 @@
 package com.pedro.expresstpv.ui.recyclers
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,7 @@ class ListaArticulosAdapter :
     ListAdapter<Articulo, ListaArticulosAdapter.ListaArticulosViewHodel>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListaArticulosViewHodel {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.lista_categoria_layout, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.lista_articulos_layout, parent, false)
         return ListaArticulosViewHodel(v)
     }
 
@@ -26,10 +27,12 @@ class ListaArticulosAdapter :
     companion object {
         private val DiffCallback = object : DiffUtil.ItemCallback<Articulo>() {
             override fun areItemsTheSame(oldItem: Articulo, newItem: Articulo): Boolean {
+                Log.d("ADAPTER", "Comprobando las diferencias entre la id ${oldItem.id} y la id ${newItem.id} ")
                 return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(oldItem: Articulo, newItem: Articulo): Boolean {
+                Log.d("ADAPTER", "Comparando los objetos $oldItem y $newItem")
                 return oldItem == newItem
             }
         }
@@ -41,6 +44,7 @@ class ListaArticulosAdapter :
         private val binding = ListaArticulosLayoutBinding.bind(v)
 
         fun bind(articulo: Articulo) {
+            Log.d("HOLDER", "Pintando el articulo $articulo")
             binding.tvNombreArticuloListaArticulos.text = articulo.nombre
             binding.tvPrecioListaArticulos.text = articulo.precio.toString()
         }

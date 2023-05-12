@@ -30,7 +30,7 @@ class ArticuloEditorViewModel @Inject constructor(
     fun guardarArticulo(nombre : String, precio : Double, categoria : Categoria, tipoIva : TipoIva){
         val articulo = Articulo(nombre = nombre, precio = precio, categoria = categoria, tipoIva = tipoIva)
         viewModelScope.launch {
-            //articuloRepository.insertarArticulo(articulo)
+            articuloRepository.insertarArticulo(articulo)
         }
     }
 
