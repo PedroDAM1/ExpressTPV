@@ -4,13 +4,19 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.pedro.expresstpv.R
 import com.pedro.expresstpv.databinding.ActivityArticuloEditorBinding
 import com.pedro.expresstpv.domain.model.Categoria
 import com.pedro.expresstpv.domain.model.TipoIva
 import com.pedro.expresstpv.ui.viewmodel.ArticuloEditorViewModel
+import com.pedro.expresstpv.ui.viewmodel.UIState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -42,10 +48,12 @@ class ArticuloEditorActivity : AppCompatActivity() {
      */
     private fun setListeners(){
         binding.btnAceptarArticuloEditor.setOnClickListener {
-             recuperarDatos()
+            recuperarDatos()
+//            enviarDatos()
+            finish()
         }
         binding.btnCancelarArticuloEditor.setOnClickListener {
-
+            finish()
         }
     }
 
@@ -86,7 +94,7 @@ class ArticuloEditorActivity : AppCompatActivity() {
 
 
     private fun enviarDatos(){
-
+        viewModel.guardarArticulo(nombre, precio, categoria!!, tipoIva!!)
     }
     /**
      * Obtendremos los datos del viewModel y los cargaremos en el spinner.
@@ -95,12 +103,17 @@ class ArticuloEditorActivity : AppCompatActivity() {
      * solo me proporcionara el nombre
      */
     private fun cargarDatosSpinner(){
-        viewModel.categoriasLiveData.observe(this) { liveData ->
-            binding.spCategoriaArticuloEditor.adapter = ArrayAdapter(this, R.layout.elemento_spinner_textview, liveData.values.toMutableList())
-        }
-        viewModel.tipoIvaLiveData.observe(this) { liveData ->
-            binding.spTipoIvaArticuloEditor.adapter = ArrayAdapter(this, R.layout.elemento_spinner_textview, liveData.values.toMutableList())
-        }
-    }
+        viewModel.listaCategorias
+            .onEach {
+                binding.spCategoriaArticuloEditor.adapter = ArrayAdapter(this@ArticuloEditorActivity, R.layout.elemento_spinner_textview, it)
+            }
+            .launchIn(lifecycleScope)
 
+        viewModel.listaTipoIva
+            .onEach{
+                binding.spTipoIvaArticuloEditor.adapter = ArrayAdapter(this@ArticuloEditorActivity, R.layout.elemento_spinner_textview, it)
+            }
+            .launchIn(lifecycleScope)
+
+    }
 }

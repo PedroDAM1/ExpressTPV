@@ -1,7 +1,13 @@
 package com.pedro.expresstpv.domain.functions
 
+import android.content.Context
 import android.graphics.Color
 import android.util.Log
+import androidx.appcompat.app.AlertDialog
+import com.pedro.expresstpv.ui.viewmodel.UIState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
 
 class Functions {
     companion object{
@@ -43,6 +49,35 @@ class Functions {
             val blue = Color.blue(color)
             val yiq = (red * 299 + green * 587 + blue * 114) / 1000
             return if (yiq >= 128) Color.BLACK else Color.WHITE
+        }
+
+        /**
+         * La funcion nos devolvera un MutableState sabiendo que nos llegara un UIState.
+         *
+         * @param corrrutina donde correra nuestro escuchador
+         * @param flow Flow que se encontrara en el repositorio del que queramos obtener el MutableState
+         */
+        fun <T> getStateFlow(scope : CoroutineScope, flow : Flow<T>) : MutableStateFlow<UIState> {
+            //Empezamos a escuchar el flow que conecta con la base de datos
+            val state = MutableStateFlow<UIState>(UIState.Loading)
+            flow
+                .onEach {
+                    state.value = UIState.Succes(flow)
+                }
+                .catch {
+                    state.value = UIState.Error(it.message.orEmpty())
+                }
+                .flowOn(Dispatchers.IO)
+                .launchIn(scope)
+
+            return state
+        }
+
+        fun mostrarMensajeError(context : Context, titulo : String, mensaje : String){
+            AlertDialog.Builder(context)
+                .setTitle(titulo)
+                .setMessage(mensaje)
+                .setPositiveButton("Aceptar", null)
         }
     }
 }

@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.*
 import com.pedro.expresstpv.data.database.entities.ArticuloConCategoriaETipoIva
 import com.pedro.expresstpv.data.database.entities.ArticuloEntity
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
@@ -27,7 +28,7 @@ interface ArticuloDao {
     suspend fun getById(id: Int): ArticuloEntity?
 
     @Query("SELECT * FROM tb_articulo")
-    suspend fun getAll(): List<ArticuloEntity>
+    fun getAll(): Flow<List<ArticuloEntity>>
 
     @Transaction
     @Query("SELECT * FROM tb_articulo")

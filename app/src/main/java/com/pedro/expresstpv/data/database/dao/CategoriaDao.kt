@@ -22,7 +22,7 @@ interface CategoriaDao {
     suspend fun deleteAll()
 
     @Query("SELECT * FROM tb_categoria WHERE id=:id")
-    suspend fun getById(id: Int): CategoriaEntity?
+    fun getById(id: Int): Flow<CategoriaEntity?>
 
     @Query("SELECT * FROM tb_categoria")
     fun getAll(): Flow<List<CategoriaEntity>>

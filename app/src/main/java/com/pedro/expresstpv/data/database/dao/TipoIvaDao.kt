@@ -2,6 +2,7 @@ package com.pedro.expresstpv.data.database.dao
 
 import androidx.room.*
 import com.pedro.expresstpv.data.database.entities.TipoIvaEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TipoIvaDao {
@@ -21,8 +22,8 @@ interface TipoIvaDao {
     suspend fun deleteAll()
 
     @Query("SELECT * FROM tb_tipoiva WHERE id=:id")
-    suspend fun getById(id: Int): TipoIvaEntity?
+    fun getById(id: Int): Flow<TipoIvaEntity?>
 
     @Query("SELECT * FROM tb_tipoiva")
-    suspend fun getAll(): List<TipoIvaEntity>
+    fun getAll(): Flow<List<TipoIvaEntity>>
 }

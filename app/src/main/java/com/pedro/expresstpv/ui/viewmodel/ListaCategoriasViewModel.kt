@@ -3,6 +3,7 @@ package com.pedro.expresstpv.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pedro.expresstpv.data.provider.CategoriaRepository
+import com.pedro.expresstpv.domain.functions.Functions
 import com.pedro.expresstpv.domain.model.Categoria
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +17,7 @@ class ListaCategoriasViewModel @Inject constructor(
 
 
     //Flow
-    private val _listaCategoriasUIState = MutableStateFlow<UIState>(UIState.Loading)
+    private val _listaCategoriasUIState = Functions.getStateFlow(viewModelScope, categoriaRepository.categoriaFlow)
     val listaCategoriasUIState : StateFlow<UIState> = _listaCategoriasUIState
 
     init {
@@ -25,15 +26,15 @@ class ListaCategoriasViewModel @Inject constructor(
 
     private fun onCreate(){
         //Empezamos a escuchar el flow que conecta con la base de datos
-        categoriaRepository.categoriaFlow
-            .onEach {
-                _listaCategoriasUIState.value = UIState.Succes(categoriaRepository.categoriaFlow)
-            }
-            .catch {
-                _listaCategoriasUIState.value = UIState.Error(it.message.orEmpty())
-            }
-            .flowOn(Dispatchers.IO)
-            .launchIn(viewModelScope)
+//        categoriaRepository.categoriaFlow
+//            .onEach {
+//                _listaCategoriasUIState.value = UIState.Succes(categoriaRepository.categoriaFlow)
+//            }
+//            .catch {
+//                _listaCategoriasUIState.value = UIState.Error(it.message.orEmpty())
+//            }
+//            .flowOn(Dispatchers.IO)
+//            .launchIn(viewModelScope)
     }
 
 

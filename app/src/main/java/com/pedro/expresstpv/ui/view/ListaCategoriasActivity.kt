@@ -1,21 +1,18 @@
 package com.pedro.expresstpv.ui.view
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pedro.expresstpv.databinding.ActivityListaCategoriasBinding
+import com.pedro.expresstpv.domain.functions.Functions.Companion.mostrarMensajeError
 import com.pedro.expresstpv.ui.recyclers.ListaCategoriasAdapter
 import com.pedro.expresstpv.ui.viewmodel.ListaCategoriasViewModel
 import com.pedro.expresstpv.ui.viewmodel.UIState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import com.pedro.expresstpv.domain.model.Categoria as Categoria
 
@@ -50,14 +47,12 @@ class ListaCategoriasActivity : AppCompatActivity() {
                     when(flow){
                         is UIState.Error -> {
                             binding.progressBar.visibility = View.GONE
-
+                            mostrarMensajeError(this@ListaCategoriasActivity, "Error",
+                            "Hubo un error al cargar\n: ${flow.msg}")
                         }
                         is UIState.Succes<*> -> {
-                            flow.flow.onEach {
-                                adapter.data = (it as List<Categoria>).toMutableList()
-                            }
-                                .flowOn(Dispatchers.Main)
-                                .collect{
+                                flow.flow.collect{
+                                    adapter.data = (it as List<Categoria>).toMutableList()
                                     adapter.notifyItemChanged(adapter.data.size-1)
                                     binding.progressBar.visibility = View.GONE
                                 }
@@ -79,6 +74,5 @@ class ListaCategoriasActivity : AppCompatActivity() {
         binding.rvListaCategorias.layoutManager = layoutManager
         binding.rvListaCategorias.adapter = adapter
     }
-
 
 }
