@@ -1,4 +1,4 @@
-package com.pedro.expresstpv.ui.recyclers
+package com.pedro.expresstpv.ui.adapters
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -46,7 +46,8 @@ class ListaArticulosAdapter :
         fun bind(articulo: Articulo) {
             Log.d("HOLDER", "Pintando el articulo $articulo")
             binding.tvNombreArticuloListaArticulos.text = articulo.nombre
-            binding.tvPrecioListaArticulos.text = articulo.precio.toString()
+            //Mostramos el precio mejor formateado formateando la cadena existente en los strings recursos
+            binding.tvPrecioListaArticulos.text = binding.tvPrecioListaArticulos.context.getString(R.string.precio_selector).format(articulo.precio)
         }
 
     }

@@ -17,8 +17,7 @@ class ListaCategoriasViewModel @Inject constructor(
 
 
     //Flow
-    private val _listaCategoriasUIState = Functions.getStateFlow(viewModelScope, categoriaRepository.categoriaFlow)
-    val listaCategoriasUIState : StateFlow<UIState> = _listaCategoriasUIState
+    val listaCategoriasUIState : StateFlow<UIState> = Functions.getStateFlow(viewModelScope, categoriaRepository.getAllCategorias())
 
     init {
         onCreate()
@@ -26,9 +25,9 @@ class ListaCategoriasViewModel @Inject constructor(
 
     private fun onCreate(){
         //Empezamos a escuchar el flow que conecta con la base de datos
-//        categoriaRepository.categoriaFlow
+//        categoriaRepository.getAllCategorias()
 //            .onEach {
-//                _listaCategoriasUIState.value = UIState.Succes(categoriaRepository.categoriaFlow)
+//                _listaCategoriasUIState.value = UIState.Succes(categoriaRepository.getAllCategorias())
 //            }
 //            .catch {
 //                _listaCategoriasUIState.value = UIState.Error(it.message.orEmpty())

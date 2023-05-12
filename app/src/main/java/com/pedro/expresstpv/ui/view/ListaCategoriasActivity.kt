@@ -1,18 +1,27 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package com.pedro.expresstpv.ui.view
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pedro.expresstpv.databinding.ActivityListaCategoriasBinding
+import com.pedro.expresstpv.domain.functions.Functions
 import com.pedro.expresstpv.domain.functions.Functions.Companion.mostrarMensajeError
-import com.pedro.expresstpv.ui.recyclers.ListaCategoriasAdapter
+import com.pedro.expresstpv.domain.model.Articulo
+import com.pedro.expresstpv.ui.adapters.ListaCategoriasAdapter
 import com.pedro.expresstpv.ui.viewmodel.ListaCategoriasViewModel
 import com.pedro.expresstpv.ui.viewmodel.UIState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import com.pedro.expresstpv.domain.model.Categoria as Categoria
 
@@ -40,26 +49,31 @@ class ListaCategoriasActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Obtenemos el UIState para saber si los datos estan ya o no cargados
+     */
     private fun getState(){
+        //Lanzamos el hilo
         lifecycleScope.launch {
             viewModel.listaCategoriasUIState
+                //Nos susbscribimos al estado del uiState para saber si han cargado ya los datos
                 .collect { flow ->
                     when(flow){
+                        //En caso de error mostraremos el mensaje de error
                         is UIState.Error -> {
-                            binding.progressBar.visibility = View.GONE
+                            binding.pbListaCategorias.visibility = View.GONE
                             mostrarMensajeError(this@ListaCategoriasActivity, "Error",
                             "Hubo un error al cargar\n: ${flow.msg}")
                         }
+                        //Si no ocurre nada, cargaremos los datos en el adapter
+                        //TODO mejorar el sistema del adapter para que sea un ListAdapter
                         is UIState.Succes<*> -> {
-                                flow.flow.collect{
-                                    adapter.data = (it as List<Categoria>).toMutableList()
-                                    adapter.notifyItemChanged(adapter.data.size-1)
-                                    binding.progressBar.visibility = View.GONE
-                                }
-
+                            binding.pbListaCategorias.visibility = View.GONE
+                            subscribeToFlow(flow.flow as Flow<List<Categoria>>)
                         }
+                        //Si aun sigue cargando dejaremos la progressBar visible
                         UIState.Loading -> {
-                            binding.progressBar.visibility = View.VISIBLE
+                            binding.pbListaCategorias.visibility = View.VISIBLE
 
                         }
                     }
@@ -69,10 +83,21 @@ class ListaCategoriasActivity : AppCompatActivity() {
 
     private fun cargarRecycler(){
         val layoutManager = LinearLayoutManager(this)
-        adapter = ListaCategoriasAdapter(mutableListOf())
+        adapter = ListaCategoriasAdapter()
 
         binding.rvListaCategorias.layoutManager = layoutManager
         binding.rvListaCategorias.adapter = adapter
+    }
+
+    private suspend fun subscribeToFlow(flow : Flow<List<Categoria>>){
+        flow.catch {
+            mostrarMensajeError(this@ListaCategoriasActivity, "Error en los datos", "Hubo un error al cargar los datos")
+        }
+            .flowOn(Dispatchers.Main)
+            .collect{
+                Log.d("ADAPTER", "Actualizando el adapter del ListArticulo")
+                adapter.submitList(it)
+            }
     }
 
 }

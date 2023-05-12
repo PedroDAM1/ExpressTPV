@@ -22,9 +22,9 @@ class ArticuloEditorViewModel @Inject constructor(
     : ViewModel() {
 
     //Flow
-    val listaCategorias : Flow<List<Categoria>> = categoriaRepository.categoriaFlow
+    val listaCategorias : Flow<List<Categoria>> = categoriaRepository.getAllCategorias()
 
-    val listaTipoIva : Flow<List<TipoIva>> = tipoIvaRepository.tipoIvaFlow
+    val listaTipoIva : Flow<List<TipoIva>> = tipoIvaRepository.getAllTipoIva()
 
 
     fun guardarArticulo(nombre : String, precio : Double, categoria : Categoria, tipoIva : TipoIva){

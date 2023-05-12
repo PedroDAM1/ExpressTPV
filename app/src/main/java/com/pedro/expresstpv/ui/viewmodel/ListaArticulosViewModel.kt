@@ -15,9 +15,8 @@ class ListaArticulosViewModel @Inject constructor(
    articuloRepository: ArticuloRepository
 ) : ViewModel() {
 
-    val _listaArticulos : Flow<List<Articulo>> = articuloRepository.getAllArticulos()
     //En la uiState mostraremos el loading mientras carga la lista de articulos
-    val listaArticulos : StateFlow<UIState> = Functions.getStateFlow(viewModelScope, _listaArticulos)
+    val listaArticulos : StateFlow<UIState> = Functions.getStateFlow(viewModelScope, articuloRepository.getAllArticulos())
 
 
 }

@@ -1,6 +1,5 @@
 package com.pedro.expresstpv.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pedro.expresstpv.data.provider.CategoriaRepository
@@ -17,8 +16,6 @@ class CategoriaEditorViewModel @Inject constructor(
     fun guardarDatos(nombre : String, color: String){
 
         val categoria = Categoria(nombre = nombre, color = color)
-
-        Log.d("CATEGORIA VIEW MODEL", "Categoria = nombre: $nombre, color: $color")
 
         viewModelScope.launch {
             categoriaRepository.insert(categoria)

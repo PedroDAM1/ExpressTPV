@@ -2,14 +2,10 @@ package com.pedro.expresstpv.data.provider
 
 import android.util.Log
 import com.pedro.expresstpv.data.database.dao.TipoIvaDao
-import com.pedro.expresstpv.data.database.entities.CategoriaEntity
 import com.pedro.expresstpv.data.database.entities.TipoIvaEntity
-import com.pedro.expresstpv.domain.model.Categoria
 import com.pedro.expresstpv.domain.model.TipoIva
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,7 +14,7 @@ class TipoIvaRepository @Inject constructor(private val tipoIvaDao: TipoIvaDao){
 
     private val _tipoIvaEntityFlow : Flow<List<TipoIvaEntity>> = tipoIvaDao.getAll()
 
-    val tipoIvaFlow : Flow<List<TipoIva>> = _tipoIvaEntityFlow
+    private val _tipoIvaFlow : Flow<List<TipoIva>> = _tipoIvaEntityFlow
         .map {
             Log.d("GET TIPOIVA", "Mapeando el flow desde la base de datos")
             it.map {tipoIva ->
@@ -27,6 +23,7 @@ class TipoIvaRepository @Inject constructor(private val tipoIvaDao: TipoIvaDao){
             }
         }
 
+    fun getAllTipoIva() = _tipoIvaFlow
     suspend fun getTipoIvaById(id : Int) : TipoIva?{
         return tipoIvaDao.getById(id)
             .catch {
