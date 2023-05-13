@@ -7,7 +7,8 @@ import androidx.room.*
     foreignKeys = [
         ForeignKey(entity = CategoriaEntity::class, parentColumns = ["id"], childColumns = ["id_categoria"]),
         ForeignKey(entity = TipoIvaEntity::class, parentColumns = ["id"], childColumns = ["id_tipoiva"])
-    ]
+    ],
+    //indices = [Index("id_tipoiva", "id_categoria")]
 )
 data class ArticuloEntity(
     @PrimaryKey(autoGenerate = true)
@@ -19,22 +20,5 @@ data class ArticuloEntity(
     val nombre: String,
     @ColumnInfo(defaultValue = "0.0")
     val precio: Double = 0.0
-)
-
-data class ArticuloConCategoriaETipoIva(
-    @Embedded
-    val articuloEntity: ArticuloEntity,
-    @Relation(
-        entity = CategoriaEntity::class,
-        parentColumn = "id_categoria",
-        entityColumn = "id"
-    )
-    val categoriaEntity: CategoriaEntity,
-    @Relation(
-        entity = TipoIvaEntity::class,
-        parentColumn = "id_tipoiva",
-        entityColumn = "id"
-    )
-    val tipoIvaEntity: TipoIvaEntity,
 )
 

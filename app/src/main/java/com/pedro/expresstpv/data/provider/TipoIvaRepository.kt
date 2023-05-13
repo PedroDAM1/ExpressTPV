@@ -22,6 +22,7 @@ class TipoIvaRepository @Inject constructor(private val tipoIvaDao: TipoIvaDao){
                 tipoIva.toDomain()
             }
         }
+        .flowOn(Dispatchers.IO)
 
     fun getAllTipoIva() = _tipoIvaFlow
     suspend fun getTipoIvaById(id : Int) : TipoIva?{

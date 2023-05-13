@@ -2,6 +2,7 @@ package com.pedro.expresstpv.data.database.dao
 
 import androidx.room.*
 import com.pedro.expresstpv.data.database.entities.MetodoPagoEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MetodoPagoDao {
@@ -21,8 +22,8 @@ interface MetodoPagoDao {
     suspend fun deleteAll()
 
     @Query("SELECT * FROM tb_metodopago WHERE id=:id")
-    suspend fun getById(id: Int): MetodoPagoEntity?
+    fun getById(id: Int): Flow<MetodoPagoEntity?>
 
     @Query("SELECT * FROM tb_metodopago")
-    suspend fun getAll(): List<MetodoPagoEntity>
+    fun getAll(): Flow<List<MetodoPagoEntity>>
 }

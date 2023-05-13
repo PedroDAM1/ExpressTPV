@@ -3,6 +3,7 @@ package com.pedro.expresstpv.data.database.dao
 import androidx.room.*
 import com.pedro.expresstpv.data.database.entities.TicketConCierreYMetodoPago
 import com.pedro.expresstpv.data.database.entities.TicketEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TicketDao {
@@ -22,16 +23,9 @@ interface TicketDao {
     suspend fun deleteAll()
 
     @Query("SELECT * FROM tb_ticket WHERE num_ticket=:numTicket")
-    suspend fun getByNumTicket(numTicket: Int): TicketEntity?
+    fun getByNumTicket(numTicket: Int): Flow<TicketEntity?>
 
     @Query("SELECT * FROM tb_ticket")
-    suspend fun getAll(): List<TicketEntity>
+    fun getAll(): Flow<List<TicketEntity>>
 
-    @Transaction
-    @Query("SELECT * FROM tb_ticket WHERE num_ticket=:numTicket")
-    suspend fun getTicketConCierreYMetodoPagoById(numTicket: Int) : TicketConCierreYMetodoPago?
-
-    @Transaction
-    @Query("SELECT * FROM tb_ticket")
-    suspend fun getTicketConCierreYMetodoPago() : List<TicketConCierreYMetodoPago>
 }

@@ -35,10 +35,7 @@ class CategoriaRepository @Inject constructor(private val categoriaDao: Categori
                 it?.toDomain()
             }
             .flowOn(Dispatchers.IO)
-            .first {
-                Log.d("GET CATEGORIAS","Obteniendo categoria por id: ${it?.id} ${it?.nombre}, ${it?.color}")
-                it?.id == id
-            }
+            .first()
     }
 
     fun getCategoriaByIdFlow(id : Int): Flow<Categoria?>{

@@ -1,8 +1,8 @@
 package com.pedro.expresstpv.data.database.dao
 
 import androidx.room.*
-import com.pedro.expresstpv.data.database.entities.LineaTicketConArticuloYTicket
 import com.pedro.expresstpv.data.database.entities.LineaTicketEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface LineaTicketDao {
@@ -25,13 +25,7 @@ interface LineaTicketDao {
     suspend fun getById(id: Int): LineaTicketEntity?
 
     @Query("SELECT * FROM tb_lineaticket")
-    suspend fun getAll(): List<LineaTicketEntity>
+    fun getAll(): Flow<List<LineaTicketEntity>>
 
-    @Transaction
-    @Query("SELECT * FROM tb_lineaticket WHERE id=:id")
-    suspend fun getLineaTicketConArticuloYTicketById(id : Int): LineaTicketConArticuloYTicket?
 
-    @Transaction
-    @Query("SELECT * FROM tb_lineaticket")
-    suspend fun getAllLineaTicketConArticuloYTicket() : List<LineaTicketConArticuloYTicket>
 }

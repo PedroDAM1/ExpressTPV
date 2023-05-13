@@ -2,6 +2,7 @@ package com.pedro.expresstpv.data.database.dao
 
 import androidx.room.*
 import com.pedro.expresstpv.data.database.entities.CierreEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CierreDao {
@@ -21,8 +22,8 @@ interface CierreDao {
     suspend fun deleteAll()
 
     @Query("SELECT * FROM tb_cierre WHERE num_cierre=:numCierre")
-    suspend fun getByNumCierre(numCierre: Int): CierreEntity?
+    fun getByNumCierre(numCierre: Int): Flow<CierreEntity?>
 
     @Query("SELECT * FROM tb_cierre")
-    suspend fun getAll(): List<CierreEntity>
+    fun getAll(): Flow<List<CierreEntity>>
 }
