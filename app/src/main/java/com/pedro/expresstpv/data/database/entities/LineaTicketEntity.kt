@@ -46,22 +46,5 @@ data class LineaTicketConArticuloYTicket(
 
 )
 
-//data class LineaTicketConArticuloYTicket(
-//    @Embedded
-//    val lineaTicketEntity: LineaTicketEntity,
-//    @Relation(
-//        entity = ArticuloConCategoriaETipoIva::class,
-//        parentColumn = "id_articulo",
-//        entityColumn = "id"
-//    )
-//    val articuloConCategoriaETipoIva: ArticuloConCategoriaETipoIva,
-//    @Relation(
-//        entity = TicketConCierreYMetodoPago::class,
-//        parentColumn = "numTicket",
-//        entityColumn = "num_ticket"
-//    )
-//    val ticketConCierreYMetodoPago: TicketConCierreYMetodoPago
-//)
-
 
 

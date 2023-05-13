@@ -1,22 +1,22 @@
 package com.pedro.expresstpv.ui.viewmodel
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.pedro.expresstpv.data.database.dao.ArticuloDao
-import com.pedro.expresstpv.data.database.entities.ArticuloConCategoriaETipoIva
-import com.pedro.expresstpv.data.database.entities.CategoriaEntity
+import com.pedro.expresstpv.data.provider.ArticuloRepository
+import com.pedro.expresstpv.domain.model.LineaTicket
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
 @HiltViewModel
-class VentasViewModel @Inject constructor(private val articuloDao: ArticuloDao) : ViewModel() {
+class VentasViewModel @Inject constructor(private val articuloRepository: ArticuloRepository) : ViewModel() {
 
-    init {
-        onCreate()
-    }
+    private val _listaArticulos = articuloRepository.getAllArticulos()
+    private val lineaTicketFlow : Flow<List<LineaTicket>> = flowOf()
 
-    private fun onCreate() {
+    fun getAllArticulos() = _listaArticulos
+
+    fun getListaArticulosPorCategoria(idCategoria : Int){
+        //TODO Hacer que la funcion devuelva los articulos que pertenezcan a una categoria concreta
     }
 }
