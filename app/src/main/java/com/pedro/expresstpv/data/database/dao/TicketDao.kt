@@ -1,7 +1,6 @@
 package com.pedro.expresstpv.data.database.dao
 
 import androidx.room.*
-import com.pedro.expresstpv.data.database.entities.TicketConCierreYMetodoPago
 import com.pedro.expresstpv.data.database.entities.TicketEntity
 import kotlinx.coroutines.flow.Flow
 

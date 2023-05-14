@@ -2,6 +2,7 @@ package com.pedro.expresstpv.data.database.dao
 
 import androidx.room.*
 import com.pedro.expresstpv.data.database.entities.LineaTicketEntity
+import com.pedro.expresstpv.domain.model.LineaTicket
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -22,10 +23,14 @@ interface LineaTicketDao {
     suspend fun deleteAll()
 
     @Query("SELECT * FROM tb_lineaticket WHERE id=:id")
-    suspend fun getById(id: Int): LineaTicketEntity?
+    fun getById(id: Int): Flow<LineaTicketEntity?>
 
     @Query("SELECT * FROM tb_lineaticket")
     fun getAll(): Flow<List<LineaTicketEntity>>
+
+    @Query("SELECT * FROM tb_lineaticket WHERE num_ticket=:numTicket")
+    fun getLineaTicketByNumTicket(numTicket : Int) : Flow<List<LineaTicketEntity>>
+
 
 
 }

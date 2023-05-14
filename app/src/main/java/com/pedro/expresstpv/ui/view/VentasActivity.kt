@@ -6,16 +6,12 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import com.pedro.expresstpv.ExpressTPVApp
 import com.pedro.expresstpv.R
 import com.pedro.expresstpv.databinding.ActivityVentasBinding
 import com.pedro.expresstpv.domain.functions.Functions
-import com.pedro.expresstpv.ui.adapters.VentasCalculadoraListAdapter
+import com.pedro.expresstpv.ui.adapters.VentasCalculadoraListAdapterEXP
 import com.pedro.expresstpv.ui.viewmodel.VentasViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -23,13 +19,12 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class VentasActivity() : AppCompatActivity() {
 
     private lateinit var binding : ActivityVentasBinding
-    private lateinit var adapter : VentasCalculadoraListAdapter
+    private lateinit var adapter : VentasCalculadoraListAdapterEXP
 
     private val ventasViewModel by viewModels<VentasViewModel>()
 
@@ -65,24 +60,25 @@ class VentasActivity() : AppCompatActivity() {
             }
 
             R.id.miConfiguracion -> {
-
+                ventasViewModel.deleteAllLineaTickets()
             }
         }
 
         return super.onOptionsItemSelected(item)
     }
 
-
     private fun setRecycler(){
         val layoutManager = GridLayoutManager(this, 3)
-        adapter = VentasCalculadoraListAdapter()
+        adapter = VentasCalculadoraListAdapterEXP { ventasViewModel.onArticuloItemClick(it) }
 
         binding.rvArticulosCalculadora.layoutManager = layoutManager
         binding.rvArticulosCalculadora.adapter = adapter
     }
 
+
+
     private fun subscribeToFlow() {
-        ventasViewModel.getAllArticulos()
+        ventasViewModel.getArticulosConCantidad()
             .onEach {
                 adapter.submitList(it)
             }

@@ -28,24 +28,6 @@ data class TicketEntity(
     @ColumnInfo(name = "id_metodopago")
     val idMetodopago: Int,
     @ColumnInfo(defaultValue = "CURRENT_TIMESTAMP")
-    val fecha: LocalDateTime = LocalDateTime.now(),
+    val fecha: LocalDateTime? = LocalDateTime.now(),
     val total: Double
-)
-
-
-data class TicketConCierreYMetodoPago(
-    @Embedded
-    val ticketEntity: TicketEntity,
-    @Relation(
-        entity = CierreEntity::class,
-        parentColumn = "num_cierre",
-        entityColumn = "num_cierre"
-    )
-    val cierreEntity: CierreEntity,
-    @Relation(
-        entity = MetodoPagoEntity::class,
-        parentColumn = "id_metodopago",
-        entityColumn = "id"
-    )
-    val metodoPagoEntity: MetodoPagoEntity
 )

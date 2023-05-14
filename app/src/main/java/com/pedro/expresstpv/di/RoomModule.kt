@@ -47,7 +47,8 @@ object RoomModule {
                 db.execSQL("INSERT INTO tb_tipoiva (id, nombre, porcentaje) VALUES (0, 'SIN IVA', 0.00), (1, 'SUPER REDUCIDO', 4.00), (2, 'REDUCIDO', 10.00), (3, 'NORMAL', 21.00), (4, 'EXENTO', 0.00);")
                 db.execSQL("INSERT INTO tb_metodopago(id, nombre) VALUES (0, 'SIN DEFINIR'), (1, 'TARJETA'), (2, 'EFECTIVO');")
                 db.execSQL("INSERT INTO tb_categoria(id, nombre, color) VALUES (0, 'SIN CATEGORIA', '#FFFFFF');")
-                db.execSQL("INSERT INTO tb_cierre(num_cierre, fecha) VALUES (0, '0001-01-01 00:00');")
+                db.execSQL("INSERT INTO tb_cierre(num_cierre, fecha) VALUES (0, NULL);")
+                db.execSQL("INSERT INTO tb_ticket(num_ticket, num_cierre, id_metodopago, fecha, total) VALUES (0, 0, 0, NULL, 0.00);")
             }
         }
         database = Room.databaseBuilder(context, AccesoDatos::class.java, EXPRESSTPV_DATABASE_NAME)

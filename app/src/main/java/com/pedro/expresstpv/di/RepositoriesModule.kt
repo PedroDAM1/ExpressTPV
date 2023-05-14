@@ -31,8 +31,8 @@ object RepositoriesModule {
 
     @Singleton
     @Provides
-    fun provideLineaTicketRepository(lineaTicketDao: LineaTicketDao): LineaTicketRepository {
-        return LineaTicketRepository(lineaTicketDao)
+    fun provideLineaTicketRepository(lineaTicketDao: LineaTicketDao, ticketRepository: TicketRepository): LineaTicketRepository {
+        return LineaTicketRepository(lineaTicketDao, ticketRepository)
     }
 
     @Singleton

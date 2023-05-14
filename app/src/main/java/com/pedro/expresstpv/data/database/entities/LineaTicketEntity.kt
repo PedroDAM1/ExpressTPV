@@ -12,12 +12,12 @@ import androidx.room.*
 data class LineaTicketEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-   /* @ColumnInfo(name = "id_articulo")
-    val idArticulo: Int,*/
     @ColumnInfo(name = "num_ticket")
     val numTicket : Int,
     @ColumnInfo(defaultValue = "")
     val descripcion: String = "",
+    @ColumnInfo(name = "categoria_venta",defaultValue = "")
+    val categoriaVenta : String = "",
     @ColumnInfo(defaultValue = "0")
     val cantidad: Int = 0,
     @ColumnInfo(name = "valor_iva", defaultValue = "0.0")

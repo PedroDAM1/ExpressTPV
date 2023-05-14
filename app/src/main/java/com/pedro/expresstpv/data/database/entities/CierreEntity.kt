@@ -11,7 +11,7 @@ data class CierreEntity(
     @PrimaryKey
     @ColumnInfo(name = "num_cierre") val numCierre: Int,
     @ColumnInfo(defaultValue = "CURRENT_TIMESTAMP")
-    val fecha: LocalDateTime = LocalDateTime.now()
+    val fecha: LocalDateTime? = LocalDateTime.now()
 )
 
 
