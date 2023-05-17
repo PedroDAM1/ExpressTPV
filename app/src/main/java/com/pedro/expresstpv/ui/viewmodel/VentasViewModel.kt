@@ -9,7 +9,7 @@ import com.pedro.expresstpv.data.usecase.ArticulosUseCase
 import com.pedro.expresstpv.data.usecase.LineaTicketUseCases
 import com.pedro.expresstpv.domain.model.Articulo
 import com.pedro.expresstpv.domain.model.LineaTicket
-import com.pedro.expresstpv.ui.adapters.VentasCalculadoraListAdapterEXP
+import com.pedro.expresstpv.ui.adapters.VentasCalculadoraListAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -29,30 +29,12 @@ class VentasViewModel @Inject constructor(
     private val _lineaTicketActivoFlow = lineaTicketUseCases.getLineaTicketActivoFlow()
     private var _listaLineaTickets : MutableList<LineaTicket> = mutableListOf()
 
-/*    private val _articuloConCantidadFlow : Flow<List<VentasCalculadoraListAdapterEXP.ArticuloYCantidad>> = _listaArticulos
-        .map {
-        //Mapeamos cada objeto de la lista
-            it.map {articulo ->
-                //Obtenemos la lista de las lineasTickets que aun no se han asociado a ningun ticket
-                val listaLineas = lineaTicketUseCases.getLineaTicketActivo()
-                //Si ninguna lineaTicket coincide con exactitud con el articulo que queremos mapear, significa que la cantidad sera 0
-                var articuloYCantidad = VentasCalculadoraListAdapterEXP.ArticuloYCantidad(articulo, 0)
-                listaLineas.forEach { lineaTicket ->
-                    //Si alguna de estas lineas coincide con los datos de un articulo, entonces obtendremos la cantidad de aqui
-                    if (isLineaTicketOfArticulo(lineaTicket, articulo)){
-                        articuloYCantidad = VentasCalculadoraListAdapterEXP.ArticuloYCantidad(articulo, lineaTicket.cantidad)
-                    }
-                }
-                articuloYCantidad
-            }
-        }*/
-
-    private val _articuloConCantidadFlow : Flow<List<VentasCalculadoraListAdapterEXP.ArticuloYCantidad>> = _listaArticulos.combine(_lineaTicketActivoFlow){ listaArticulos, lineasTickets ->
+    private val _articuloConCantidadFlow : Flow<List<VentasCalculadoraListAdapter.ArticuloYCantidad>> = _listaArticulos.combine(_lineaTicketActivoFlow){ listaArticulos, lineasTickets ->
         listaArticulos.map {articulo ->
-            var articuloYCantidad = VentasCalculadoraListAdapterEXP.ArticuloYCantidad(articulo, 0)
+            var articuloYCantidad = VentasCalculadoraListAdapter.ArticuloYCantidad(articulo, 0)
             lineasTickets.forEach {lineaTicket ->
                 if (isLineaTicketOfArticulo(lineaTicket, articulo)){
-                    articuloYCantidad = VentasCalculadoraListAdapterEXP.ArticuloYCantidad(articulo, lineaTicket.cantidad)
+                    articuloYCantidad = VentasCalculadoraListAdapter.ArticuloYCantidad(articulo, lineaTicket.cantidad)
                 }
             }
             articuloYCantidad
@@ -84,20 +66,15 @@ class VentasViewModel @Inject constructor(
      * del articulo no coincide con las de la lineaTicket
      */
     private fun isLineaTicketOfArticulo(lineaTicket: LineaTicket, articulo: Articulo) : Boolean{
-        if (lineaTicket.descripcion == articulo.nombre &&
+        return if (lineaTicket.descripcion == articulo.nombre &&
             lineaTicket.categoriaVenta == articulo.categoria.nombre &&
             lineaTicket.valorIva == articulo.tipoIva.porcentaje &&
-            (lineaTicket.total/lineaTicket.cantidad) == articulo.precio)
-        {
+            (lineaTicket.total/lineaTicket.cantidad) == articulo.precio) {
             Log.d("COMPROBADOR", "El archivo es valido")
-            return true
+            true
         } else {
-            return false
+            false
         }
-/*        return lineaTicket.descripcion == articulo.nombre &&
-                lineaTicket.categoriaVenta == articulo.categoria.nombre &&
-                lineaTicket.valorIva == articulo.tipoIva.porcentaje &&
-                (lineaTicket.total/lineaTicket.cantidad) == articulo.precio*/
     }
 
     /**
@@ -117,6 +94,9 @@ class VentasViewModel @Inject constructor(
         return lineaTicket
     }
 
+    /**
+     * Nos subscribimos a la lista de lineaTickets para cuando se actualice en tiempo real
+     */
     private fun subscribeToFlow(){
         viewModelScope.launch (Dispatchers.IO) {
             _lineaTicketFlow
@@ -132,17 +112,16 @@ class VentasViewModel @Inject constructor(
     /**
      * Obtenemos el articulo que se ha clicado en el boton del adapter, ademas deberemos de devolver la cantidad de lineaTicket de ese articulo
      */
-    fun onArticuloItemClick(articulo: VentasCalculadoraListAdapterEXP.ArticuloYCantidad) {
+    fun onArticuloItemClick(articulo: VentasCalculadoraListAdapter.ArticuloYCantidad) {
         viewModelScope.launch (Dispatchers.IO) {
             Log.d("ARTICULO CLICADO", "Se ha clicado al articulo: $articulo")
-            var lineaTicket : LineaTicket? = comprobarLineaTicket(articulo.articulo)
+            val lineaTicket : LineaTicket? = comprobarLineaTicket(articulo.articulo)
             if (lineaTicket == null){
                 lineaTicketUseCases.crearLineaTicket(articulo.articulo)
             } else {
                 lineaTicketUseCases.aumentarCantidadLineaTicket(lineaTicket, 1)
             }
         }
-
     }
 
 }

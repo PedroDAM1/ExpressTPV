@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.pedro.expresstpv.R
 import com.pedro.expresstpv.databinding.ActivityVentasBinding
 import com.pedro.expresstpv.domain.functions.Functions
-import com.pedro.expresstpv.ui.adapters.VentasCalculadoraListAdapterEXP
+import com.pedro.expresstpv.ui.adapters.VentasCalculadoraListAdapter
 import com.pedro.expresstpv.ui.viewmodel.VentasViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.onEach
 class VentasActivity() : AppCompatActivity() {
 
     private lateinit var binding : ActivityVentasBinding
-    private lateinit var adapter : VentasCalculadoraListAdapterEXP
+    private lateinit var adapter : VentasCalculadoraListAdapter
 
     private val ventasViewModel by viewModels<VentasViewModel>()
 
@@ -67,16 +67,23 @@ class VentasActivity() : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    /*****************************************************************************************************/
+
+    /**
+     * Preparamos el recycler
+     */
     private fun setRecycler(){
         val layoutManager = GridLayoutManager(this, 3)
-        adapter = VentasCalculadoraListAdapterEXP { ventasViewModel.onArticuloItemClick(it) }
+        adapter = VentasCalculadoraListAdapter { ventasViewModel.onArticuloItemClick(it) }
 
         binding.rvArticulosCalculadora.layoutManager = layoutManager
         binding.rvArticulosCalculadora.adapter = adapter
     }
 
 
-
+    /**
+     * Nos subscribimos a la lista que nos dice cuando un articulo se actualiza o cuando se actualiza una linea ticket
+     */
     private fun subscribeToFlow() {
         ventasViewModel.getArticulosConCantidad()
             .onEach {

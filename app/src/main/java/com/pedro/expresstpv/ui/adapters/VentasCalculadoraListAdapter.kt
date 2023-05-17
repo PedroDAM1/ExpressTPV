@@ -1,6 +1,5 @@
 package com.pedro.expresstpv.ui.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,7 @@ import com.pedro.expresstpv.R
 import com.pedro.expresstpv.databinding.CalculadoraVentasLayoutBinding
 import com.pedro.expresstpv.domain.model.Articulo
 
-class VentasCalculadoraListAdapterEXP (val onItemClicked : (ArticuloYCantidad) -> Unit) : ListAdapter<VentasCalculadoraListAdapterEXP.ArticuloYCantidad, VentasCalculadoraListAdapterEXP.VentasCalculadoraViewHolder>(
+class VentasCalculadoraListAdapter (val onItemClicked : (ArticuloYCantidad) -> Unit) : ListAdapter<VentasCalculadoraListAdapter.ArticuloYCantidad, VentasCalculadoraListAdapter.VentasCalculadoraViewHolder>(
     DiffCallback) {
 
     override fun onCreateViewHolder(
@@ -51,9 +50,14 @@ class VentasCalculadoraListAdapterEXP (val onItemClicked : (ArticuloYCantidad) -
         fun bind(articuloYCantidad: ArticuloYCantidad){
             binding.tvNombreArticuloCalculadora.text = articuloYCantidad.articulo.nombre
             binding.tvPrecioArticuloCalculadora.text = binding.root.context.getString(R.string.precio_articulo_calculadora).format(articuloYCantidad.articulo.precio)
+            //Si la cantidad es mayor que cero significa que tenemos una lineaTicket
             if(articuloYCantidad.cantidad > 0) {
                 binding.tvCantidadArticuloCalculadora.text = articuloYCantidad.cantidad.toString()
                 binding.tvCantidadArticuloCalculadora.setBackgroundColor(binding.root.context.getColor(R.color.fondo_boton_cantidad_clicada))
+            } else {
+                //Si nos llega un 0 deberemos de repintar para evitar problemas
+                binding.tvCantidadArticuloCalculadora.text = articuloYCantidad.cantidad.toString()
+                binding.tvCantidadArticuloCalculadora.setBackgroundColor(binding.root.context.getColor(R.color.fondo_boton_cantidad_noclicada))
             }
         }
     }
