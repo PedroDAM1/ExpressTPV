@@ -2,44 +2,52 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:minHeight="40dp"
+    android:paddingStart="5dp"
+    android:paddingEnd="5dp"
     android:background="@drawable/separator_filas_lineasticket_ventas">
 
     <TextView
         android:id="@+id/tvCantidadGrillaLineaTickets"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.1"
+        android:layout_width="35dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.15"
+        android:background="@drawable/separator_listas_activities"
+        android:ellipsize="end"
+        android:gravity="center"
         android:maxWidth="25dp"
         android:maxLines="1"
-        android:ellipsize="end"
-        android:background="@drawable/separator_columnas_lineasticket_ventas"
-        android:gravity="start"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/tvNombreGrillaLineaTickets"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/separator_columnas_lineasticket_ventas"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/tvCategoriaGrillaLineaTickets"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@drawable/separator_columnas_lineasticket_ventas"
         android:gravity="center"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/tvTotalGrillaLineaTickets"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
         android:layout_weight="0.1"
-        android:maxLines="1"
         android:background="@drawable/separator_listas_activities"
-        android:gravity="end"
-        android:text="0.00€" />
+        android:gravity="center|end"
+        android:maxLines="1"
+        android:text="@string/precio_selector"
+        android:textSize="20sp" />
 </LinearLayout>

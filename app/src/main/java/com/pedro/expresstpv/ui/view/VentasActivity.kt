@@ -8,9 +8,11 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.pedro.expresstpv.R
 import com.pedro.expresstpv.databinding.ActivityVentasBinding
 import com.pedro.expresstpv.domain.functions.Functions
+import com.pedro.expresstpv.ui.adapters.GrillaLIneaTicketsListAdapter
 import com.pedro.expresstpv.ui.adapters.VentasCalculadoraListAdapter
 import com.pedro.expresstpv.ui.viewmodel.VentasViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,7 +26,8 @@ import kotlinx.coroutines.flow.onEach
 class VentasActivity() : AppCompatActivity() {
 
     private lateinit var binding : ActivityVentasBinding
-    private lateinit var adapter : VentasCalculadoraListAdapter
+    private lateinit var adapterVentas : VentasCalculadoraListAdapter
+    private lateinit var adapterGrillaLineaTickets : GrillaLIneaTicketsListAdapter
 
     private val ventasViewModel by viewModels<VentasViewModel>()
 
@@ -32,7 +35,8 @@ class VentasActivity() : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityVentasBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setRecycler()
+        setRecyclerVentas()
+        setRecyclerGrillaLineaTicket()
         subscribeToFlow()
     }
 
@@ -72,12 +76,18 @@ class VentasActivity() : AppCompatActivity() {
     /**
      * Preparamos el recycler
      */
-    private fun setRecycler(){
+    private fun setRecyclerVentas(){
         val layoutManager = GridLayoutManager(this, 3)
-        adapter = VentasCalculadoraListAdapter { ventasViewModel.onArticuloItemClick(it) }
-
+        adapterVentas = VentasCalculadoraListAdapter { ventasViewModel.onArticuloItemClick(it) }
         binding.rvArticulosCalculadora.layoutManager = layoutManager
-        binding.rvArticulosCalculadora.adapter = adapter
+        binding.rvArticulosCalculadora.adapter = adapterVentas
+    }
+
+    private fun setRecyclerGrillaLineaTicket(){
+        val layoutManager = LinearLayoutManager(this)
+        adapterGrillaLineaTickets = GrillaLIneaTicketsListAdapter()
+        binding.rvGridLineasTickets.layoutManager = layoutManager
+        binding.rvGridLineasTickets.adapter = adapterGrillaLineaTickets
     }
 
 
@@ -87,7 +97,7 @@ class VentasActivity() : AppCompatActivity() {
     private fun subscribeToFlow() {
         ventasViewModel.getArticulosConCantidad()
             .onEach {
-                adapter.submitList(it)
+                adapterVentas.submitList(it)
             }
             .catch {
                 Functions.mostrarMensajeError(
@@ -97,5 +107,22 @@ class VentasActivity() : AppCompatActivity() {
             }
             .flowOn(Dispatchers.Main)
             .launchIn(lifecycleScope)
+
+        ventasViewModel.getLineaTicketActivo()
+            .onEach {
+                adapterGrillaLineaTickets.submitList(it)
+                val total = it.sumOf { it.total }
+                binding.tvTotal.text = getString(R.string.precio_selector).format(total)
+            }
+            .catch {
+                Functions.mostrarMensajeError(
+                    this@VentasActivity,
+                    "Error",
+                    "Hubo un error al cargar las lineas de tickets"
+                )
+            }
+            .flowOn(Dispatchers.Main)
+            .launchIn(lifecycleScope)
+
     }
 }

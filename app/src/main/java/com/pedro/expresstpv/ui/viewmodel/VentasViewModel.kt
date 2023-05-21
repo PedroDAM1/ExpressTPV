@@ -46,10 +46,9 @@ class VentasViewModel @Inject constructor(
         subscribeToFlow()
     }
 
-    fun getAllArticulos() = _listaArticulos
-
     fun getArticulosConCantidad() = _articuloConCantidadFlow
 
+    fun getLineaTicketActivo() = _lineaTicketActivoFlow
     fun deleteAllLineaTickets(){
         viewModelScope.launch (Dispatchers.IO) {
             lineaTicketRepository.deleteAll()
