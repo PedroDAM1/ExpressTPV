@@ -1,8 +1,11 @@
 package com.pedro.expresstpv.di
 
 import android.content.Context
+import androidx.room.ColumnInfo
+import androidx.room.PrimaryKey
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.pedro.expresstpv.data.database.AccesoDatos
 import com.pedro.expresstpv.data.database.dao.ArticuloDao
@@ -51,7 +54,27 @@ object RoomModule {
                 db.execSQL("INSERT INTO tb_ticket(num_ticket, num_cierre, id_metodopago, fecha, total) VALUES (0, 0, 0, NULL, 0.00);")
             }
         }
+        val migration2to1 = object : Migration(2,1){
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("DROP TABLE IF EXISTS tb_lineaticket;")
+                database.execSQL("""CREATE TABLE tb_lineaticket (
+                  id INTEGER PRIMARY KEY NOT NULL,
+                  num_ticket INTEGER NOT NULL,
+                  descripcion TEXT NOT NULL DEFAULT '',
+                  categoria_venta TEXT NOT NULL DEFAULT '',
+                  cantidad INTEGER NOT NULL DEFAULT 0,
+                  valor_iva REAL NOT NULL DEFAULT 0.0,
+                  subtotal REAL NOT NULL DEFAULT 0.0,
+                  total REAL NOT NULL DEFAULT 0.0,
+                  FOREIGN KEY (num_ticket) REFERENCES tb_ticket(num_ticket)
+                );
+                """.trimMargin())
+            }
+
+        }
+
         database = Room.databaseBuilder(context, AccesoDatos::class.java, EXPRESSTPV_DATABASE_NAME)
+            .addMigrations(migration2to1)
             .addCallback(callback)
             .build()
 
