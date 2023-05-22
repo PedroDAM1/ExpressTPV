@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pedro.expresstpv.data.provider.ArticuloRepository
 import com.pedro.expresstpv.data.provider.LineaTicketRepository
-import com.pedro.expresstpv.data.usecase.ArticulosUseCase
 import com.pedro.expresstpv.data.usecase.LineaTicketUseCases
 import com.pedro.expresstpv.domain.model.Articulo
 import com.pedro.expresstpv.domain.model.LineaTicket
@@ -21,7 +20,6 @@ class VentasViewModel @Inject constructor(
     private val articuloRepository: ArticuloRepository,
     private val lineaTicketRepository: LineaTicketRepository,
     private val lineaTicketUseCases: LineaTicketUseCases,
-    private val articulosUseCase: ArticulosUseCase
 ) : ViewModel() {
 
     private val _listaArticulos = articuloRepository.getAllArticulos()
@@ -31,13 +29,9 @@ class VentasViewModel @Inject constructor(
 
     private val _articuloConCantidadFlow : Flow<List<VentasCalculadoraListAdapter.ArticuloYCantidad>> = _listaArticulos.combine(_lineaTicketActivoFlow){ listaArticulos, lineasTickets ->
         listaArticulos.map {articulo ->
-            var articuloYCantidad = VentasCalculadoraListAdapter.ArticuloYCantidad(articulo, 0)
-            lineasTickets.forEach {lineaTicket ->
-                if (isLineaTicketOfArticulo(lineaTicket, articulo)){
-                    articuloYCantidad = VentasCalculadoraListAdapter.ArticuloYCantidad(articulo, lineaTicket.cantidad)
-                }
-            }
-            articuloYCantidad
+            val lineaTicket = lineasTickets.firstOrNull{ isLineaTicketOfArticulo(it, articulo) }
+            //Si no obtenemos una lineaticket, devolveremos 0 de cantidad
+            VentasCalculadoraListAdapter.ArticuloYCantidad(articulo, lineaTicket?.cantidad ?: 0)
         }
     }
         .flowOn(Dispatchers.IO)
@@ -65,32 +59,19 @@ class VentasViewModel @Inject constructor(
      * del articulo no coincide con las de la lineaTicket
      */
     private fun isLineaTicketOfArticulo(lineaTicket: LineaTicket, articulo: Articulo) : Boolean{
-        return if (lineaTicket.descripcion == articulo.nombre &&
+        return lineaTicket.descripcion == articulo.nombre &&
             lineaTicket.categoriaVenta == articulo.categoria.nombre &&
             lineaTicket.valorIva == articulo.tipoIva.porcentaje &&
-            (lineaTicket.total/lineaTicket.cantidad) == articulo.precio) {
-            Log.d("COMPROBADOR", "El archivo es valido")
-            true
-        } else {
-            false
-        }
+            (lineaTicket.total/lineaTicket.cantidad) == articulo.precio
     }
 
     /**
      * Comprobamos si existe alguna lineaTicket que coincida con un articulo,
      * si coincide la devolvemos, sino devolveremos null
      */
-    private fun comprobarLineaTicket(articulo : Articulo) : LineaTicket?{
-        var lineaTicket : LineaTicket? = null
-        _listaLineaTickets.forEach {
-            //Vamos a comprobar si las caracteristicas del articulo coinciden con las de la linea ticket
-             if (isLineaTicketOfArticulo(it, articulo)) {
-                //Existe la lineaTicket, asique la devolvemos
-                lineaTicket = it
-            }
-        }
+    private fun comprobarLineaTicket(articulo: Articulo): LineaTicket? {
         //Si no existe la linea ticket se devuelve null
-        return lineaTicket
+        return _listaLineaTickets.firstOrNull { isLineaTicketOfArticulo(it, articulo) }
     }
 
     /**
@@ -113,7 +94,6 @@ class VentasViewModel @Inject constructor(
      */
     fun onArticuloItemClick(articulo: VentasCalculadoraListAdapter.ArticuloYCantidad) {
         viewModelScope.launch (Dispatchers.IO) {
-            Log.d("ARTICULO CLICADO", "Se ha clicado al articulo: $articulo")
             val lineaTicket : LineaTicket? = comprobarLineaTicket(articulo.articulo)
             if (lineaTicket == null){
                 lineaTicketUseCases.crearLineaTicket(articulo.articulo)
