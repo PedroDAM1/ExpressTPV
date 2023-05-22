@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutGrillaLineaTicket"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="40dp"
-    android:paddingStart="5dp"
-    android:paddingEnd="5dp"
-    android:background="@drawable/separator_filas_lineasticket_ventas">
+   >
 
     <TextView
         android:id="@+id/tvCantidadGrillaLineaTickets"
-        android:layout_width="35dp"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.15"
-        android:background="@drawable/separator_listas_activities"
+        android:layout_weight="0.4"
+        android:background="@drawable/item_grilla_columna_derecha"
         android:ellipsize="end"
         android:gravity="center"
         android:maxWidth="25dp"
@@ -22,9 +21,11 @@
 
     <TextView
         android:id="@+id/tvNombreGrillaLineaTickets"
-        android:layout_width="100dp"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:background="@drawable/separator_columnas_lineasticket_ventas"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:background="@drawable/item_grilla_columna_derecha"
         android:layout_weight="1"
         android:gravity="center"
         android:text="TextView"
@@ -32,22 +33,26 @@
 
     <TextView
         android:id="@+id/tvCategoriaGrillaLineaTickets"
-        android:layout_width="100dp"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@drawable/separator_columnas_lineasticket_ventas"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:background="@drawable/item_grilla_columna_derecha"
         android:gravity="center"
         android:text="TextView"
         android:textSize="20sp" />
 
     <TextView
         android:id="@+id/tvTotalGrillaLineaTickets"
-        android:layout_width="60dp"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.1"
-        android:background="@drawable/separator_listas_activities"
+        android:minWidth="40dp"
+        android:layout_weight="0.6"
+        android:background="@drawable/item_grilla_solo_bottom"
         android:gravity="center|end"
-        android:maxLines="1"
+        android:maxLines="2"
+        android:ellipsize="start"
         android:text="@string/precio_selector"
         android:textSize="20sp" />
 </LinearLayout>

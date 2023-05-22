@@ -123,4 +123,8 @@ class VentasViewModel @Inject constructor(
         }
     }
 
+    fun onLineaTicketItemClick(lineaTicket: LineaTicket?){
+
+    }
+
 }

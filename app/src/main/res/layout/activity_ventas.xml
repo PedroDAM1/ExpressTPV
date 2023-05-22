@@ -8,12 +8,12 @@
     tools:context=".ui.view.VentasActivity">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="392dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/rvGridLineasTickets"
-        app:layout_constraintStart_toStartOf="@+id/rvGridLineasTickets"
-        app:layout_constraintEnd_toEndOf="@id/rvGridLineasTickets"
+        app:layout_constraintStart_toStartOf="@id/cvGrillaLineaTickets"
+        app:layout_constraintEnd_toEndOf="@id/cvGrillaLineaTickets"
+        app:layout_constraintBottom_toTopOf="@id/cvGrillaLineaTickets"
         >
 
         <TextView
@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="ID"
+            android:text="UDS"
             android:textSize="18sp" />
 
         <TextView
@@ -53,21 +53,25 @@
             android:textSize="18sp" />
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvGridLineasTickets"
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvGrillaLineaTickets"
         android:layout_width="0dp"
         android:layout_height="180dp"
+        android:layout_marginTop="40dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="30dp"
         android:layout_marginEnd="10dp"
-        android:background="@drawable/backgrounds_views"
-        android:backgroundTint="#FFFFFF"
-        app:circularflow_radiusInDP="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:cardCornerRadius="12dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvGridLineasTickets"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </androidx.cardview.widget.CardView>
     <TextView
         android:id="@+id/textView"
         android:layout_width="0dp"
@@ -79,8 +83,9 @@
         android:textColor="@color/textViewsColor"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/rvGridLineasTickets"
-        app:layout_constraintTop_toBottomOf="@+id/rvGridLineasTickets" />
+        app:layout_constraintStart_toStartOf="@id/cvGrillaLineaTickets"
+        app:layout_constraintTop_toBottomOf="@id/cvGrillaLineaTickets"
+        />
 
     <TextView
         android:id="@+id/tvTotal"
@@ -93,23 +98,74 @@
         android:textColor="@color/textViewsColor"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/rvGridLineasTickets"
-        app:layout_constraintTop_toBottomOf="@+id/rvGridLineasTickets" />
+        app:layout_constraintEnd_toEndOf="@id/cvGrillaLineaTickets"
+        app:layout_constraintTop_toBottomOf="@id/cvGrillaLineaTickets"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvArticulosCalculadora"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginTop="140dp"
+        android:layout_marginBottom="0dp"
         android:background="@drawable/backgrounds_views"
         android:padding="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/tvTotal"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintBottom_toTopOf="@id/btnCobrarVentasActivity"
+        app:layout_constraintEnd_toEndOf="@id/cvGrillaLineaTickets"
+        app:layout_constraintStart_toStartOf="@id/cvGrillaLineaTickets"
+        app:layout_constraintTop_toBottomOf="@id/cvGrillaLineaTickets" />
 
+    <Button
+        android:id="@+id/btnMenosVentasActivity"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:enabled="false"
+        app:cornerRadius="12dp"
+        app:icon="@drawable/ic_menos_nuevo"
+        app:iconGravity="top"
+        app:iconSize="40dp"
+        app:iconTintMode="multiply"
+        app:layout_constraintBottom_toTopOf="@+id/rvArticulosCalculadora"
+        app:layout_constraintEnd_toEndOf="@+id/rvArticulosCalculadora" />
+
+    <Button
+        android:id="@+id/btnMasVentasActivity"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="5dp"
+        android:enabled="false"
+        app:cornerRadius="12dp"
+        app:icon="@drawable/ic_add_nuevo"
+        app:iconGravity="top"
+        app:iconSize="40dp"
+        app:iconTintMode="multiply"
+        app:layout_constraintBottom_toTopOf="@+id/rvArticulosCalculadora"
+        app:layout_constraintEnd_toStartOf="@+id/btnMenosVentasActivity" />
+
+    <Button
+        android:id="@+id/btnEliminarTodoVentasActivity"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:enabled="false"
+        app:cornerRadius="12dp"
+        app:icon="@drawable/ic_delete_papelera"
+        app:iconGravity="top"
+        app:iconSize="40dp"
+        app:iconTintMode="multiply"
+        app:layout_constraintBottom_toTopOf="@+id/rvArticulosCalculadora"
+        app:layout_constraintStart_toStartOf="@+id/rvArticulosCalculadora" />
+
+    <Button
+        android:id="@+id/btnCobrarVentasActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:enabled="false"
+        android:text="Cobrar"
+        app:icon="@drawable/ic_dinero_cobrar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

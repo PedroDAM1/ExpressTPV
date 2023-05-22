@@ -1,5 +1,6 @@
 package com.pedro.expresstpv.ui.adapters
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +12,10 @@ import com.pedro.expresstpv.R
 import com.pedro.expresstpv.databinding.GrillaLineaticketCalculadoraLayoutBinding
 import com.pedro.expresstpv.domain.model.LineaTicket
 
-class GrillaLIneaTicketsListAdapter (private val onItemClick : (LineaTicket) -> Unit) : ListAdapter<LineaTicket, GrillaLIneaTicketsListAdapter.GrillaLineaTicketsViewHolder>(
+class GrillaLIneaTicketsListAdapter (private val onItemClick : (LineaTicket?) -> Unit) : ListAdapter<LineaTicket, GrillaLIneaTicketsListAdapter.GrillaLineaTicketsViewHolder>(
     DiffCallback) {
 
+    // Si hay algun item seleccionado tendra un valor, en caso de que no tendra un nulo
     private var selectedItem : LineaTicket? = null
 
     override fun onCreateViewHolder(
@@ -24,9 +26,23 @@ class GrillaLIneaTicketsListAdapter (private val onItemClick : (LineaTicket) -> 
         return GrillaLineaTicketsViewHolder(v)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: GrillaLineaTicketsViewHolder, position: Int) {
-        holder.bind(getItem(position))
-        onItemClick(getItem(position))
+        val item = getItem(position)
+        holder.bind(item)
+        // Hacer click notificaremos al viewmodel para que actualice los botones para añadir y eliminar
+        holder.itemView.setOnClickListener {
+            // Si selectedItem no tiene valor le asignamos el valor correspondiente
+            selectedItem = if(selectedItem != item || selectedItem==null){
+                item
+            // Si selectedItem tiene un valor, y clicamos de nuevo, es para desmarcarlo
+            } else {
+                null
+            }
+            // Enviamos el selected item a la funcion lambda
+            onItemClick(selectedItem)
+            notifyDataSetChanged()
+        }
     }
 
     companion object {
@@ -56,9 +72,18 @@ class GrillaLIneaTicketsListAdapter (private val onItemClick : (LineaTicket) -> 
 
             if (selectedItem == lineaTicket){
                 //Pintamos el color del item seleccionado
+                lineaTicketSelected()
             } else {
                 // Despintamos el color del articulo seleccionado
+                lineaTicketUnselected()
             }
+        }
+
+        private fun lineaTicketSelected(){
+            binding.layoutGrillaLineaTicket.setBackgroundColor(binding.root.context.getColor(R.color.orange))
+        }
+        private fun lineaTicketUnselected(){
+            binding.layoutGrillaLineaTicket.setBackgroundColor(binding.root.context.getColor(R.color.white))
         }
 
     }

@@ -85,7 +85,7 @@ class VentasActivity() : AppCompatActivity() {
 
     private fun setRecyclerGrillaLineaTicket(){
         val layoutManager = LinearLayoutManager(this)
-        adapterGrillaLineaTickets = GrillaLIneaTicketsListAdapter()
+        adapterGrillaLineaTickets = GrillaLIneaTicketsListAdapter { ventasViewModel.onLineaTicketItemClick(it)}
         binding.rvGridLineasTickets.layoutManager = layoutManager
         binding.rvGridLineasTickets.adapter = adapterGrillaLineaTickets
     }
