@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.pedro.expresstpv.data.provider.ArticuloRepository
 import com.pedro.expresstpv.data.provider.LineaTicketRepository
 import com.pedro.expresstpv.data.usecase.LineaTicketUseCases
+import com.pedro.expresstpv.domain.functions.Functions
 import com.pedro.expresstpv.domain.model.Articulo
 import com.pedro.expresstpv.domain.model.LineaTicket
 import com.pedro.expresstpv.ui.adapters.VentasCalculadoraListAdapter
@@ -43,9 +44,9 @@ class VentasViewModel @Inject constructor(
     fun getArticulosConCantidad() = _articuloConCantidadFlow
 
     fun getLineaTicketActivo() = _lineaTicketActivoFlow
-    fun deleteAllLineaTickets(){
+    fun eliminarTicketActual(){
         viewModelScope.launch (Dispatchers.IO) {
-            lineaTicketRepository.deleteAll()
+            lineaTicketUseCases.eliminarTicketActivo()
         }
     }
 
@@ -98,13 +99,21 @@ class VentasViewModel @Inject constructor(
             if (lineaTicket == null){
                 lineaTicketUseCases.crearLineaTicket(articulo.articulo)
             } else {
-                lineaTicketUseCases.aumentarCantidadLineaTicket(lineaTicket, 1)
+                aumentarCantidadLineaTicket(lineaTicket)
             }
         }
     }
 
-    fun onLineaTicketItemClick(lineaTicket: LineaTicket?){
+    fun reducirCantidadLineaTicket(lineaTicket: LineaTicket){
+        viewModelScope.launch(Dispatchers.IO) {
+            lineaTicketUseCases.reducirCantidadLineaTicket(lineaTicket, 1)
+        }
+    }
 
+    fun aumentarCantidadLineaTicket(lineaTicket: LineaTicket){
+        viewModelScope.launch (Dispatchers.IO) {
+            lineaTicketUseCases.aumentarCantidadLineaTicket(lineaTicket, 1)
+        }
     }
 
 }

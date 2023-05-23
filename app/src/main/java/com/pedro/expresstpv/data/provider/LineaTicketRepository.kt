@@ -64,6 +64,15 @@ class LineaTicketRepository @Inject constructor(
     suspend fun deleteAll(){
         lineaTicketDao.deleteAll()
     }
+
+    suspend fun deleteLineaTicket(lineaTicket: LineaTicket){
+        lineaTicketDao.delete(lineaTicket.toEntity())
+    }
+
+    suspend fun deleteListaLineaTickets(listaLineaTickets : List<LineaTicket>){
+        lineaTicketDao.deleteList(listaLineaTickets.map { it.toEntity() })
+    }
+
     private suspend fun LineaTicketEntity.toDomain() : LineaTicket{
         val ticket : Ticket = ticketRepository.getTicketByNumTicket(this.numTicket) ?: ticketRepository.getTicketByNumTicket(0)!!
 

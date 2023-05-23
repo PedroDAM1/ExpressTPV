@@ -71,4 +71,17 @@ class LineaTicketUseCases @Inject constructor(
         lineaTicketRepository.updateLineaTicket(lineaTicket)
     }
 
+    suspend fun reducirCantidadLineaTicket(lineaTicket: LineaTicket, cantidad: Int){
+        if (lineaTicket.cantidad == 1){
+            // Si nos llega la ultima linea ticket deberemos de eliminar la row
+            lineaTicketRepository.deleteLineaTicket(lineaTicket)
+        } else {
+            aumentarCantidadLineaTicket(lineaTicket, -cantidad)
+        }
+    }
+
+    suspend fun eliminarTicketActivo(){
+        lineaTicketRepository.deleteListaLineaTickets(getLineaTicketActivo())
+    }
+
 }

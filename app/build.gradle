@@ -51,6 +51,8 @@ dependencies {
     /* COLOR PICKER */
     implementation 'com.github.duanhong169:colorpicker:1.1.6'
 
+    implementation 'androidx.gridlayout:gridlayout:1.0.0'
+
     /* VIEWMODEL */
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
 

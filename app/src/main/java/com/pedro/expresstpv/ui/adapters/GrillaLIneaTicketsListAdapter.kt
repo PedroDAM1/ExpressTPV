@@ -18,6 +18,8 @@ class GrillaLIneaTicketsListAdapter (private val onItemClick : (LineaTicket?) ->
     // Si hay algun item seleccionado tendra un valor, en caso de que no tendra un nulo
     private var selectedItem : LineaTicket? = null
 
+    fun getSelectedItem() = selectedItem
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int

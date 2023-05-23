@@ -19,6 +19,9 @@ interface LineaTicketDao {
     @Delete
     suspend fun delete(lineaTicket: LineaTicketEntity)
 
+    @Delete
+    suspend fun deleteList(listaLineaTicket : List<LineaTicketEntity>)
+
     @Query("DELETE FROM tb_lineaticket")
     suspend fun deleteAll()
 

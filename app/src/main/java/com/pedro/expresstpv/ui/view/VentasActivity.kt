@@ -6,12 +6,14 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pedro.expresstpv.R
 import com.pedro.expresstpv.databinding.ActivityVentasBinding
 import com.pedro.expresstpv.domain.functions.Functions
+import com.pedro.expresstpv.domain.model.LineaTicket
 import com.pedro.expresstpv.ui.adapters.GrillaLIneaTicketsListAdapter
 import com.pedro.expresstpv.ui.adapters.VentasCalculadoraListAdapter
 import com.pedro.expresstpv.ui.viewmodel.VentasViewModel
@@ -38,6 +40,7 @@ class VentasActivity() : AppCompatActivity() {
         setRecyclerVentas()
         setRecyclerGrillaLineaTicket()
         subscribeToFlow()
+        setListeners()
     }
 
     /**
@@ -64,7 +67,7 @@ class VentasActivity() : AppCompatActivity() {
             }
 
             R.id.miConfiguracion -> {
-                ventasViewModel.deleteAllLineaTickets()
+                ventasViewModel.eliminarTicketActual()
             }
         }
 
@@ -72,6 +75,51 @@ class VentasActivity() : AppCompatActivity() {
     }
 
     /*****************************************************************************************************/
+
+    private fun setListeners(){
+        binding.btnMenosVentasActivity.setOnClickListener {
+            reducirLineaTicket()
+        }
+        binding.btnMasVentasActivity.setOnClickListener {
+            aumentarLineaTicket()
+        }
+        binding.btnEliminarTodoVentasActivity.setOnClickListener {
+            borrarTicketCompleto()
+        }
+        binding.btnCobrarVentasActivity.setOnClickListener {
+            cobrarTicket()
+        }
+    }
+
+    private fun cobrarTicket(){
+        startActivity(Intent(this, CobrosActivity::class.java))
+    }
+
+    private fun borrarTicketCompleto(){
+        AlertDialog.Builder(this)
+            .setPositiveButton("Aceptar"){ _, _ ->
+                ventasViewModel.eliminarTicketActual()
+            }
+            .setNegativeButton("Cancelar", null)
+            .setTitle("¿Eliminar ticket?")
+            .setMessage("¿Quieres eliminar este ticket completo?")
+            .create()
+            .show()
+    }
+
+    private fun reducirLineaTicket(){
+        val item = adapterGrillaLineaTickets.getSelectedItem()
+        if (item != null){
+            ventasViewModel.reducirCantidadLineaTicket(item)
+        }
+    }
+
+    private fun aumentarLineaTicket(){
+        val item = adapterGrillaLineaTickets.getSelectedItem()
+        if (item != null){
+            ventasViewModel.aumentarCantidadLineaTicket(item)
+        }
+    }
 
     /**
      * Preparamos el recycler
@@ -85,7 +133,7 @@ class VentasActivity() : AppCompatActivity() {
 
     private fun setRecyclerGrillaLineaTicket(){
         val layoutManager = LinearLayoutManager(this)
-        adapterGrillaLineaTickets = GrillaLIneaTicketsListAdapter { ventasViewModel.onLineaTicketItemClick(it)}
+        adapterGrillaLineaTickets = GrillaLIneaTicketsListAdapter { onLineaTicketItemClick(it)}
         binding.rvGridLineasTickets.layoutManager = layoutManager
         binding.rvGridLineasTickets.adapter = adapterGrillaLineaTickets
     }
@@ -110,9 +158,15 @@ class VentasActivity() : AppCompatActivity() {
 
         ventasViewModel.getLineaTicketActivo()
             .onEach {
+                //Actualizamos la grilla de lineas tickets
                 adapterGrillaLineaTickets.submitList(it)
-                val total = it.sumOf { it.total }
+
+                //Marcamos el total en el textView
+                val total = it.sumOf { linea -> linea.total }
                 binding.tvTotal.text = getString(R.string.precio_selector).format(total)
+
+                //Habilitar o deshabilitar el boton de borrado
+                checkearBotonesLineasTickets(it)
             }
             .catch {
                 Functions.mostrarMensajeError(
@@ -124,5 +178,37 @@ class VentasActivity() : AppCompatActivity() {
             .flowOn(Dispatchers.Main)
             .launchIn(lifecycleScope)
 
+    }
+
+    private fun onLineaTicketItemClick(lineaTicket: LineaTicket?){
+        if (lineaTicket == null){
+            // Desmarcamos los botones
+            deshabilitarBotonesMasYMenos()
+        } else {
+            // Marcamos los botones
+            habilitarBotonesMasYMenos()
+        }
+
+    }
+
+    private fun deshabilitarBotonesMasYMenos(){
+        binding.btnMasVentasActivity.isEnabled = false
+        binding.btnMenosVentasActivity.isEnabled = false
+    }
+
+    private fun habilitarBotonesMasYMenos(){
+        binding.btnMasVentasActivity.isEnabled = true
+        binding.btnMenosVentasActivity.isEnabled = true
+    }
+
+    private fun checkearBotonesLineasTickets(lista: List<LineaTicket>){
+        if (lista.isNotEmpty()){
+            binding.btnEliminarTodoVentasActivity.isEnabled = true
+            binding.btnCobrarVentasActivity.isEnabled = true
+        } else {
+            binding.btnEliminarTodoVentasActivity.isEnabled = false
+            binding.btnCobrarVentasActivity.isEnabled = false
+            deshabilitarBotonesMasYMenos()
+        }
     }
 }

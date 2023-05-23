@@ -78,6 +78,8 @@ class Functions {
                 .setTitle(titulo)
                 .setMessage(mensaje)
                 .setPositiveButton("Aceptar", null)
+                .create()
+                .show()
         }
     }
 }
