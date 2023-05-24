@@ -10,7 +10,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ExpressTPV"
+        android:theme="@style/ActionBarOrange"
         tools:targetApi="31">
         <activity
             android:name=".ui.view.CobrosActivity"

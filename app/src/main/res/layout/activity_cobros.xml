@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/old_lace"
+    android:background="@color/background_activities"
     tools:context=".ui.view.CobrosActivity">
 
     <TextView
@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="25dp"
         android:layout_margin="0dp"
-        android:background="@color/gris_sepa"
+        android:background="@color/background_subtitulos"
         android:text="Pantalla de Cobros"
         android:textColor="@color/white"
         android:textSize="16sp"
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="1dp"
                 android:layout_marginEnd="1dp"
-                android:background="@color/dark_orange"
+                android:background="@color/action_bar_color"
                 android:text="TOTAL:"
                 android:textColor="@color/gris_sepa"
                 android:textSize="20sp" />
@@ -59,7 +59,7 @@
                 android:layout_gravity="end"
                 android:layout_marginStart="1dp"
                 android:layout_marginEnd="1dp"
-                android:background="@color/gris_sepa"
+                android:background="@color/background_subtitulos"
                 android:gravity="end"
                 android:text="0.00€"
                 android:textColor="@color/white"
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="1dp"
                 android:layout_marginEnd="1dp"
-                android:background="@color/orange_tenue"
+                android:background="@color/background_elements"
                 android:text="Entrega"
                 android:textColor="@color/gris_sepa"
                 android:textSize="20sp" />
@@ -117,11 +117,10 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="8dp"
         app:cardUseCompatPadding="true"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cvTotalesCobro"
-        app:layout_constraintEnd_toStartOf="@id/cvMomendasCobro"
         app:layout_constraintBottom_toTopOf="@id/cvBilletesCobro"
-        >
+        app:layout_constraintEnd_toStartOf="@id/cvMomendasCobro"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cvTotalesCobro">
 
         <androidx.gridlayout.widget.GridLayout
             android:layout_width="match_parent"
@@ -458,8 +457,7 @@
             android:id="@+id/rvMetodosPagoCobro"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            tools:listitem="@layout/recycler_view_item" />
+            android:orientation="horizontal" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -470,13 +468,12 @@
         app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="@+id/cvCalculadoraCobro"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cvTotalesCobro"
-        app:layout_constraintStart_toEndOf="@id/cvCalculadoraCobro">
+        app:layout_constraintStart_toEndOf="@id/cvCalculadoraCobro"
+        app:layout_constraintTop_toBottomOf="@+id/cvTotalesCobro">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
 
             <ImageButton
                 android:id="@+id/ibtn2euros"

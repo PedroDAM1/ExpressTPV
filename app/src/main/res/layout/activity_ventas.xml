@@ -4,17 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#A8A8A8"
+    android:background="@color/background_activities"
     tools:context=".ui.view.VentasActivity">
 
     <LinearLayout
         android:layout_width="392dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="@id/cvGrillaLineaTickets"
-        app:layout_constraintEnd_toEndOf="@id/cvGrillaLineaTickets"
         app:layout_constraintBottom_toTopOf="@id/cvGrillaLineaTickets"
-        >
+        app:layout_constraintEnd_toEndOf="@id/cvGrillaLineaTickets"
+        app:layout_constraintStart_toStartOf="@id/cvGrillaLineaTickets">
 
         <TextView
             android:id="@+id/textView9"
@@ -23,6 +22,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="UDS"
+            android:textColor="@color/background_subtitulos"
             android:textSize="18sp" />
 
         <TextView
@@ -32,6 +32,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="DESCRIPCION"
+            android:textColor="@color/background_subtitulos"
             android:textSize="18sp" />
 
         <TextView
@@ -41,6 +42,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="CATEGORIA"
+            android:textColor="@color/background_subtitulos"
             android:textSize="18sp" />
 
         <TextView
@@ -50,6 +52,7 @@
             android:layout_weight="0.8"
             android:gravity="center"
             android:text="PRECIO"
+            android:textColor="@color/background_subtitulos"
             android:textSize="18sp" />
     </LinearLayout>
 
@@ -58,20 +61,26 @@
         android:id="@+id/cvGrillaLineaTickets"
         android:layout_width="0dp"
         android:layout_height="180dp"
-        android:layout_marginTop="40dp"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="10dp"
         app:cardCornerRadius="12dp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvGridLineasTickets"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvGridLineasTickets"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
     </androidx.cardview.widget.CardView>
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="0dp"
@@ -80,12 +89,11 @@
         android:gravity="center_vertical|start"
         android:text="@string/total"
         android:textAllCaps="true"
-        android:textColor="@color/textViewsColor"
+        android:textColor="@color/background_subtitulos"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/cvGrillaLineaTickets"
-        app:layout_constraintTop_toBottomOf="@id/cvGrillaLineaTickets"
-        />
+        app:layout_constraintTop_toBottomOf="@id/cvGrillaLineaTickets" />
 
     <TextView
         android:id="@+id/tvTotal"
@@ -95,77 +103,99 @@
         android:gravity="center_vertical|end"
         android:text="@string/precio_selector"
         android:textAllCaps="true"
-        android:textColor="@color/textViewsColor"
+        android:textColor="@color/background_subtitulos"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@id/cvGrillaLineaTickets"
-        app:layout_constraintTop_toBottomOf="@id/cvGrillaLineaTickets"
-        />
+        app:layout_constraintTop_toBottomOf="@id/cvGrillaLineaTickets" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvArticulosCalculadora"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvArticulosCalculadora"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="140dp"
-        android:layout_marginBottom="0dp"
-        android:background="@drawable/backgrounds_views"
-        android:padding="5dp"
+        style="@style/StyleCardViews"
         app:layout_constraintBottom_toTopOf="@id/btnCobrarVentasActivity"
         app:layout_constraintEnd_toEndOf="@id/cvGrillaLineaTickets"
         app:layout_constraintStart_toStartOf="@id/cvGrillaLineaTickets"
-        app:layout_constraintTop_toBottomOf="@id/cvGrillaLineaTickets" />
+        app:layout_constraintTop_toBottomOf="@id/cvGrillaLineaTickets">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/StyleLayoutsOfCardViews"
+            >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvArticulosCalculadora"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/btnMenosVentasActivity"
+        style="@style/StyleIconsButtons"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:enabled="false"
-        app:cornerRadius="12dp"
         app:icon="@drawable/ic_menos_nuevo"
-        app:iconGravity="top"
-        app:iconSize="40dp"
-        app:iconTintMode="multiply"
-        app:layout_constraintBottom_toTopOf="@+id/rvArticulosCalculadora"
-        app:layout_constraintEnd_toEndOf="@+id/rvArticulosCalculadora" />
+        app:layout_constraintEnd_toEndOf="@id/cvArticulosCalculadora"
+        app:layout_constraintBottom_toTopOf="@id/cvArticulosCalculadora"
+        />
 
     <Button
         android:id="@+id/btnMasVentasActivity"
+        style="@style/StyleIconsButtons"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginEnd="5dp"
         android:enabled="false"
-        app:cornerRadius="12dp"
         app:icon="@drawable/ic_add_nuevo"
-        app:iconGravity="top"
-        app:iconSize="40dp"
-        app:iconTintMode="multiply"
-        app:layout_constraintBottom_toTopOf="@+id/rvArticulosCalculadora"
-        app:layout_constraintEnd_toStartOf="@+id/btnMenosVentasActivity" />
+        app:layout_constraintEnd_toStartOf="@id/btnMenosVentasActivity"
+        app:layout_constraintBottom_toTopOf="@id/cvArticulosCalculadora"
+        tools:layout_editor_absoluteX="275dp"
+        tools:layout_editor_absoluteY="310dp" />
 
     <Button
         android:id="@+id/btnEliminarTodoVentasActivity"
+        style="@style/StyleIconsButtons"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:enabled="false"
         app:cornerRadius="12dp"
         app:icon="@drawable/ic_delete_papelera"
-        app:iconGravity="top"
-        app:iconSize="40dp"
-        app:iconTintMode="multiply"
-        app:layout_constraintBottom_toTopOf="@+id/rvArticulosCalculadora"
-        app:layout_constraintStart_toStartOf="@+id/rvArticulosCalculadora" />
+        app:layout_constraintBottom_toTopOf="@id/cvArticulosCalculadora"
+        app:layout_constraintStart_toStartOf="@id/cvArticulosCalculadora"
+        />
 
     <Button
         android:id="@+id/btnCobrarVentasActivity"
+        style="@style/StyleIconsButtons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/secundary_color"
         android:enabled="false"
         android:text="Cobrar"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:icon="@drawable/ic_dinero_cobrar"
+        app:iconTintMode="multiply"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tvSubtituloActionBarVentas"
+        style="@style/StyleTextViewSubtitlesActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_height_subtitle_actionbar"
+        android:text="Pantalla de ventas"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

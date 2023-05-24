@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="size_subtitles_actionbar">18sp</dimen>
+    <integer name="size_subtitles_textviews">16</integer>
+    <dimen name="size_contents_textviews">18sp</dimen>
+    <integer name="size_titles_textviews">20</integer>
+    <dimen name="size_height_subtitle_actionbar">25dp</dimen>
+</resources>
