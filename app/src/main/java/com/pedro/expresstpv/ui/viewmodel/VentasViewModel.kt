@@ -30,6 +30,7 @@ class VentasViewModel @Inject constructor(
 
     private val _articuloConCantidadFlow : Flow<List<VentasCalculadoraListAdapter.ArticuloYCantidad>> = _listaArticulos.combine(_lineaTicketActivoFlow){ listaArticulos, lineasTickets ->
         listaArticulos.map {articulo ->
+            Log.d("VENTASVIEWMODEL", "Mapeando el flow a articulosycantidades")
             val lineaTicket = lineasTickets.firstOrNull{ isLineaTicketOfArticulo(it, articulo) }
             //Si no obtenemos una lineaticket, devolveremos 0 de cantidad
             VentasCalculadoraListAdapter.ArticuloYCantidad(articulo, lineaTicket?.cantidad ?: 0)
@@ -62,6 +63,7 @@ class VentasViewModel @Inject constructor(
      * del articulo no coincide con las de la lineaTicket
      */
     private fun isLineaTicketOfArticulo(lineaTicket: LineaTicket, articulo: Articulo) : Boolean{
+        Log.d("VENTASVIEWMODEL", "comparando articulos")
         return lineaTicket.descripcion == articulo.nombre &&
             lineaTicket.categoriaVenta == articulo.categoria.nombre &&
             lineaTicket.valorIva == articulo.tipoIva.porcentaje &&

@@ -7,10 +7,7 @@ import com.pedro.expresstpv.domain.model.Cierre
 import com.pedro.expresstpv.domain.model.MetodoPago
 import com.pedro.expresstpv.domain.model.Ticket
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -32,15 +29,28 @@ class TicketRepository @Inject constructor(
 
     fun getAllTicket() = _listaTicketFlow
 
+    suspend fun insertTicket(ticket: Ticket){
+        ticketDao.insert(ticket.toEntity())
+    }
+
     suspend fun getTicketByNumTicket(numTicket : Int) : Ticket? {
         return ticketDao.getByNumTicket(numTicket)
             .map {
                 it?.toDomain()
             }
             .flowOn(Dispatchers.IO)
-            .first()
+            .lastOrNull()
     }
 
+    private fun Ticket.toEntity() : TicketEntity{
+        return TicketEntity(
+            numTicket = this.numTicket,
+            numCierre = this.cierre.numCierre,
+            idMetodopago = this.metodoPago.id,
+            fecha = this.fecha,
+            total = this.total
+        )
+    }
     private suspend fun TicketEntity.toDomain() : Ticket {
         //Los objetos con id 0 de la base de datos son objetos base para cuando aun no se le asigno nada al objeto
         val cierre : Cierre = cierreRepository.getCierreByNumCierre(this.numCierre) ?: cierreRepository.getCierreByNumCierre(0)!!

@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="25dp"
         android:layout_margin="0dp"
-        android:text="Pantalla de Cobros"
+        android:text="@string/txtSubtitulo"
         style="@style/StyleTextViewSubtitlesActionBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -47,7 +47,7 @@
                 android:layout_marginStart="1dp"
                 android:layout_marginEnd="1dp"
                 android:background="@color/action_bar_color"
-                android:text="TOTAL:"
+                android:text="@string/txtTotal"
                 android:textColor="@color/gris_sepa"
                 android:textSize="20sp" />
 
@@ -71,7 +71,7 @@
                 android:layout_marginStart="1dp"
                 android:layout_marginEnd="1dp"
                 android:background="@color/background_elements"
-                android:text="Entrega:"
+                android:text="@string/txtEntrega"
                 android:textColor="@color/gris_sepa"
                 android:textSize="20sp" />
 
@@ -93,7 +93,7 @@
                 android:layout_marginStart="1dp"
                 android:layout_marginEnd="1dp"
                 android:background="@color/orange_tenue"
-                android:text="Cambio:"
+                android:text="@string/txtCambio"
                 android:textColor="@color/gris_sepa"
                 android:textSize="20sp" />
 
@@ -126,7 +126,7 @@
             android:layout_height="match_parent">
 
             <Button
-                android:id="@+id/button5"
+                android:id="@+id/btnNum1Cobro"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:backgroundTint="@color/white"
@@ -144,7 +144,7 @@
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
                 android:paddingBottom="0dp"
-                android:text="1"
+                android:text="@string/num1"
                 android:textColor="@color/gris_sepa"
                 android:textSize="38sp"
                 app:iconPadding="0dp"
@@ -152,7 +152,7 @@
                 app:layout_row="2" />
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/btnNum4Cobro"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:backgroundTint="@color/white"
@@ -170,7 +170,7 @@
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
                 android:paddingBottom="0dp"
-                android:text="4"
+                android:text="@string/num4"
                 android:textColor="@color/gris_sepa"
                 android:textSize="38sp"
                 app:iconPadding="0dp"
@@ -178,7 +178,7 @@
                 app:layout_row="1" />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/btnNum8Cobro"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:backgroundTint="@color/white"
@@ -196,7 +196,7 @@
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
                 android:paddingBottom="0dp"
-                android:text="8"
+                android:text="@string/num8"
                 android:textColor="@color/gris_sepa"
                 android:textSize="38sp"
                 app:iconPadding="0dp"
@@ -204,7 +204,7 @@
                 app:layout_row="0" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/btnNum7Cobro"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:backgroundTint="@color/white"
@@ -222,7 +222,7 @@
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
                 android:paddingBottom="0dp"
-                android:text="7"
+                android:text="@string/num7"
                 android:textColor="@color/gris_sepa"
                 android:textSize="38sp"
                 app:iconPadding="0dp"
@@ -230,7 +230,7 @@
                 app:layout_row="0" />
 
             <Button
-                android:id="@+id/button6"
+                android:id="@+id/btnNum5Cobro"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:backgroundTint="@color/white"
@@ -248,15 +248,16 @@
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
                 android:paddingBottom="0dp"
-                android:text="5"
+                android:text="@string/num5"
                 android:textColor="@color/gris_sepa"
                 android:textSize="38sp"
                 app:iconPadding="0dp"
                 app:layout_column="1"
-                app:layout_row="1" />
+                app:layout_row="1"
+                />
 
             <Button
-                android:id="@+id/button7"
+                android:id="@+id/btnNum2Cobro"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:backgroundTint="@color/white"
@@ -274,7 +275,7 @@
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
                 android:paddingBottom="0dp"
-                android:text="2"
+                android:text="@string/num2"
                 android:textColor="@color/gris_sepa"
                 android:textSize="38sp"
                 app:iconPadding="0dp"
@@ -282,7 +283,7 @@
                 app:layout_row="2" />
 
             <Button
-                android:id="@+id/button8"
+                android:id="@+id/btnNum9Cobro"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:backgroundTint="@color/white"
@@ -300,7 +301,7 @@
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
                 android:paddingBottom="0dp"
-                android:text="9"
+                android:text="@string/num9"
                 android:textColor="@color/gris_sepa"
                 android:textSize="38sp"
                 app:iconPadding="0dp"
@@ -308,7 +309,7 @@
                 app:layout_row="0" />
 
             <Button
-                android:id="@+id/button9"
+                android:id="@+id/btnNum6Cobro"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:backgroundTint="@color/white"
@@ -326,7 +327,7 @@
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
                 android:paddingBottom="0dp"
-                android:text="6"
+                android:text="@string/num6"
                 android:textColor="@color/gris_sepa"
                 android:textSize="38sp"
                 app:iconPadding="0dp"
@@ -334,7 +335,7 @@
                 app:layout_row="1" />
 
             <Button
-                android:id="@+id/button10"
+                android:id="@+id/btnNum3Cobro"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:backgroundTint="@color/white"
@@ -352,7 +353,7 @@
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
                 android:paddingBottom="0dp"
-                android:text="3"
+                android:text="@string/num3"
                 android:textColor="@color/gris_sepa"
                 android:textSize="38sp"
                 app:iconPadding="0dp"
@@ -360,7 +361,7 @@
                 app:layout_row="2" />
 
             <Button
-                android:id="@+id/button11"
+                android:id="@+id/btnNum0Cobro"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:backgroundTint="@color/white"
@@ -378,8 +379,7 @@
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
                 android:paddingBottom="0dp"
-                android:text="0
-"
+                android:text="@string/num0"
                 android:textColor="@color/gris_sepa"
                 android:textSize="38sp"
                 app:iconPadding="0dp"
@@ -387,7 +387,7 @@
                 app:layout_row="3" />
 
             <Button
-                android:id="@+id/button12"
+                android:id="@+id/btnCommaCobro"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:backgroundTint="@color/white"
@@ -405,7 +405,7 @@
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
                 android:paddingBottom="0dp"
-                android:text=","
+                android:text="@string/comma"
                 android:textColor="@color/gris_sepa"
                 android:textSize="38sp"
                 app:iconPadding="0dp"
@@ -413,7 +413,7 @@
                 app:layout_row="3" />
 
             <Button
-                android:id="@+id/button13"
+                android:id="@+id/btnBorrarCobro"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:backgroundTint="@color/white"
@@ -431,7 +431,7 @@
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
                 android:paddingBottom="0dp"
-                android:text="CE"
+                android:text="@string/CE"
                 android:textColor="@color/gris_sepa"
                 android:textSize="38sp"
                 app:iconPadding="0dp"
@@ -482,6 +482,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@color/white"
+                android:contentDescription="@string/content2e"
                 android:padding="10dp"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toTopOf="@id/ibtn50cents"
@@ -496,7 +497,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@color/white"
-                android:contentDescription="1 euro"
+                android:contentDescription="@string/content1e"
                 android:padding="8dp"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toTopOf="@id/ibtn20cents"
@@ -510,6 +511,7 @@
                 android:id="@+id/ibtn50cents"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:contentDescription="@string/content50cents"
                 android:background="@color/white"
                 android:padding="10dp"
                 android:scaleType="centerCrop"
@@ -524,6 +526,7 @@
                 android:id="@+id/ibtn20cents"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:contentDescription="@string/content20cents"
                 android:background="@color/white"
                 android:padding="8dp"
                 android:scaleType="centerCrop"
@@ -538,6 +541,7 @@
                 android:id="@+id/ibtn10cents"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:contentDescription="@string/content10cents"
                 android:background="@color/white"
                 android:padding="10dp"
                 android:scaleType="centerCrop"
@@ -551,6 +555,7 @@
                 android:id="@+id/ibtn5cents"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:contentDescription="@string/content5cents"
                 android:background="@color/white"
                 android:padding="8dp"
                 android:scaleType="centerCrop"
@@ -564,6 +569,7 @@
                 android:id="@+id/ibtn2cents"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:contentDescription="@string/content2cents"
                 android:background="@color/white"
                 android:padding="8dp"
                 android:scaleType="centerCrop"
@@ -577,6 +583,7 @@
                 android:id="@+id/ibtn1cents"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:contentDescription="@string/content1cents"
                 android:background="@color/white"
                 android:padding="8dp"
                 android:scaleType="centerCrop"
@@ -607,6 +614,7 @@
                 android:id="@+id/ibtnBillete200"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:contentDescription="@string/content200e"
                 android:layout_margin="2dp"
                 android:background="@color/white"
                 android:padding="4dp"
@@ -621,6 +629,7 @@
                 android:id="@+id/ibtnBillete100"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:contentDescription="@string/content100e"
                 android:layout_margin="2dp"
                 android:background="@color/white"
                 android:padding="4dp"
@@ -635,6 +644,7 @@
                 android:id="@+id/ibtnBillete50"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:contentDescription="@string/content50e"
                 android:layout_margin="2dp"
                 android:background="@color/white"
                 android:padding="4dp"
@@ -649,6 +659,7 @@
                 android:id="@+id/ibtnBillete20"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:contentDescription="@string/content20e"
                 android:layout_margin="2dp"
                 android:background="@color/white"
                 android:padding="4dp"
@@ -663,6 +674,7 @@
                 android:id="@+id/ibtnBillete10"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:contentDescription="@string/content10e"
                 android:layout_margin="2dp"
                 android:background="@color/white"
                 android:padding="4dp"
@@ -679,13 +691,15 @@
                 android:layout_height="0dp"
                 android:layout_margin="2dp"
                 android:background="@color/white"
+                android:contentDescription="@string/content5e"
                 android:padding="4dp"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/ibtnBillete10"
                 app:layout_constraintTop_toBottomOf="@id/ibtnBillete50"
-                app:srcCompat="@drawable/billete5e" />
+                app:srcCompat="@drawable/billete5e"
+                tools:ignore="ImageContrastCheck" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

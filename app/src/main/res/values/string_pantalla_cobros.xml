@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="txtSubtitulo">Pantalla de cobros</string>
+    <string name="txtTotal">TOTAL:</string>
+    <string name="txtEntrega">Entrega:</string>
+    <string name="txtCambio">Cambio:</string>
+
+    <string name="num9">9</string>
+    <string name="num8">8</string>
+    <string name="num7">7</string>
+    <string name="num6">6</string>
+    <string name="num5">5</string>
+    <string name="num4">4</string>
+    <string name="num3">3</string>
+    <string name="num2">2</string>
+    <string name="num1">1</string>
+    <string name="num0">0</string>
+    <string name="comma">,</string>
+    <string name="CE">CE</string>
+
+    <string name="content200e">200</string>
+    <string name="content100e">100</string>
+    <string name="content50e">50</string>
+    <string name="content20e">20</string>
+    <string name="content10e">10</string>
+    <string name="content5e">5</string>
+    <string name="content2e">2</string>
+    <string name="content1e">1</string>
+    <string name="content50cents">0.50</string>
+    <string name="content20cents">0.20</string>
+    <string name="content10cents">0.10</string>
+    <string name="content5cents">0.05</string>
+    <string name="content2cents">0.02</string>
+    <string name="content1cents">0.01</string>
+</resources>

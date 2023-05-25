@@ -5,10 +5,7 @@ import com.pedro.expresstpv.data.database.dao.CierreDao
 import com.pedro.expresstpv.data.database.entities.CierreEntity
 import com.pedro.expresstpv.domain.model.Cierre
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -33,7 +30,7 @@ class CierresRepository @Inject constructor(private val cierreDao: CierreDao) {
                 it?.toDomain()
             }
             .flowOn(Dispatchers.IO)
-            .first()
+            .lastOrNull()
     }
 
     private fun CierreEntity.toDomain() : Cierre{

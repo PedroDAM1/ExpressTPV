@@ -4,10 +4,7 @@ import com.pedro.expresstpv.data.database.dao.MetodoPagoDao
 import com.pedro.expresstpv.data.database.entities.MetodoPagoEntity
 import com.pedro.expresstpv.domain.model.MetodoPago
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -31,7 +28,7 @@ class MetodoPagoRepository @Inject constructor(private val metodoPagoDao: Metodo
                 it?.toDomain()
             }
             .flowOn(Dispatchers.IO)
-            .first()
+            .lastOrNull()
     }
 
     private fun MetodoPagoEntity.toDomain() : MetodoPago{

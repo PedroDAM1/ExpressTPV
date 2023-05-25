@@ -2,6 +2,9 @@ package com.pedro.expresstpv.ui.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.view.View.OnClickListener
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,6 +31,7 @@ class CobrosActivity : AppCompatActivity() {
         setContentView(binding.root)
         cargarDatos()
         setRecycler()
+        setListeners()
     }
 
     private fun cargarDatos(){
@@ -45,6 +49,25 @@ class CobrosActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             adapter.submitList(viewModel.getMetodosPago())
+        }
+    }
+
+    private fun setListeners(){
+
+    }
+
+    private fun setListenerCalculadoras(){
+
+    }
+
+
+    val onSumClickListener = OnClickListener {
+        val contentDescription = it.contentDescription
+        try {
+            val valor = contentDescription.toString().toDouble()
+
+        }catch (e: java.lang.NumberFormatException){
+            Log.d("ERROR", "Error al parsear en la pantalla de cobros: ${e.message}")
         }
     }
 }

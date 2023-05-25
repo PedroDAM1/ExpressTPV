@@ -1,13 +1,7 @@
 package com.pedro.expresstpv.di
 
-import com.pedro.expresstpv.data.provider.ArticuloRepository
-import com.pedro.expresstpv.data.provider.LineaTicketRepository
-import com.pedro.expresstpv.data.provider.MetodoPagoRepository
-import com.pedro.expresstpv.data.provider.TicketRepository
-import com.pedro.expresstpv.data.usecase.ArticulosUseCase
-import com.pedro.expresstpv.data.usecase.LineaTicketUseCases
-import com.pedro.expresstpv.data.usecase.MetodoPagoUseCase
-import com.pedro.expresstpv.data.usecase.TicketUseCase
+import com.pedro.expresstpv.data.provider.*
+import com.pedro.expresstpv.data.usecase.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,14 +26,20 @@ object UseCaseModule {
 
     @Singleton
     @Provides
-    fun provideTicketUseCase(ticketRepository: TicketRepository, lineaTicketUseCases: LineaTicketUseCases) : TicketUseCase {
-        return TicketUseCase(ticketRepository, lineaTicketUseCases)
+    fun provideTicketUseCase(ticketRepository: TicketRepository, lineaTicketUseCases: LineaTicketUseCases, cierreUseCase: CierreUseCase) : TicketUseCase {
+        return TicketUseCase(ticketRepository, lineaTicketUseCases, cierreUseCase)
     }
 
     @Singleton
     @Provides
     fun provideMetodoPago(metodoPagoRepository: MetodoPagoRepository) : MetodoPagoUseCase{
         return MetodoPagoUseCase(metodoPagoRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideCierreUseCase (cierresRepository: CierresRepository) : CierreUseCase{
+        return CierreUseCase(cierresRepository)
     }
 
 }
