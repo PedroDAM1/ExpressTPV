@@ -4,4 +4,6 @@
     <string name="precio_articulo_calculadora">(%.2f€)</string>
     <string name="articulo_selector">%s:</string>
     <string name="precio_selector">%.2f€</string>
+
+    <string name="contentDescriptionGenerica">FOTO</string>
 </resources>

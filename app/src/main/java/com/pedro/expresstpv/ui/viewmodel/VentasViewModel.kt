@@ -44,6 +44,8 @@ class VentasViewModel @Inject constructor(
     fun getArticulosConCantidad() = _articuloConCantidadFlow
 
     fun getLineaTicketActivo() = _lineaTicketActivoFlow
+
+    suspend fun getTotalesTicket() = lineaTicketUseCases.getTotalFromLineaTicketsActivo()
     fun eliminarTicketActual(){
         viewModelScope.launch (Dispatchers.IO) {
             lineaTicketUseCases.eliminarTicketActivo()

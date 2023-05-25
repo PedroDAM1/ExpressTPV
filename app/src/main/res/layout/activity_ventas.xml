@@ -59,25 +59,20 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvGrillaLineaTickets"
+        style="@style/StyleCardViews"
         android:layout_width="0dp"
         android:layout_height="180dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="10dp"
-        app:cardCornerRadius="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvGridLineasTickets"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvGridLineasTickets"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
+            android:layout_height="match_parent" />
 
     </androidx.cardview.widget.CardView>
 
@@ -111,26 +106,19 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvArticulosCalculadora"
+        style="@style/StyleCardViews"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="140dp"
-        style="@style/StyleCardViews"
         app:layout_constraintBottom_toTopOf="@id/btnCobrarVentasActivity"
         app:layout_constraintEnd_toEndOf="@id/cvGrillaLineaTickets"
         app:layout_constraintStart_toStartOf="@id/cvGrillaLineaTickets"
         app:layout_constraintTop_toBottomOf="@id/cvGrillaLineaTickets">
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvArticulosCalculadora"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            style="@style/StyleLayoutsOfCardViews"
-            >
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvArticulosCalculadora"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
+            android:layout_height="match_parent" />
 
     </androidx.cardview.widget.CardView>
 
@@ -141,9 +129,8 @@
         android:layout_height="60dp"
         android:enabled="false"
         app:icon="@drawable/ic_menos_nuevo"
-        app:layout_constraintEnd_toEndOf="@id/cvArticulosCalculadora"
         app:layout_constraintBottom_toTopOf="@id/cvArticulosCalculadora"
-        />
+        app:layout_constraintEnd_toEndOf="@id/cvArticulosCalculadora" />
 
     <Button
         android:id="@+id/btnMasVentasActivity"
@@ -153,8 +140,8 @@
         android:layout_marginEnd="5dp"
         android:enabled="false"
         app:icon="@drawable/ic_add_nuevo"
-        app:layout_constraintEnd_toStartOf="@id/btnMenosVentasActivity"
         app:layout_constraintBottom_toTopOf="@id/cvArticulosCalculadora"
+        app:layout_constraintEnd_toStartOf="@id/btnMenosVentasActivity"
         tools:layout_editor_absoluteX="275dp"
         tools:layout_editor_absoluteY="310dp" />
 
@@ -167,8 +154,7 @@
         app:cornerRadius="12dp"
         app:icon="@drawable/ic_delete_papelera"
         app:layout_constraintBottom_toTopOf="@id/cvArticulosCalculadora"
-        app:layout_constraintStart_toStartOf="@id/cvArticulosCalculadora"
-        />
+        app:layout_constraintStart_toStartOf="@id/cvArticulosCalculadora" />
 
     <Button
         android:id="@+id/btnCobrarVentasActivity"
@@ -177,13 +163,12 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:backgroundTint="@color/secundary_color"
+        android:backgroundTint="@color/verde_oliva"
         android:enabled="false"
         android:text="Cobrar"
         android:textSize="20sp"
         android:textStyle="bold"
         app:icon="@drawable/ic_dinero_cobrar"
-        app:iconTintMode="multiply"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

@@ -11,14 +11,11 @@
         <!-- Otros atributos personalizados que desees -->
     </style>
 
-    <style name="StyleButtonsAdapters.textViews" parent="android:Widget.Material.TextView">
+    <style name="StyleTextViews" parent="android:Widget.Material.TextView">
         <item name="android:textColor">@color/gris_sepa</item>
         <item name="android:textSize">@dimen/size_contents_textviews</item>
     </style>
 
-    <style name="StyleButtonsAdapters.layout" parent="android:Theme">
-        <item name="android:background">@color/background_layout_cardviewButtons</item>
-    </style>
     <style name="StyleIconsButtons" parent="Widget.Material3.Button">
         <item name="backgroundTint">@color/secundary_color</item>
         <item name="android:textColor">@color/gris_sepa</item>
@@ -35,27 +32,12 @@
         <item name="cardUseCompatPadding">true</item>
         <item name="cardElevation">2dp</item>
         <item name="android:padding">5dp</item>
+        <item name="cardBackgroundColor">@color/background_recyclers</item>
     </style>
 
-    <style name="StyleLayoutsOfCardViews" parent="android:Theme">
-        <item name="android:background">@color/background_cardviews</item>
+    <style name="StyleLayoutsOfcvAdapters" parent="android:Theme">
+        <item name="android:background">@color/background_layout_cardviewButtons</item>
     </style>
 
-    <!--
-     <Button
-        android:id="@+id/btnEliminarTodoVentasActivity"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:backgroundTint="@color/background_elements"
-        android:enabled="false"
-        app:cornerRadius="12dp"
-        app:icon="@drawable/ic_delete_papelera"
-        app:iconGravity="top"
-        app:iconSize="40dp"
-        app:iconTintMode="multiply"
-        app:layout_constraintBottom_toTopOf="@+id/rvArticulosCalculadora"
-        app:layout_constraintStart_toStartOf="@+id/rvArticulosCalculadora" />
-
-     -->
 
 </resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="StyleVentas.cvAdapterVentas" parent="StyleCardViews">
+        <item name="cardBackgroundColor">@color/background_layout_cardviewButtons</item>
+    </style>
+
+
+
+</resources>

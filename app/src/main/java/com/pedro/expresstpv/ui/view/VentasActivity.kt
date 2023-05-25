@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class VentasActivity() : AppCompatActivity() {
@@ -161,9 +162,7 @@ class VentasActivity() : AppCompatActivity() {
                 //Actualizamos la grilla de lineas tickets
                 adapterGrillaLineaTickets.submitList(it)
 
-                //Marcamos el total en el textView
-                val total = it.sumOf { linea -> linea.total }
-                binding.tvTotal.text = getString(R.string.precio_selector).format(total)
+                actualizarTotal()
 
                 //Habilitar o deshabilitar el boton de borrado
                 checkearBotonesLineasTickets(it)
@@ -178,6 +177,14 @@ class VentasActivity() : AppCompatActivity() {
             .flowOn(Dispatchers.Main)
             .launchIn(lifecycleScope)
 
+    }
+
+    private fun actualizarTotal(){
+        lifecycleScope.launch {
+            //Marcamos el total en el textView
+            val total = ventasViewModel.getTotalesTicket()
+            binding.tvTotal.text = getString(R.string.precio_selector).format(total)
+        }
     }
 
     private fun onLineaTicketItemClick(lineaTicket: LineaTicket?){

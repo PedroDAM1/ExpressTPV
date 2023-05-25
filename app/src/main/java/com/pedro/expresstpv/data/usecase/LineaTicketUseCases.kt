@@ -84,4 +84,10 @@ class LineaTicketUseCases @Inject constructor(
         lineaTicketRepository.deleteListaLineaTickets(getLineaTicketActivo())
     }
 
+    suspend fun getTotalFromLineaTicketsActivo() : Double{
+        return getLineaTicketActivo().sumOf {
+            it.total
+        }
+    }
+
 }

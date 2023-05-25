@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="WidthMetodoPagoCardView">180dp</dimen>
+
+    <style name="StyleCobro" />
+
+    <!-- Estilo para el cardView que esta por encima del recycler de los metodos de pago-->
+    <style name="StyleCobro.cvRecyclerMetodoPago" parent="StyleCardViews"/>
+
+
+    <style name="StyleCobro.cvAdapterMetodoPago" parent="StyleCardViews">
+        <item name="cardBackgroundColor">@color/background_layout_cardviewButtons</item>
+    </style>
+
+    <!-- Pinta el layout de los items del metodo de pago -->
+    <style name="StyleCobro.cvAdapterMetodoPago.lAdapter" parent="StyleLayoutsOfcvAdapters">
+        <item name="android:background">@color/background_layout_cardviewButtons</item>
+    </style>
+
+    <style name="StyleCobro.cvAdapterMetodoPago.lAdapter.tvMetodoPago" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/foreground_textviews</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+</resources>

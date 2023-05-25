@@ -5,4 +5,8 @@
     <dimen name="size_contents_textviews">18sp</dimen>
     <integer name="size_titles_textviews">20</integer>
     <dimen name="size_height_subtitle_actionbar">25dp</dimen>
+
+    <dimen name="cornerRadiusCardViews">12dp</dimen>
+    <dimen name="cardElevationCardViews">2dp</dimen>
+    <bool name="cardUseCompatPadding">true</bool>
 </resources>

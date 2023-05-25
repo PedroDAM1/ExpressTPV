@@ -5,14 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="120dp"
     android:layout_margin="0.5dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="2dp"
-    app:cardUseCompatPadding="true">
+    style="@style/StyleVentas.cvAdapterVentas"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        style="@style/StyleButtonsAdapters.layout"
         >
 
         <TextView
@@ -25,7 +23,7 @@
             android:layout_marginBottom="10dp"
             android:ellipsize="start"
             android:maxLines="3"
-            style="@style/StyleButtonsAdapters.textViews"
+            style="@style/StyleTextViews"
             app:layout_constraintBottom_toTopOf="@+id/tvPrecioArticuloCalculadora"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +38,7 @@
             android:layout_marginBottom="10dp"
             android:ellipsize="start"
             android:maxLines="1"
-            style="@style/StyleButtonsAdapters.textViews"
+            style="@style/StyleTextViews"
             android:textSize="16sp"
             android:text="@string/precio_articulo_calculadora"
             app:layout_constraintBottom_toTopOf="@+id/tvCantidadArticuloCalculadora"
