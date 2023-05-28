@@ -13,10 +13,13 @@
         android:theme="@style/ActionBarOrange"
         tools:targetApi="31">
         <activity
-            android:name=".ui.view.CobrosActivity"
-            android:theme="@style/ActionBarOrange"
-            android:parentActivityName=".ui.view.VentasActivity"
+            android:name=".ui.view.CierresActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.view.CobrosActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.view.VentasActivity"
+            android:theme="@style/ActionBarOrange" />
         <activity
             android:name=".ui.view.ListaCategoriasActivity"
             android:exported="false" />

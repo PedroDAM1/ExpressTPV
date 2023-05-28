@@ -5,6 +5,7 @@ import com.pedro.expresstpv.data.provider.LineaTicketRepository
 import com.pedro.expresstpv.data.provider.TicketRepository
 import com.pedro.expresstpv.domain.model.Articulo
 import com.pedro.expresstpv.domain.model.LineaTicket
+import com.pedro.expresstpv.domain.model.Ticket
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
@@ -88,6 +89,13 @@ class LineaTicketUseCases @Inject constructor(
         return getLineaTicketActivo().sumOf {
             it.total
         }
+    }
+
+    suspend fun updateLineaTicketsActivoToNewTicket(ticket: Ticket){
+        val updated = getLineaTicketActivo().map {
+            it.copy(ticket = ticket)
+        }
+        lineaTicketRepository.updateAllLineaTicket(updated)
     }
 
 }

@@ -12,7 +12,7 @@ import com.pedro.expresstpv.databinding.TiposCobroLayoutBinding
 import com.pedro.expresstpv.domain.model.LineaTicket
 import com.pedro.expresstpv.domain.model.MetodoPago
 
-class TipoCobroListAdapter : ListAdapter<MetodoPago, TipoCobroListAdapter.TipoCobroViewHolder>(
+class TipoCobroListAdapter (private val onItemClick : (MetodoPago) -> Unit) : ListAdapter<MetodoPago, TipoCobroListAdapter.TipoCobroViewHolder>(
     DiffCallback){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TipoCobroViewHolder {
@@ -21,7 +21,11 @@ class TipoCobroListAdapter : ListAdapter<MetodoPago, TipoCobroListAdapter.TipoCo
     }
 
     override fun onBindViewHolder(holder: TipoCobroViewHolder, position: Int) {
-        holder.render(getItem(position))
+        val metodoPago = getItem(position)
+        holder.render(metodoPago)
+        holder.itemView.setOnClickListener {
+            onItemClick(metodoPago)
+        }
     }
 
     companion object {

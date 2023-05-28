@@ -40,7 +40,7 @@ class LineaTicketRepository @Inject constructor(
                 it?.toDomain()
             }
             .flowOn(Dispatchers.IO)
-            .first()
+            .lastOrNull()
     }
 
     fun getLineasTicketsByNumTicket(numTicket : Int) = lineaTicketDao.getLineaTicketByNumTicket(numTicket)
@@ -59,6 +59,10 @@ class LineaTicketRepository @Inject constructor(
     suspend fun updateLineaTicket(lineaTicket: LineaTicket){
         lineaTicketDao.update(lineaTicket.toEntity())
         Log.d("UPDATE LIENATICKET", "Se ha actualizado una lineaTicket a: $lineaTicket")
+    }
+
+    suspend fun updateAllLineaTicket(listaLineaTickets: List<LineaTicket>){
+        lineaTicketDao.updateAll(listaLineaTickets.map { it.toEntity() })
     }
 
     suspend fun deleteAll(){

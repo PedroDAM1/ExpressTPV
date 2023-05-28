@@ -2,7 +2,7 @@ package com.pedro.expresstpv.domain.model
 
 data class LineaTicket(
     val id : Int= 0,
-    val ticket: Ticket,
+    var ticket: Ticket,
     val descripcion : String = "",
     val categoriaVenta : String = "",
     var cantidad : Int = 0,

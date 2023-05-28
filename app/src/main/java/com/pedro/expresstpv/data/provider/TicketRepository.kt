@@ -8,6 +8,7 @@ import com.pedro.expresstpv.domain.model.MetodoPago
 import com.pedro.expresstpv.domain.model.Ticket
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -39,7 +40,11 @@ class TicketRepository @Inject constructor(
                 it?.toDomain()
             }
             .flowOn(Dispatchers.IO)
-            .lastOrNull()
+            .first()
+    }
+
+    suspend fun getLastNumTicket() : Int = withContext(Dispatchers.IO){
+        return@withContext ticketDao.getLastNumTicket()
     }
 
     private fun Ticket.toEntity() : TicketEntity{

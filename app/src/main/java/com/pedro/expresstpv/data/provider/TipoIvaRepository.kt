@@ -5,7 +5,9 @@ import com.pedro.expresstpv.data.database.dao.TipoIvaDao
 import com.pedro.expresstpv.data.database.entities.TipoIvaEntity
 import com.pedro.expresstpv.domain.model.TipoIva
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,8 +27,8 @@ class TipoIvaRepository @Inject constructor(private val tipoIvaDao: TipoIvaDao){
         .flowOn(Dispatchers.IO)
 
     fun getAllTipoIva() = _tipoIvaFlow
-    suspend fun getTipoIvaById(id : Int) : TipoIva?{
-        return tipoIvaDao.getById(id)
+    suspend fun getTipoIvaById(id : Int) : TipoIva? = withContext(Dispatchers.IO){
+        return@withContext tipoIvaDao.getById(id)
             .catch {
                 Log.d("GET TIPOIVA", "Error al intentar obtener el iva con id $id")
             }
@@ -54,18 +56,19 @@ class TipoIvaRepository @Inject constructor(private val tipoIvaDao: TipoIvaDao){
         Log.d("INSERT","Insert: $tipoIva")
     }
 
+    /* TIPO IVA */
+
+    private fun TipoIvaEntity.toDomain() = TipoIva(
+        id = id,
+        nombre = nombre,
+        porcentaje = porcentaje
+    )
+
+    private fun TipoIva.toEntity() = TipoIvaEntity(
+        id = id,
+        nombre = nombre,
+        porcentaje = porcentaje
+    )
+
 }
 
-/* TIPO IVA */
-
-fun TipoIvaEntity.toDomain() = TipoIva(
-    id = id,
-    nombre = nombre,
-    porcentaje = porcentaje
-)
-
-fun TipoIva.toEntity() = TipoIvaEntity(
-    id = id,
-    nombre = nombre,
-    porcentaje = porcentaje
-)

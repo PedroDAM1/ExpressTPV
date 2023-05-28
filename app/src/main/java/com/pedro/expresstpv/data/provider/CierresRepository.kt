@@ -30,7 +30,7 @@ class CierresRepository @Inject constructor(private val cierreDao: CierreDao) {
                 it?.toDomain()
             }
             .flowOn(Dispatchers.IO)
-            .lastOrNull()
+            .first()
     }
 
     private fun CierreEntity.toDomain() : Cierre{

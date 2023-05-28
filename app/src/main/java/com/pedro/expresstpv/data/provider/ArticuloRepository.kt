@@ -52,13 +52,15 @@ class ArticuloRepository @Inject constructor(private val articuloDao: ArticuloDa
         Log.d("INSERTANDO ARTICULO", "Se esta insertando el articulo $articulo")
         articuloDao.insert(articulo.toEntity())
     }
+
+    /* ARTICULO */
+    private fun Articulo.toEntity() = ArticuloEntity(
+        id = id,
+        idCategoria = categoria.id,
+        idIva = tipoIva.id,
+        nombre = nombre,
+        precio = precio
+    )
 }
 
-/* ARTICULO */
-fun Articulo.toEntity() = ArticuloEntity(
-    id = id,
-    idCategoria = categoria.id,
-    idIva = tipoIva.id,
-    nombre = nombre,
-    precio = precio
-)
+

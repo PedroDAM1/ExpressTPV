@@ -27,4 +27,7 @@ interface TicketDao {
     @Query("SELECT * FROM tb_ticket")
     fun getAll(): Flow<List<TicketEntity>>
 
+    @Query("SELECT num_ticket FROM tb_ticket ORDER BY num_ticket DESC LIMIT 1")
+    suspend fun getLastNumTicket() : Int
+
 }

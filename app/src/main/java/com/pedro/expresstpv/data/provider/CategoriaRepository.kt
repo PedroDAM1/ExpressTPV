@@ -52,22 +52,22 @@ class CategoriaRepository @Inject constructor(private val categoriaDao: Categori
         Log.d("INSERT CATEGORIA","Insert: $categoria")
     }
 
+    /* CATEGORIA */
+
+
+    private fun Categoria.toEntity() = CategoriaEntity(
+        id = id,
+        nombre = nombre,
+        color = color
+    )
+    private fun CategoriaEntity.toDomain() = Categoria(
+        id = id,
+        nombre = nombre,
+        color = color
+    )
 
 
 }
 
-/* CATEGORIA */
-
-
-fun Categoria.toEntity() = CategoriaEntity(
-    id = id,
-    nombre = nombre,
-    color = color
-)
-fun CategoriaEntity.toDomain() = Categoria(
-    id = id,
-    nombre = nombre,
-    color = color
-)
 
 

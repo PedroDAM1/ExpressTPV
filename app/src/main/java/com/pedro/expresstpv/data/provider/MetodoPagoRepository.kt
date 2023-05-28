@@ -28,7 +28,7 @@ class MetodoPagoRepository @Inject constructor(private val metodoPagoDao: Metodo
                 it?.toDomain()
             }
             .flowOn(Dispatchers.IO)
-            .lastOrNull()
+            .first()
     }
 
     private fun MetodoPagoEntity.toDomain() : MetodoPago{

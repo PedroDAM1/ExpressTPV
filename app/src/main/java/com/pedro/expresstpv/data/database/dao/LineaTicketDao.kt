@@ -16,6 +16,9 @@ interface LineaTicketDao {
     @Update
     suspend fun update(lineaTicket: LineaTicketEntity)
 
+    @Update
+    suspend fun updateAll(listLineaTicket: List<LineaTicketEntity>)
+
     @Delete
     suspend fun delete(lineaTicket: LineaTicketEntity)
 

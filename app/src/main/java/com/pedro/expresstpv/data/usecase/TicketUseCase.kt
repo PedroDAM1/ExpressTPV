@@ -17,14 +17,29 @@ class TicketUseCase @Inject constructor(
 
     suspend fun crearTicket(metodoPago: MetodoPago, total : Double, subtotal : Double) = withContext(Dispatchers.IO){
         val cierreActivo = cierreUseCase.getCierreActivo()
+        val lastTicket = getLastNumTicket()
 
         val ticket = Ticket(
-            numTicket = 0,
-            cierre =cierreActivo,
+            //Insertamos el ticket con un nuevo id
+            numTicket = lastTicket+1,
+            cierre = cierreActivo,
             metodoPago = metodoPago,
             total = total)
 
         ticketRepository.insertTicket(ticket)
+
+        lineaTicketUseCases.updateLineaTicketsActivoToNewTicket(ticket)
+    }
+
+    suspend fun getLastNumTicket() : Int = ticketRepository.getLastNumTicket()
+
+    suspend fun getTicketByNumTicket(num : Int) : Ticket? {
+        return ticketRepository.getTicketByNumTicket(num)
+    }
+
+    suspend fun getTicketActivo() : Ticket {
+        return ticketRepository.getTicketByNumTicket(0)!!
+
     }
 
 }

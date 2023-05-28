@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.pedro.expresstpv.data.provider.ArticuloRepository
 import com.pedro.expresstpv.data.provider.LineaTicketRepository
 import com.pedro.expresstpv.data.usecase.LineaTicketUseCases
+import com.pedro.expresstpv.data.usecase.TicketUseCase
 import com.pedro.expresstpv.domain.functions.Functions
 import com.pedro.expresstpv.domain.model.Articulo
 import com.pedro.expresstpv.domain.model.LineaTicket
@@ -21,6 +22,7 @@ class VentasViewModel @Inject constructor(
     private val articuloRepository: ArticuloRepository,
     private val lineaTicketRepository: LineaTicketRepository,
     private val lineaTicketUseCases: LineaTicketUseCases,
+    private val ticketUseCases: TicketUseCase
 ) : ViewModel() {
 
     private val _listaArticulos = articuloRepository.getAllArticulos()
@@ -74,17 +76,22 @@ class VentasViewModel @Inject constructor(
      * Comprobamos si existe alguna lineaTicket que coincida con un articulo,
      * si coincide la devolvemos, sino devolveremos null
      */
-    private fun comprobarLineaTicket(articulo: Articulo): LineaTicket? {
+    private suspend fun comprobarLineaTicket(articulo: Articulo): LineaTicket? {
         //Si no existe la linea ticket se devuelve null
-        return _listaLineaTickets.firstOrNull { isLineaTicketOfArticulo(it, articulo) }
+        val linea = _listaLineaTickets.firstOrNull { isLineaTicketOfArticulo(it, articulo) }
+        return if (linea?.ticket?.numTicket == ticketUseCases.getTicketActivo().numTicket){
+            linea
+        } else {
+            null
+        }
     }
 
     /**
      * Nos subscribimos a la lista de lineaTickets para cuando se actualice en tiempo real
      */
     private fun subscribeToFlow(){
-        viewModelScope.launch (Dispatchers.IO) {
-            _lineaTicketFlow
+        viewModelScope.launch (Dispatchers.Default) {
+            _lineaTicketActivoFlow
                 .catch {
                     Log.d("VENTAS VIEW MODEL", "Error al subscribir en el flow del ventas view model: ${it.message}")
                 }
@@ -98,7 +105,7 @@ class VentasViewModel @Inject constructor(
      * Obtenemos el articulo que se ha clicado en el boton del adapter, ademas deberemos de devolver la cantidad de lineaTicket de ese articulo
      */
     fun onArticuloItemClick(articulo: VentasCalculadoraListAdapter.ArticuloYCantidad) {
-        viewModelScope.launch (Dispatchers.IO) {
+        viewModelScope.launch (Dispatchers.Default) {
             val lineaTicket : LineaTicket? = comprobarLineaTicket(articulo.articulo)
             if (lineaTicket == null){
                 lineaTicketUseCases.crearLineaTicket(articulo.articulo)

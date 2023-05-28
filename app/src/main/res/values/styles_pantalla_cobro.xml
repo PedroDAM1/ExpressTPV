@@ -2,7 +2,9 @@
 <resources>
     <dimen name="WidthMetodoPagoCardView">180dp</dimen>
 
-    <style name="StyleCobro" />
+    <style name="StyleCobro.tv" parent="StyleTextViews">
+        <item name="android:paddingEnd">5sp</item>
+    </style>
 
     <!-- Estilo para el cardView que esta por encima del recycler de los metodos de pago-->
     <style name="StyleCobro.cvRecyclerMetodoPago" parent="StyleCardViews"/>
