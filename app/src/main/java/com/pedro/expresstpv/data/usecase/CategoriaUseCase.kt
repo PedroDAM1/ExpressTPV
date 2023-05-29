@@ -8,13 +8,8 @@ import javax.inject.Singleton
 @Singleton
 class CategoriaUseCase @Inject constructor(
     private val categoriaRepository: CategoriaRepository
-) {
+) : BaseUseCase<Categoria>(categoriaRepository) {
 
-    suspend fun getAllCategoriasFlow() = categoriaRepository.getAllCategoriasFlow()
-
-    suspend fun getAllCategorias() = categoriaRepository.getAllCategorias()
-
-    suspend fun getCategoriaById(id : Int) = categoriaRepository.getCategoriaById(id)
 
     suspend fun insertCategoria(nombre : String, color : String){
         val categoria = Categoria(nombre = nombre, color = color)

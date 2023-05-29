@@ -25,8 +25,8 @@ class ArticuloEditorViewModel @Inject constructor(
 ) : ViewModel() {
 
     //Flow
-    suspend fun getListaCategorias() = categoriaUseCase.getAllCategoriasFlow()
-    suspend fun getListaTipoIva() = tipoIvaUseCase.getAllTipoIvaFlow()
+    fun getListaCategorias() = categoriaUseCase.getAllFlow()
+    fun getListaTipoIva() = tipoIvaUseCase.getAllFlow()
 
     fun guardarArticulo(nombre : String, precio : Double, categoria : Categoria, tipoIva : TipoIva){
         viewModelScope.launch (Dispatchers.IO) {

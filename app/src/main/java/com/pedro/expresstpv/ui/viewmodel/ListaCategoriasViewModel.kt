@@ -23,7 +23,7 @@ class ListaCategoriasViewModel @Inject constructor(
 //    val listaCategoriasUIState : StateFlow<UIState> = Functions.getStateFlow(viewModelScope, categoriaUseCase.getAllCategoriasFlow())
 
     suspend fun getListaCategoriasUIState() : StateFlow<UIState> {
-        return Functions.getStateFlow(viewModelScope, categoriaUseCase.getAllCategoriasFlow())
+        return Functions.getStateFlow(viewModelScope, categoriaUseCase.getAllFlow())
     }
 
 

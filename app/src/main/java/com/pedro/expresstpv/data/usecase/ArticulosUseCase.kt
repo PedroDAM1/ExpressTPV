@@ -13,9 +13,9 @@ import javax.inject.Singleton
 @Singleton
 class ArticulosUseCase @Inject constructor(
     private val articuloRepository: ArticuloRepository
-) {
+) : BaseUseCase<Articulo>(articuloRepository) {
 
-    private val _listaArticulosFlow = articuloRepository.getAllArticulos()
+    private val _listaArticulosFlow = articuloRepository.getAllFlow()
 
     suspend fun getArticulosByName(nombre : String) : List<Articulo> = withContext(Dispatchers.IO){
         var lista : List<Articulo> = listOf()
@@ -27,7 +27,7 @@ class ArticulosUseCase @Inject constructor(
         return@withContext lista
     }
 
-    suspend fun getAllArticulosFlow() = articuloRepository.getAllArticulos()
+    fun getAllArticulosFlow() = articuloRepository.getAllFlow()
 
     suspend fun insertArticulo(nombre : String, precio : Double, categoria : Categoria, tipoIva : TipoIva){
         val articulo = Articulo(nombre = nombre, precio = precio, categoria = categoria, tipoIva = tipoIva)

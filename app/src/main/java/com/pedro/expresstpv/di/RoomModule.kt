@@ -1,21 +1,17 @@
 package com.pedro.expresstpv.di
 
 import android.content.Context
-import androidx.room.ColumnInfo
-import androidx.room.PrimaryKey
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.pedro.expresstpv.data.database.AccesoDatos
-import com.pedro.expresstpv.data.database.dao.ArticuloDao
+import com.pedro.expresstpv.data.database.dao.ArticuloDaoI
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
 import javax.inject.Singleton
 
 
@@ -89,7 +85,7 @@ object RoomModule {
      **********************************************************************************************/
     @Singleton
     @Provides
-    fun provideArticuloDao(db: AccesoDatos): ArticuloDao{
+    fun provideArticuloDao(db: AccesoDatos): ArticuloDaoI{
         return db.getArticuloDao()
     }
 

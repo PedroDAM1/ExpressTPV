@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pedro.expresstpv.data.provider.ArticuloRepository
+import com.pedro.expresstpv.data.usecase.ArticulosUseCase
 import com.pedro.expresstpv.data.usecase.LineaTicketUseCases
 import com.pedro.expresstpv.data.usecase.TicketUseCase
 import com.pedro.expresstpv.domain.model.Articulo
@@ -17,12 +18,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class VentasViewModel @Inject constructor(
-    private val articuloRepository: ArticuloRepository,
+    private val articulosUseCase: ArticulosUseCase,
     private val lineaTicketUseCases: LineaTicketUseCases,
     private val ticketUseCases: TicketUseCase
 ) : ViewModel() {
 
-    private val _listaArticulos = articuloRepository.getAllArticulos()
+    private val _listaArticulos = articulosUseCase.getAllArticulosFlow()
     private val _lineaTicketActivoFlow = lineaTicketUseCases.getLineaTicketActivoFlow()
     private var _listaLineaTickets : MutableList<LineaTicket> = mutableListOf()
 

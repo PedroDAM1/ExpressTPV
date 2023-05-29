@@ -15,19 +15,19 @@ import javax.inject.Singleton
 object RepositoriesModule {
     @Singleton
     @Provides
-    fun provideCategoriaRepository(categoriaDao: CategoriaDao): CategoriaRepository {
+    fun provideCategoriaRepository(categoriaDao: CategoriaDaoI): CategoriaRepository {
         return CategoriaRepository(categoriaDao)
     }
 
     @Singleton
     @Provides
-    fun provideTipoIvaRepository(tipoIvaDao: TipoIvaDao): TipoIvaRepository {
+    fun provideTipoIvaRepository(tipoIvaDao: TipoIvaDaoI): TipoIvaRepository {
         return TipoIvaRepository(tipoIvaDao)
     }
 
     @Singleton
     @Provides
-    fun provideArticuloRepository(articuloDao: ArticuloDao, categoriaUseCase: CategoriaUseCase, tipoIvaUseCase: TipoIvaUseCase): ArticuloRepository {
+    fun provideArticuloRepository(articuloDao: ArticuloDaoI, categoriaUseCase: CategoriaUseCase, tipoIvaUseCase: TipoIvaUseCase): ArticuloRepository {
         return ArticuloRepository(articuloDao, categoriaUseCase, tipoIvaUseCase)
     }
 
