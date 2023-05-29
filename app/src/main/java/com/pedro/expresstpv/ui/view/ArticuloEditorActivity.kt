@@ -103,17 +103,17 @@ class ArticuloEditorActivity : AppCompatActivity() {
      * solo me proporcionara el nombre
      */
     private fun cargarDatosSpinner(){
-        viewModel.listaCategorias
-            .onEach {
-                binding.spCategoriaArticuloEditor.adapter = ArrayAdapter(this@ArticuloEditorActivity, R.layout.elemento_spinner_textview, it)
-            }
-            .launchIn(lifecycleScope)
-
-        viewModel.listaTipoIva
-            .onEach{
-                binding.spTipoIvaArticuloEditor.adapter = ArrayAdapter(this@ArticuloEditorActivity, R.layout.elemento_spinner_textview, it)
-            }
-            .launchIn(lifecycleScope)
-
+        lifecycleScope.launch (Dispatchers.Main){
+            viewModel.getListaCategorias()
+                .collect{
+                    binding.spCategoriaArticuloEditor.adapter = ArrayAdapter(this@ArticuloEditorActivity, R.layout.elemento_spinner_textview, it)
+                }
+        }
+        lifecycleScope.launch (Dispatchers.Main) {
+            viewModel.getListaTipoIva()
+                .collect{
+                    binding.spTipoIvaArticuloEditor.adapter = ArrayAdapter(this@ArticuloEditorActivity, R.layout.elemento_spinner_textview, it)
+                }
+        }
     }
 }

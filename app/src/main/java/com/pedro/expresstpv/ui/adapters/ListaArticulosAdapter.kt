@@ -27,12 +27,10 @@ class ListaArticulosAdapter :
     companion object {
         private val DiffCallback = object : DiffUtil.ItemCallback<Articulo>() {
             override fun areItemsTheSame(oldItem: Articulo, newItem: Articulo): Boolean {
-                Log.d("ADAPTER", "Comprobando las diferencias entre la id ${oldItem.id} y la id ${newItem.id} ")
                 return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(oldItem: Articulo, newItem: Articulo): Boolean {
-                Log.d("ADAPTER", "Comparando los objetos $oldItem y $newItem")
                 return oldItem == newItem
             }
         }

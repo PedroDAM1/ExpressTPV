@@ -2,6 +2,8 @@ package com.pedro.expresstpv.di
 
 import com.pedro.expresstpv.data.database.dao.*
 import com.pedro.expresstpv.data.provider.*
+import com.pedro.expresstpv.data.usecase.CategoriaUseCase
+import com.pedro.expresstpv.data.usecase.TipoIvaUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,8 +27,8 @@ object RepositoriesModule {
 
     @Singleton
     @Provides
-    fun provideArticuloRepository(articuloDao: ArticuloDao, categoriaRepository: CategoriaRepository, tipoIvaRepository: TipoIvaRepository): ArticuloRepository {
-        return ArticuloRepository(articuloDao, categoriaRepository, tipoIvaRepository)
+    fun provideArticuloRepository(articuloDao: ArticuloDao, categoriaUseCase: CategoriaUseCase, tipoIvaUseCase: TipoIvaUseCase): ArticuloRepository {
+        return ArticuloRepository(articuloDao, categoriaUseCase, tipoIvaUseCase)
     }
 
     @Singleton
@@ -52,4 +54,5 @@ object RepositoriesModule {
     fun provideTicketRepository(ticketDao: TicketDao, cierresRepository: CierresRepository, metodoPagoRepository: MetodoPagoRepository): TicketRepository {
         return TicketRepository(ticketDao, cierresRepository, metodoPagoRepository)
     }
+
 }

@@ -33,12 +33,10 @@ class ListaCategoriasAdapter
     companion object {
         private val DiffCallback = object : DiffUtil.ItemCallback<Categoria>() {
             override fun areItemsTheSame(oldItem: Categoria, newItem: Categoria): Boolean {
-                Log.d("ADAPTER", "Comprobando las diferencias entre la id ${oldItem.id} y la id ${newItem.id} ")
                 return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(oldItem: Categoria, newItem: Categoria): Boolean {
-                Log.d("ADAPTER", "Comparando los objetos $oldItem y $newItem")
                 return oldItem == newItem
             }
         }

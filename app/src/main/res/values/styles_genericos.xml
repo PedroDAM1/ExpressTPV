@@ -11,6 +11,10 @@
         <!-- Otros atributos personalizados que desees -->
     </style>
 
+    <style name="StyleLayoutsActivities">
+        <item name="android:background">@color/background_activities</item>
+    </style>
+
     <style name="StyleTextViews" parent="android:Widget.Material.TextView">
         <item name="android:textColor">@color/gris_sepa</item>
         <item name="android:textSize">@dimen/size_contents_textviews</item>

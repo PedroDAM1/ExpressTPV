@@ -234,6 +234,7 @@ class CobrosActivity : AppCompatActivity() {
 
     private fun calcularCambio(){
         if (totalEntrega == 0.0){
+            totalCambio = 0.0
             return
         }
         totalCambio = totalEntrega - totalTicket

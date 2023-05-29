@@ -12,25 +12,47 @@ import javax.inject.Singleton
 @Singleton
 class CierresRepository @Inject constructor(private val cierreDao: CierreDao) {
 
+    private val _mapCierres : MutableMap<Int, Cierre> = mutableMapOf()
+    private val _mapCierresEntity : MutableMap<Int, CierreEntity> = mutableMapOf()
+    private val _mapTempEntity : MutableMap<Int, CierreEntity> = mutableMapOf()
+
     private val _cierreEntityFlow : Flow<List<CierreEntity>> = cierreDao.getAll()
     private val _cierreFlow : Flow<List<Cierre>> = _cierreEntityFlow
+        .onEach {
+            loadCache(it)
+        }
         .map {
-            it.map { entity ->
-                Log.d("GET CIERRES", "Mapeando el cierre: $entity")
-                entity.toDomain()
-            }
+           mapCierres()
+            _mapCierres.values.toList()
         }
         .flowOn(Dispatchers.IO)
+
+    private suspend fun loadFlow(){
+        _cierreFlow.first()
+    }
+
+    private fun loadCache(list: List<CierreEntity>){
+        list.forEach {
+            val entry = _mapCierresEntity[it.numCierre]
+            if (entry == null || entry != it){
+                _mapCierresEntity[it.numCierre] = it
+                _mapTempEntity[it.numCierre] = it
+            }
+        }
+    }
+
+    private fun mapCierres(){
+        _mapTempEntity.forEach{(key , value)->
+            val cierre = value.toDomain()
+            _mapCierres[key] = cierre
+        }
+    }
 
     fun getAllCierres() = _cierreFlow
 
     suspend fun getCierreByNumCierre(numCierre : Int) : Cierre?{
-        return cierreDao.getByNumCierre(numCierre)
-            .map {
-                it?.toDomain()
-            }
-            .flowOn(Dispatchers.IO)
-            .first()
+        loadFlow()
+        return _mapCierres[numCierre]
     }
 
     private fun CierreEntity.toDomain() : Cierre{

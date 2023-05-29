@@ -42,4 +42,15 @@ object UseCaseModule {
         return CierreUseCase(cierresRepository)
     }
 
+    @Singleton
+    @Provides
+    fun provideCategoriaUseCase (categoriaRepository: CategoriaRepository) : CategoriaUseCase{
+        return CategoriaUseCase(categoriaRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideTipoIvaUseCase (tipoIvaRepository: TipoIvaRepository) : TipoIvaUseCase{
+        return TipoIvaUseCase(tipoIvaRepository)
+    }
 }

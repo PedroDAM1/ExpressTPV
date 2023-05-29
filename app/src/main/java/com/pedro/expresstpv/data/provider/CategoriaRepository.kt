@@ -5,7 +5,9 @@ import com.pedro.expresstpv.data.database.dao.CategoriaDao
 import com.pedro.expresstpv.data.database.entities.CategoriaEntity
 import com.pedro.expresstpv.domain.model.Categoria
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -15,27 +17,60 @@ class CategoriaRepository @Inject constructor(private val categoriaDao: Categori
 
 
     private val _categoriaEntityFlow: Flow<List<CategoriaEntity>> = categoriaDao.getAll()
-
-    private val _categoriaFlow: Flow<List<Categoria>> = _categoriaEntityFlow
-        .map {
-            it.map { categoria  ->
-                Log.d("GET CATEGORIAS", "Mapeando categoria: $categoria")
-                categoria.toDomain()
-            }
+    private val _categoriaFlow : Flow<List<Categoria>> = _categoriaEntityFlow
+        .onEach {
+            loadCache(it)
         }
-
+        .map {
+            mapCacheCategoria()
+            _mapaCategorias.values.toList()
+        }
         .flowOn(Dispatchers.IO)
 
-    fun getAllCategorias() = _categoriaFlow
+
+    private var _mapaCategorias : MutableMap<Int, Categoria> = mutableMapOf()
+    private var _mapaCategoriaEntity : MutableMap<Int, CategoriaEntity> = mutableMapOf()
+    private var _mapaTempEntity : MutableMap<Int, CategoriaEntity> = mutableMapOf()
+
+    private suspend fun loadFlow(){
+        _categoriaFlow.first()
+    }
+    private fun loadCache(lista : List<CategoriaEntity>){
+        lista.forEach { entity ->
+            val categoriaEntry = _mapaCategoriaEntity[entity.id]
+            //Si la entity no existe o es diferente la cachearemos
+            if (categoriaEntry == null || categoriaEntry != entity) {
+                Log.d("CACHEO CATEGORIAS", "Se esta cacheando la categoria $entity")
+                _mapaCategoriaEntity[entity.id] = entity
+                //La cacheamos en el mapa temporal
+                _mapaTempEntity[entity.id] = entity
+            }
+        }
+    }
+
+    private fun mapCacheCategoria(){
+        // Vamos a recorrer el map temporal y mapearlo en un mapa de la clase de dominio
+        _mapaTempEntity.forEach{ (key, value) ->
+            val categoria = value.toDomain()
+            _mapaCategorias[key] = categoria
+        }
+        _mapaTempEntity.clear()
+    }
+
+    suspend fun getAllCategoriasFlow(): Flow<List<Categoria>> {
+        loadFlow()
+        return _categoriaFlow
+    }
+
+    suspend fun getAllCategorias() : List<Categoria> {
+        loadFlow()
+        return _mapaCategorias.values.toList()
+    }
 
     suspend fun getCategoriaById(id : Int) : Categoria? {
+        loadFlow()
         //Si la categoria no existe devolveremos nulo
-        return categoriaDao.getById(id)
-            .map {
-                it?.toDomain()
-            }
-            .flowOn(Dispatchers.IO)
-            .first()
+        return _mapaCategorias[id]
     }
 
     fun getCategoriaByIdFlow(id : Int): Flow<Categoria?>{

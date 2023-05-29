@@ -55,7 +55,7 @@ class ListaCategoriasActivity : AppCompatActivity() {
     private fun getState(){
         //Lanzamos el hilo
         lifecycleScope.launch {
-            viewModel.listaCategoriasUIState
+            viewModel.getListaCategoriasUIState()
                 //Nos susbscribimos al estado del uiState para saber si han cargado ya los datos
                 .collect { flow ->
                     when(flow){
@@ -74,7 +74,6 @@ class ListaCategoriasActivity : AppCompatActivity() {
                         //Si aun sigue cargando dejaremos la progressBar visible
                         UIState.Loading -> {
                             binding.pbListaCategorias.visibility = View.VISIBLE
-
                         }
                     }
                 }
@@ -95,7 +94,6 @@ class ListaCategoriasActivity : AppCompatActivity() {
         }
             .flowOn(Dispatchers.Main)
             .collect{
-                Log.d("ADAPTER", "Actualizando el adapter del ListArticulo")
                 adapter.submitList(it)
             }
     }
