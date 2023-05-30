@@ -19,7 +19,7 @@ class CobrosViewModel @Inject constructor(
     private val ticketUseCases: TicketUseCase
 ) : ViewModel() {
 
-    suspend fun getMetodosPago() = metodoPagoUseCase.getMetodosPago()
+    suspend fun getMetodosPago() = metodoPagoUseCase.getAll()
     suspend fun getTotalTicket() : Double = withContext(Dispatchers.IO){
         return@withContext lineaTicketUseCases.getTotalFromLineaTicketsActivo()
     }

@@ -3,25 +3,23 @@ package com.pedro.expresstpv.data.usecase
 import com.pedro.expresstpv.data.provider.MetodoPagoRepository
 import com.pedro.expresstpv.domain.model.MetodoPago
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.filterNot
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class MetodoPagoUseCase @Inject constructor(
     private val metodoPagoRepository: MetodoPagoRepository
-) {
+) : BaseUseCase<MetodoPago>(metodoPagoRepository) {
 
-    suspend fun getMetodosPago() : List<MetodoPago>{
-        return metodoPagoRepository.getAllMetodoPago()
-            .map { it.filterNot { it.id == 0 } }
-            .flowOn(Dispatchers.IO)
-            .first()
+    suspend fun getMetodoPagoByDefault() : MetodoPago = withContext(Dispatchers.IO){
+        var metodo = this@MetodoPagoUseCase.getById(0)
+        if (metodo == null){
+            metodo = MetodoPago(id = 0, nombre = "SIN DEFINIR")
+        }
+
+        return@withContext metodo
     }
-
-    fun getMetodosPagoFlow() = metodoPagoRepository.getAllMetodoPago()
 
 }

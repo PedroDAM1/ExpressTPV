@@ -6,8 +6,8 @@ import androidx.room.TypeConverters
 import com.pedro.expresstpv.data.database.dao.*
 import com.pedro.expresstpv.data.database.entities.*
 
-@Database(entities = [CategoriaEntityI::class, TipoIvaEntityI::class, ArticuloEntityI::class, LineaTicketEntity::class, CierreEntity::class, MetodoPagoEntity::class, TicketEntity::class],
-    version = 1)
+@Database(entities = [CategoriaEntity::class, TipoIvaEntity::class, ArticuloEntity::class, LineaTicketEntity::class, CierreEntity::class, MetodoPagoEntity::class, TicketEntity::class],
+    version = 3)
 @TypeConverters(LocalDateTimeConverter::class)
 abstract class AccesoDatos : RoomDatabase() {
 

@@ -12,12 +12,16 @@ class CierreUseCase @Inject constructor(
     private val cierresRepository: CierresRepository
 ) {
 
-    suspend fun getCierreByNumCierre(num : Int) = cierresRepository.getCierreByNumCierre(num)
-
+    suspend fun getCierreByNumCierre(num : Int) : Cierre? {
+        return cierresRepository.getAll()
+            .firstOrNull {
+                it.numCierre == num
+            }
+    }
     suspend fun getCierreActivo() : Cierre = withContext(Dispatchers.IO){
-        val cierre = cierresRepository.getCierreByNumCierre(0)
+        val cierre = cierresRepository.getById(0)
 
-        return@withContext cierre ?: Cierre(0, null)
+        return@withContext cierre ?: Cierre(0, 0, null)
     }
 
 }

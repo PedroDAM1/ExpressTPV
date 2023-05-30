@@ -9,4 +9,16 @@ interface IBaseRepository <Domain> {
 
     suspend fun getById(id: Int) : Domain?
 
+    suspend fun insert(domain: Domain)
+
+    suspend fun insertAll(list: List<Domain>)
+
+    suspend fun update(domain: Domain)
+
+    suspend fun updateAll(list: List<Domain>)
+
+    suspend fun deleteList(list: List<Domain>)
+    suspend fun delete(domain: Domain)
+    suspend fun deleteAll()
+
 }

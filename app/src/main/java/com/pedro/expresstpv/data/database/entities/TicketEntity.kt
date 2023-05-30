@@ -17,10 +17,13 @@ import java.time.LocalDateTime
             parentColumns = ["id"],
             childColumns = ["id_metodopago"]
         )
-    ]
+    ],
+    indices = [Index(value = ["num_ticket"], unique = true)]
 )
 data class TicketEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    override val id : Int,
     @ColumnInfo(name = "num_ticket")
     val numTicket: Int,
     @ColumnInfo(name = "num_cierre")
@@ -29,5 +32,8 @@ data class TicketEntity(
     val idMetodopago: Int,
     @ColumnInfo(defaultValue = "CURRENT_TIMESTAMP")
     val fecha: LocalDateTime? = LocalDateTime.now(),
-    val total: Double
-)
+    @ColumnInfo(name = "subtotal", defaultValue = "0.00")
+    val subtotal : Double = 0.0,
+    @ColumnInfo(name = "total", defaultValue = "0.0")
+    val total: Double = 0.0
+) : IBaseEntity

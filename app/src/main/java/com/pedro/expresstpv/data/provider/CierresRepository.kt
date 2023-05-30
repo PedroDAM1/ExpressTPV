@@ -1,62 +1,35 @@
 package com.pedro.expresstpv.data.provider
 
-import android.util.Log
 import com.pedro.expresstpv.data.database.dao.CierreDao
 import com.pedro.expresstpv.data.database.entities.CierreEntity
 import com.pedro.expresstpv.domain.model.Cierre
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class CierresRepository @Inject constructor(private val cierreDao: CierreDao) {
+class CierresRepository @Inject constructor(
+    private val cierreDao: CierreDao
+) : BaseRepository<Cierre, CierreEntity>(cierreDao) {
 
-    private val _mapCierres : MutableMap<Int, Cierre> = mutableMapOf()
-    private val _mapCierresEntity : MutableMap<Int, CierreEntity> = mutableMapOf()
-    private val _mapTempEntity : MutableMap<Int, CierreEntity> = mutableMapOf()
-
-    private val _cierreEntityFlow : Flow<List<CierreEntity>> = cierreDao.getAll()
-    private val _cierreFlow : Flow<List<Cierre>> = _cierreEntityFlow
-        .onEach {
-            loadCache(it)
-        }
-        .map {
-           mapCierres()
-            _mapCierres.values.toList()
-        }
-        .flowOn(Dispatchers.IO)
-
-    private suspend fun loadFlow(){
-        _cierreFlow.first()
+    override suspend fun toDomain(entity: CierreEntity): Cierre {
+        return entity.toDomain()
     }
 
-    private fun loadCache(list: List<CierreEntity>){
-        list.forEach {
-            val entry = _mapCierresEntity[it.numCierre]
-            if (entry == null || entry != it){
-                _mapCierresEntity[it.numCierre] = it
-                _mapTempEntity[it.numCierre] = it
-            }
-        }
-    }
-
-    private fun mapCierres(){
-        _mapTempEntity.forEach{(key , value)->
-            val cierre = value.toDomain()
-            _mapCierres[key] = cierre
-        }
-    }
-
-    fun getAllCierres() = _cierreFlow
-
-    suspend fun getCierreByNumCierre(numCierre : Int) : Cierre?{
-        loadFlow()
-        return _mapCierres[numCierre]
+    override suspend fun toEntity(domain: Cierre): CierreEntity {
+        return domain.toEntity()
     }
 
     private fun CierreEntity.toDomain() : Cierre{
         return Cierre(
+            id = id,
+            numCierre = this.numCierre,
+            fecha = this.fecha
+        )
+    }
+
+    private fun Cierre.toEntity() : CierreEntity{
+        return CierreEntity(
+            id = this.id,
             numCierre = this.numCierre,
             fecha = this.fecha
         )

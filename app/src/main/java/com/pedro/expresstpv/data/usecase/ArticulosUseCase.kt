@@ -5,7 +5,6 @@ import com.pedro.expresstpv.domain.model.Articulo
 import com.pedro.expresstpv.domain.model.Categoria
 import com.pedro.expresstpv.domain.model.TipoIva
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -31,7 +30,7 @@ class ArticulosUseCase @Inject constructor(
 
     suspend fun insertArticulo(nombre : String, precio : Double, categoria : Categoria, tipoIva : TipoIva){
         val articulo = Articulo(nombre = nombre, precio = precio, categoria = categoria, tipoIva = tipoIva)
-        articuloRepository.insertarArticulo(articulo)
+        articuloRepository.insert(articulo)
     }
 
 

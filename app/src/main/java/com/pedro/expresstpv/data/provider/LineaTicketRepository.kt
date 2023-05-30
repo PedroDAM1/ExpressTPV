@@ -3,98 +3,40 @@ package com.pedro.expresstpv.data.provider
 import android.util.Log
 import com.pedro.expresstpv.data.database.dao.LineaTicketDao
 import com.pedro.expresstpv.data.database.entities.LineaTicketEntity
+import com.pedro.expresstpv.data.usecase.TicketUseCase
 import com.pedro.expresstpv.domain.model.LineaTicket
 import com.pedro.expresstpv.domain.model.Ticket
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class LineaTicketRepository @Inject constructor(
     private val lineaTicketDao: LineaTicketDao,
-    private val ticketRepository: TicketRepository
-) {
-
-    private val _lineaTicketEntityFlow : Flow<List<LineaTicketEntity>> = lineaTicketDao.getAll()
-    private val _lineaTicketFlow : Flow<List<LineaTicket>> = _lineaTicketEntityFlow
-        .catch {
-            Log.d("GET LINEATICKET", "ERROR AL OBTENER EL FLOW EN LA CAPA DE MODELO: ${it.message}")
-        }
-        .map {
-            it.map { entity ->
-                entity.toDomain()
-            }
-        }
-        .flowOn(Dispatchers.IO)
+    private val ticketUseCase: TicketUseCase
+) : BaseRepository<LineaTicket, LineaTicketEntity>(lineaTicketDao) {
 
 
-    fun getAllLineaTicket() = _lineaTicketFlow
-
-    suspend fun getLineaTicketById(id : Int) : LineaTicket? {
-        return lineaTicketDao.getById(id)
-            .catch {
-                Log.d("GET LINEATICKET", "ERROR AL MAPEAR UNA LINEA TICKET: ${it.message}")
-            }
-            .map {
-                it?.toDomain()
-            }
-            .flowOn(Dispatchers.IO)
-            .lastOrNull()
-    }
-
-    fun getLineasTicketsByNumTicket(numTicket : Int) = lineaTicketDao.getLineaTicketByNumTicket(numTicket)
-        .map {
-            it.map { lineaTicket ->
-                lineaTicket.toDomain()
-            }
-        }
-        .flowOn(Dispatchers.IO)
-
-    suspend fun insertLineaTicket(lineaTicket: LineaTicket){
-        lineaTicketDao.insert(lineaTicket.toEntity())
-        Log.d("INSERT LINEATICKET", "Insertando LineaTicket: $lineaTicket")
-    }
-
-    suspend fun updateLineaTicket(lineaTicket: LineaTicket){
-        lineaTicketDao.update(lineaTicket.toEntity())
-        Log.d("UPDATE LIENATICKET", "Se ha actualizado una lineaTicket a: $lineaTicket")
-    }
-
-    suspend fun updateAllLineaTicket(listaLineaTickets: List<LineaTicket>){
-        lineaTicketDao.updateAll(listaLineaTickets.map { it.toEntity() })
-    }
-
-    suspend fun deleteAll(){
-        lineaTicketDao.deleteAll()
-    }
-
-    suspend fun deleteLineaTicket(lineaTicket: LineaTicket){
-        lineaTicketDao.delete(lineaTicket.toEntity())
-    }
-
-    suspend fun deleteListaLineaTickets(listaLineaTickets : List<LineaTicket>){
-        lineaTicketDao.deleteList(listaLineaTickets.map { it.toEntity() })
-    }
-
-    private suspend fun LineaTicketEntity.toDomain() : LineaTicket{
-        val ticket : Ticket = ticketRepository.getTicketByNumTicket(this.numTicket) ?: ticketRepository.getTicketByNumTicket(0)!!
-
-        val lineaTicket = LineaTicket(
-            id = this.id,
-            ticket = ticket,
-            descripcion = this.descripcion,
-            categoriaVenta = this.categoriaVenta,
-            cantidad = this.cantidad,
-            valorIva = this.valorIva,
-            subTotal = this.subtotal,
-            total = this.total
-        )
-
-        Log.d("GET LINEATICKET", "Se esta mapeando la linea ticket: $lineaTicket")
-
-        return lineaTicket
-    }
+//    override suspend fun loadCache(list: List<LineaTicketEntity>) {
+//        list.forEach {
+//            val entry = super.mapEntity[it.id]
+//            if (entry == null){
+//                mapEntity[it.id] = it
+//                mapTempEntity[it.id] = it
+//                return@forEach
+//            }
+//            val entryDomain = mapDomain[it.id]
+//            // Si el ticket no cambia, entonces intentaremos no mapearlo de manera forzosa para evitar tener que mapear el ticket de nuevo
+//            if (entry != it && it.numTicket == entryDomain?.ticket?.id){
+//                entryDomain.apply {
+//                    total = it.total
+//                    cantidad = it.cantidad
+//                    descripcion = it.descripcion
+//                    categoriaVenta = it.categoriaVenta
+//                    valorIva = it.valorIva
+//                }
+//            }
+//        }
+//    }
 
     private fun LineaTicket.toEntity() : LineaTicketEntity{
         return LineaTicketEntity(
@@ -107,6 +49,29 @@ class LineaTicketRepository @Inject constructor(
             subtotal = this.subTotal,
             total = this.total
         )
+    }
+
+    override suspend fun toEntity(domain: LineaTicket): LineaTicketEntity {
+        return domain.toEntity()
+    }
+
+    override suspend fun toDomain(entity: LineaTicketEntity): LineaTicket {
+        val ticket : Ticket = ticketUseCase.getByNumTicket(entity.numTicket) ?: ticketUseCase.getTicketActivo()
+
+        val lineaTicket = LineaTicket(
+            id = entity.id,
+            ticket = ticket,
+            descripcion = entity.descripcion,
+            categoriaVenta = entity.categoriaVenta,
+            cantidad = entity.cantidad,
+            valorIva = entity.valorIva,
+            subTotal = entity.subtotal,
+            total = entity.total
+        )
+
+        Log.d("GET LINEATICKET", "Se esta mapeando la linea ticket: $lineaTicket")
+
+        return lineaTicket
     }
 
 }

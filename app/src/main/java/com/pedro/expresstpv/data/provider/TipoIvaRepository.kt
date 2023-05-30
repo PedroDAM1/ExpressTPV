@@ -2,7 +2,7 @@ package com.pedro.expresstpv.data.provider
 
 import android.util.Log
 import com.pedro.expresstpv.data.database.dao.TipoIvaDaoI
-import com.pedro.expresstpv.data.database.entities.TipoIvaEntityI
+import com.pedro.expresstpv.data.database.entities.TipoIvaEntity
 import com.pedro.expresstpv.domain.model.TipoIva
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -12,7 +12,7 @@ import javax.inject.Singleton
 @Singleton
 class TipoIvaRepository @Inject constructor(
     private val tipoIvaDao: TipoIvaDaoI
-) : RepositoryBase<TipoIva, TipoIvaEntityI>(tipoIvaDao){
+) : BaseRepository<TipoIva, TipoIvaEntity>(tipoIvaDao){
 
 //    private var _mapTipoIvaEntity : MutableMap<Int, TipoIvaEntity> = mutableMapOf()
 //    private var _mapTempEntity : MutableMap<Int, TipoIvaEntity> = mutableMapOf()
@@ -33,36 +33,13 @@ class TipoIvaRepository @Inject constructor(
 //        _tipoIvaFlow.first()
 //    }
 
-    override suspend fun toDomain(entity: TipoIvaEntityI): TipoIva {
+    override suspend fun toDomain(entity: TipoIvaEntity): TipoIva {
         return entity.toDomain()
     }
 
-    override suspend fun toEntity(domain: TipoIva): TipoIvaEntityI {
+    override suspend fun toEntity(domain: TipoIva): TipoIvaEntity {
         return domain.toEntity()
     }
-
-//    private fun loadCache(lista : List<TipoIvaEntity>){
-//        lista.forEach {
-//            val entry = _mapTipoIvaEntity[it.id]
-//            if (entry == null || entry != it){
-//                _mapTipoIvaEntity[it.id] = it
-//                _mapTempEntity[it.id] = it
-//            }
-//        }
-//    }
-//    private fun mapTipoIva(){
-//        _mapTempEntity.forEach{ (key, value) ->
-//            val tipoIva = value.toDomain()
-//            _mapTipoIva[key] = tipoIva
-//        }
-//        _mapTempEntity.clear()
-//    }
-
-//    fun getAllTipoIva() = _tipoIvaFlow
-//    suspend fun getTipoIvaById(id : Int) : TipoIva? = withContext(Dispatchers.IO){
-//        loadFlow()
-//        return@withContext _mapTipoIva[id]
-//    }
 
     fun getTipoIvaByIdFlow(id: Int) : Flow<TipoIva?>{
         Log.d("GET TIPOIVA", "Obteniendo el flow del iva con id $id")
@@ -74,20 +51,15 @@ class TipoIvaRepository @Inject constructor(
             .flowOn(Dispatchers.IO)
     }
 
-    suspend fun insert(tipoIva: TipoIva){
-        tipoIvaDao.insert(tipoIva = tipoIva.toEntity())
-        Log.d("INSERT","Insert: $tipoIva")
-    }
-
     /* TIPO IVA */
 
-    private fun TipoIvaEntityI.toDomain() = TipoIva(
+    private fun TipoIvaEntity.toDomain() = TipoIva(
         id = id,
         nombre = nombre,
         porcentaje = porcentaje
     )
 
-    private fun TipoIva.toEntity() = TipoIvaEntityI(
+    private fun TipoIva.toEntity() = TipoIvaEntity(
         id = id,
         nombre = nombre,
         porcentaje = porcentaje

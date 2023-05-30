@@ -3,7 +3,6 @@ package com.pedro.expresstpv.ui.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pedro.expresstpv.data.provider.ArticuloRepository
 import com.pedro.expresstpv.data.usecase.ArticulosUseCase
 import com.pedro.expresstpv.data.usecase.LineaTicketUseCases
 import com.pedro.expresstpv.data.usecase.TicketUseCase
@@ -35,7 +34,7 @@ class VentasViewModel @Inject constructor(
             VentasCalculadoraListAdapter.ArticuloYCantidad(articulo, lineaTicket?.cantidad ?: 0)
         }
     }
-        .flowOn(Dispatchers.IO)
+        .flowOn(Dispatchers.Default)
 
     init {
         subscribeToFlow()
@@ -62,7 +61,6 @@ class VentasViewModel @Inject constructor(
      * del articulo no coincide con las de la lineaTicket
      */
     private fun isLineaTicketOfArticulo(lineaTicket: LineaTicket, articulo: Articulo) : Boolean{
-        Log.d("VENTASVIEWMODEL", "comparando articulos")
         return lineaTicket.descripcion == articulo.nombre &&
             lineaTicket.categoriaVenta == articulo.categoria.nombre &&
             lineaTicket.valorIva == articulo.tipoIva.porcentaje &&

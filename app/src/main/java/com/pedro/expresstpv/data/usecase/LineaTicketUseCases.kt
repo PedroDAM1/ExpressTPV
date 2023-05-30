@@ -2,7 +2,6 @@ package com.pedro.expresstpv.data.usecase
 
 import android.util.Log
 import com.pedro.expresstpv.data.provider.LineaTicketRepository
-import com.pedro.expresstpv.data.provider.TicketRepository
 import com.pedro.expresstpv.domain.model.Articulo
 import com.pedro.expresstpv.domain.model.LineaTicket
 import com.pedro.expresstpv.domain.model.Ticket
@@ -15,10 +14,10 @@ import javax.inject.Singleton
 @Singleton
 class LineaTicketUseCases @Inject constructor(
     private val lineaTicketRepository: LineaTicketRepository,
-    private val ticketRepository: TicketRepository
-) {
+    private val ticketUseCase: TicketUseCase
+) : BaseUseCase<LineaTicket>(lineaTicketRepository) {
 
-    private val _lineaTicketFlow = lineaTicketRepository.getAllLineaTicket()
+
 
     /**
      * Crearemos una nueva LineaTicket con la cantidad iniciada en 1
@@ -28,7 +27,7 @@ class LineaTicketUseCases @Inject constructor(
         val cantidad = 1
         //TODO, A implementar el subtotal
         val subtotal = 0.0
-        val ticket = ticketRepository.getTicketByNumTicket(0)!!
+        val ticket = ticketUseCase.getTicketActivo()
 
         val lineaTicket = LineaTicket(
             ticket = ticket,
@@ -41,24 +40,7 @@ class LineaTicketUseCases @Inject constructor(
         )
 
         Log.d("CREAR LINEATICKET", "Se ha creado la lineaTicket: $lineaTicket")
-        lineaTicketRepository.insertLineaTicket(lineaTicket)
-    }
-
-    /**
-     * Obtendremos todas las lineasTickets que tengan el idTicket en 0
-     * lo que signiffica que son los tickets actuales de la pantalla de ventas
-     */
-    fun getLineaTicketActivoFlow() : Flow<List<LineaTicket>>{
-        return _lineaTicketFlow.map {listaLineaTickets ->
-            listaLineaTickets.filter {
-                it.ticket.numTicket == 0
-            }
-        }
-            .flowOn(Dispatchers.IO)
-    }
-
-    suspend fun getLineaTicketActivo() : List<LineaTicket> = withContext(Dispatchers.IO){
-        return@withContext lineaTicketRepository.getLineasTicketsByNumTicket(0).first()
+        lineaTicketRepository.insert(lineaTicket)
     }
 
     /**
@@ -69,20 +51,37 @@ class LineaTicketUseCases @Inject constructor(
         lineaTicket.cantidad += cantidad //Aumentamos la cantidad que le pasemos por parametro
         lineaTicket.total = (precioIndividual * lineaTicket.cantidad) // Actualizamos el total una vez que se haya aumentado la cantidad
         //TODO a implementar el subtotal de la linea
-        lineaTicketRepository.updateLineaTicket(lineaTicket)
+        lineaTicketRepository.update(lineaTicket)
     }
 
     suspend fun reducirCantidadLineaTicket(lineaTicket: LineaTicket, cantidad: Int){
         if (lineaTicket.cantidad == 1){
             // Si nos llega la ultima linea ticket deberemos de eliminar la row
-            lineaTicketRepository.deleteLineaTicket(lineaTicket)
+           this.delete(lineaTicket)
         } else {
             aumentarCantidadLineaTicket(lineaTicket, -cantidad)
         }
     }
 
+    suspend fun getLineaTicketActivo() : List<LineaTicket> = withContext(Dispatchers.Default){
+        return@withContext lineaTicketRepository.getAll()
+            .filter {
+                it.ticket == ticketUseCase.getTicketActivo()
+            }
+    }
+
+    fun getLineaTicketActivoFlow() : Flow<List<LineaTicket>>{
+        return lineaTicketRepository.getAllFlow()
+            .map {
+                it.filter { it.ticket == ticketUseCase.getTicketActivo() }
+            }
+            .flowOn(Dispatchers.Default)
+    }
+
     suspend fun eliminarTicketActivo(){
-        lineaTicketRepository.deleteListaLineaTickets(getLineaTicketActivo())
+        val listaActivo = getLineaTicketActivo()
+        Log.d("LINEATICKET USECASE", "Eliminando lista: $listaActivo")
+        deleteList(listaActivo)
     }
 
     suspend fun getTotalFromLineaTicketsActivo() : Double{
@@ -92,10 +91,11 @@ class LineaTicketUseCases @Inject constructor(
     }
 
     suspend fun updateLineaTicketsActivoToNewTicket(ticket: Ticket){
-        val updated = getLineaTicketActivo().map {
-            it.copy(ticket = ticket)
+        val lista = getLineaTicketActivo()
+        lista.forEach {
+            it.ticket = ticket
         }
-        lineaTicketRepository.updateAllLineaTicket(updated)
+        updateAll(lista)
     }
 
 }

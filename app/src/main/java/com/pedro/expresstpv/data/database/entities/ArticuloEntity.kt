@@ -5,12 +5,12 @@ import androidx.room.*
 @Entity(
     tableName = "tb_articulo",
     foreignKeys = [
-        ForeignKey(entity = CategoriaEntityI::class, parentColumns = ["id"], childColumns = ["id_categoria"]),
-        ForeignKey(entity = TipoIvaEntityI::class, parentColumns = ["id"], childColumns = ["id_tipoiva"])
+        ForeignKey(entity = CategoriaEntity::class, parentColumns = ["id"], childColumns = ["id_categoria"]),
+        ForeignKey(entity = TipoIvaEntity::class, parentColumns = ["id"], childColumns = ["id_tipoiva"])
     ],
     //indices = [Index("id_tipoiva", "id_categoria")]
 )
-data class ArticuloEntityI(
+data class ArticuloEntity(
     @PrimaryKey(autoGenerate = true)
     override val id: Int = 0,
     @ColumnInfo(name = "id_categoria")

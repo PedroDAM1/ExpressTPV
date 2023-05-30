@@ -19,10 +19,7 @@ import com.pedro.expresstpv.ui.adapters.VentasCalculadoraListAdapter
 import com.pedro.expresstpv.ui.viewmodel.VentasViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -144,39 +141,38 @@ class VentasActivity() : AppCompatActivity() {
      * Nos subscribimos a la lista que nos dice cuando un articulo se actualiza o cuando se actualiza una linea ticket
      */
     private fun subscribeToFlow() {
-        ventasViewModel.getArticulosConCantidad()
-            .onEach {
-                adapterVentas.submitList(it)
-            }
-            .catch {
-                Functions.mostrarMensajeError(
-                this@VentasActivity,
-                "Error",
-                "Hubo un error al cargar los datos")
-            }
-            .flowOn(Dispatchers.Main)
-            .launchIn(lifecycleScope)
+        lifecycleScope.launch {
+            ventasViewModel.getArticulosConCantidad()
+                .catch {
+                    Functions.mostrarMensajeError(
+                        this@VentasActivity,
+                        "Error",
+                        "Hubo un error al cargar los datos")
+                }
+                .collect{
+                    adapterVentas.submitList(it)
+                }
+        }
 
-        ventasViewModel.getLineaTicketActivo()
-            .onEach {
-                //Actualizamos la grilla de lineas tickets
-                adapterGrillaLineaTickets.submitList(it)
+        lifecycleScope.launch {
+            ventasViewModel.getLineaTicketActivo()
+                .catch {
+                    Functions.mostrarMensajeError(
+                        this@VentasActivity,
+                        "Error",
+                        "Hubo un error al cargar las lineas de tickets"
+                    )
+                }
+                .collect{
+                    //Actualizamos la grilla de lineas tickets
+                    adapterGrillaLineaTickets.submitList(it)
 
-                actualizarTotal()
+                    actualizarTotal()
 
-                //Habilitar o deshabilitar el boton de borrado
-                checkearBotonesLineasTickets(it)
-            }
-            .catch {
-                Functions.mostrarMensajeError(
-                    this@VentasActivity,
-                    "Error",
-                    "Hubo un error al cargar las lineas de tickets"
-                )
-            }
-            .flowOn(Dispatchers.Main)
-            .launchIn(lifecycleScope)
-
+                    //Habilitar o deshabilitar el boton de borrado
+                    checkearBotonesLineasTickets(it)
+                }
+        }
     }
 
     private fun actualizarTotal(){
