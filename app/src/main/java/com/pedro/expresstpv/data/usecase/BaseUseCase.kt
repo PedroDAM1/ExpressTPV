@@ -51,10 +51,12 @@ abstract class BaseUseCase <Domain : IBaseModel> (private val repositoryBase: IB
         repositoryBase.deleteList(list)
     }
     suspend fun deleteAll(){
+        Log.d("DELETE ALL", "")
         repositoryBase.deleteAll()
     }
 
     suspend fun delete(domain: Domain){
+        Log.d("DELETE", "Eliminando: $domain")
         repositoryBase.delete(domain)
     }
 }

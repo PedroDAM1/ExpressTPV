@@ -2,17 +2,19 @@ package com.pedro.expresstpv.data.provider
 
 import com.pedro.expresstpv.data.database.dao.IBaseDao
 import com.pedro.expresstpv.data.database.entities.IBaseEntity
+import com.pedro.expresstpv.domain.model.IBaseModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 
-abstract class BaseRepository <Domain, Entity : IBaseEntity> (
+abstract class BaseRepository <Domain: IBaseModel, Entity : IBaseEntity> (
     private val dao : IBaseDao<Entity>
 ) : IBaseRepository<Domain> {
 
-    protected var mapDomain : MutableMap<Int, Domain> = mutableMapOf()
-    protected var mapEntity : MutableMap<Int, Entity> = mutableMapOf()
-    protected var mapTempEntity : MutableMap<Int, Entity> = mutableMapOf()
+
+    private var mapDomain : HashMap<Int, Domain> = hashMapOf()
+    private var mapEntity : HashMap<Int, Entity> = hashMapOf()
+    private var mapTempEntity : HashMap<Int, Entity> = hashMapOf()
 
     private val entityFlow: Flow<List<Entity>> = dao.getAll()
     private val domainFlow : Flow<List<Domain>> = entityFlow
@@ -39,13 +41,27 @@ abstract class BaseRepository <Domain, Entity : IBaseEntity> (
         if (list.isEmpty()){
             clearMaps()
         }
+        //Si el diccionario tiene elementos que no se encuentran en la lista, entonces deberemos de eliminar esos articulos concretos
+        val filtrado = mapEntity.values.toList().filterNot {map ->
+            list.contains(map)
+        }
+        filtrado.forEach {
+            mapEntity.remove(it.id)
+            mapTempEntity.remove(it.id)
+            mapDomain.remove(it.id)
+        }
     }
 
     private suspend fun mapDomain() = withContext(Dispatchers.Default){
-        mapTempEntity.forEach{ (key, value) ->
-            val domain = toDomain(value)
-            mapDomain[key] = domain
+        val iterator = mapTempEntity.iterator()
+        while (iterator.hasNext()){
+            val domain = toDomain(iterator.next().value)
+            mapDomain[domain.id] = domain
         }
+//        mapTempEntity.forEach{ (key, value) ->
+//            val domain = toDomain(value)
+//            mapDomain[key] = domain
+//        }
         mapTempEntity.clear()
     }
 

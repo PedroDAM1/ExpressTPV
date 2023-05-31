@@ -67,6 +67,10 @@ class VentasActivity() : AppCompatActivity() {
             R.id.miConfiguracion -> {
                 ventasViewModel.eliminarTicketActual()
             }
+
+            R.id.miHacerCierre -> {
+                startActivity(Intent(this, CierresActivity::class.java))
+            }
         }
 
         return super.onOptionsItemSelected(item)
@@ -147,7 +151,7 @@ class VentasActivity() : AppCompatActivity() {
                     Functions.mostrarMensajeError(
                         this@VentasActivity,
                         "Error",
-                        "Hubo un error al cargar los datos")
+                        "Hubo un error al cargar los datos: ${it.message}")
                 }
                 .collect{
                     adapterVentas.submitList(it)
@@ -160,7 +164,7 @@ class VentasActivity() : AppCompatActivity() {
                     Functions.mostrarMensajeError(
                         this@VentasActivity,
                         "Error",
-                        "Hubo un error al cargar las lineas de tickets"
+                        "Hubo un error al cargar las lineas de tickets: $it"
                     )
                 }
                 .collect{

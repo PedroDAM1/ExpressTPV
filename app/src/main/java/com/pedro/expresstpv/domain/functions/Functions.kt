@@ -74,6 +74,7 @@ class Functions {
         }
 
         fun mostrarMensajeError(context : Context, titulo : String, mensaje : String){
+            Log.d("EXCEPCION", mensaje)
             AlertDialog.Builder(context)
                 .setTitle(titulo)
                 .setMessage(mensaje)

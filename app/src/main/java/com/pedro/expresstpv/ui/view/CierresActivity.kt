@@ -18,4 +18,5 @@ class CierresActivity : AppCompatActivity() {
         binding = ActivityCierresBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
+
 }
