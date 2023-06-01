@@ -15,7 +15,7 @@ import javax.inject.Singleton
 @Singleton
 class LineaTicketUseCases @Inject constructor(
     private val lineaTicketRepository: LineaTicketRepository,
-    private val ticketRepository: TicketRepository
+    private val ticketUseCase: TicketUseCase
 ) : BaseUseCase<LineaTicket>(lineaTicketRepository) {
 
 
@@ -31,7 +31,7 @@ class LineaTicketUseCases @Inject constructor(
         val cantidad = 1
         //TODO, A implementar el subtotal
         val subtotal = 0.0
-        val ticket = ticketRepository.getById(0)!!
+        val ticket = ticketUseCase.getTicketActivo()
 
         val lineaTicket = LineaTicket(
             ticket = ticket,
@@ -70,14 +70,14 @@ class LineaTicketUseCases @Inject constructor(
     suspend fun getLineaTicketActivo() : List<LineaTicket> = withContext(Dispatchers.Default){
         return@withContext lineaTicketRepository.getAll()
             .filter {
-                it.ticket == ticketRepository.getById(0)!!
+                it.ticket == ticketUseCase.getTicketActivo()
             }
     }
 
     fun getLineaTicketActivoFlow() : Flow<List<LineaTicket>>{
         return lineaTicketRepository.getAllFlow()
             .map {
-                it.filter { it.ticket == ticketRepository.getById(0)!! }
+                it.filter { it.ticket == ticketUseCase.getTicketActivo() }
             }
             .flowOn(Dispatchers.Default)
     }

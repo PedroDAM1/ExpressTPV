@@ -11,11 +11,12 @@ import javax.inject.Singleton
 @Singleton
 class TicketUseCase @Inject constructor(
     private val ticketRepository: TicketRepository,
-    private val cierreUseCase: CierreUseCase,
-    private val lineaTicketUseCases: LineaTicketUseCases
+    private val cierreUseCase: CierreUseCase
 ) : BaseUseCase<Ticket>(ticketRepository) {
 
     /* Esta dependencia la inyectamos directamente aqui por temas de que hilt peta ya que lineaTicket necesita tambien dependencia con ticket y se hace un ciclo xD */
+    @Inject
+    lateinit var lineaTicketUseCases: LineaTicketUseCases
 
     suspend fun crearTicket(metodoPago: MetodoPago, total : Double, subtotal : Double) = withContext(Dispatchers.IO){
         val cierreActivo = cierreUseCase.getCierreActivo()
