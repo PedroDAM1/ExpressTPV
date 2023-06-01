@@ -16,28 +16,6 @@ class LineaTicketRepository @Inject constructor(
 ) : BaseRepository<LineaTicket, LineaTicketEntity>(lineaTicketDao) {
 
 
-//    override suspend fun loadCache(list: List<LineaTicketEntity>) {
-//        list.forEach {
-//            val entry = super.mapEntity[it.id]
-//            if (entry == null){
-//                mapEntity[it.id] = it
-//                mapTempEntity[it.id] = it
-//                return@forEach
-//            }
-//            val entryDomain = mapDomain[it.id]
-//            // Si el ticket no cambia, entonces intentaremos no mapearlo de manera forzosa para evitar tener que mapear el ticket de nuevo
-//            if (entry != it && it.numTicket == entryDomain?.ticket?.id){
-//                entryDomain.apply {
-//                    total = it.total
-//                    cantidad = it.cantidad
-//                    descripcion = it.descripcion
-//                    categoriaVenta = it.categoriaVenta
-//                    valorIva = it.valorIva
-//                }
-//            }
-//        }
-//    }
-
     private fun LineaTicket.toEntity() : LineaTicketEntity{
         return LineaTicketEntity(
             id = this.id,

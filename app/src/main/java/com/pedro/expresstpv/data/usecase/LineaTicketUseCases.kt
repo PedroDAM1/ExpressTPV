@@ -2,6 +2,7 @@ package com.pedro.expresstpv.data.usecase
 
 import android.util.Log
 import com.pedro.expresstpv.data.provider.LineaTicketRepository
+import com.pedro.expresstpv.data.provider.TicketRepository
 import com.pedro.expresstpv.domain.model.Articulo
 import com.pedro.expresstpv.domain.model.LineaTicket
 import com.pedro.expresstpv.domain.model.Ticket
@@ -14,9 +15,12 @@ import javax.inject.Singleton
 @Singleton
 class LineaTicketUseCases @Inject constructor(
     private val lineaTicketRepository: LineaTicketRepository,
-    private val ticketUseCase: TicketUseCase
+    private val ticketRepository: TicketRepository
 ) : BaseUseCase<LineaTicket>(lineaTicketRepository) {
 
+
+//    @Inject
+//    lateinit var ticketUseCase: TicketUseCase
 
 
     /**
@@ -27,7 +31,7 @@ class LineaTicketUseCases @Inject constructor(
         val cantidad = 1
         //TODO, A implementar el subtotal
         val subtotal = 0.0
-        val ticket = ticketUseCase.getTicketActivo()
+        val ticket = ticketRepository.getById(0)!!
 
         val lineaTicket = LineaTicket(
             ticket = ticket,
@@ -66,14 +70,14 @@ class LineaTicketUseCases @Inject constructor(
     suspend fun getLineaTicketActivo() : List<LineaTicket> = withContext(Dispatchers.Default){
         return@withContext lineaTicketRepository.getAll()
             .filter {
-                it.ticket == ticketUseCase.getTicketActivo()
+                it.ticket == ticketRepository.getById(0)!!
             }
     }
 
     fun getLineaTicketActivoFlow() : Flow<List<LineaTicket>>{
         return lineaTicketRepository.getAllFlow()
             .map {
-                it.filter { it.ticket == ticketUseCase.getTicketActivo() }
+                it.filter { it.ticket == ticketRepository.getById(0)!! }
             }
             .flowOn(Dispatchers.Default)
     }

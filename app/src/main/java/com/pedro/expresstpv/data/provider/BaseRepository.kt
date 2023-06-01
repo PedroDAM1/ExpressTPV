@@ -29,6 +29,7 @@ abstract class BaseRepository <Domain: IBaseModel, Entity : IBaseEntity> (
 
 
     protected open suspend fun loadCache(list: List<Entity>){
+        val mapEntityCopy = mapEntity.toMap()
         //Recorreremos la lista que nos llegue de la base de datos
         list.forEach {
             val entry = mapEntity[it.id]
@@ -53,15 +54,16 @@ abstract class BaseRepository <Domain: IBaseModel, Entity : IBaseEntity> (
     }
 
     private suspend fun mapDomain() = withContext(Dispatchers.Default){
-        val iterator = mapTempEntity.iterator()
-        while (iterator.hasNext()){
-            val domain = toDomain(iterator.next().value)
-            mapDomain[domain.id] = domain
-        }
-//        mapTempEntity.forEach{ (key, value) ->
-//            val domain = toDomain(value)
-//            mapDomain[key] = domain
+//        val iterator = mapTempEntity.iterator()
+//        while (iterator.hasNext()){
+//            val domain = toDomain(iterator.next().value)
+//            mapDomain[domain.id] = domain
 //        }
+        val mapTempEntityCopy = mapTempEntity.toMap()
+        mapTempEntityCopy.forEach{ (key, value) ->
+            val domain = toDomain(value)
+            mapDomain[key] = domain
+        }
         mapTempEntity.clear()
     }
 

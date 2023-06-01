@@ -3,6 +3,7 @@ package com.pedro.expresstpv.ui.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
@@ -148,6 +149,7 @@ class VentasActivity() : AppCompatActivity() {
         lifecycleScope.launch {
             ventasViewModel.getArticulosConCantidad()
                 .catch {
+                    Log.d("ARTICULOS CON CANTIDAD", "Excepcion al subscribirnos al flow en ventas viewmodel: ${it.stackTrace}")
                     Functions.mostrarMensajeError(
                         this@VentasActivity,
                         "Error",
@@ -161,6 +163,7 @@ class VentasActivity() : AppCompatActivity() {
         lifecycleScope.launch {
             ventasViewModel.getLineaTicketActivo()
                 .catch {
+                    Log.d("LINEA TICKET ACTIVO", "Excepcion al subscribirnos al flow en ventas viewmodel: ${it.stackTrace}")
                     Functions.mostrarMensajeError(
                         this@VentasActivity,
                         "Error",

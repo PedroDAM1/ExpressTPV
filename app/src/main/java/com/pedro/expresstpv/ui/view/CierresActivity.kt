@@ -3,9 +3,12 @@ package com.pedro.expresstpv.ui.view
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
+import com.pedro.expresstpv.R
 import com.pedro.expresstpv.databinding.ActivityCierresBinding
 import com.pedro.expresstpv.ui.viewmodel.CierresViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CierresActivity : AppCompatActivity() {
@@ -17,6 +20,13 @@ class CierresActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCierresBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        loadData()
+    }
+
+    private fun loadData(){
+        lifecycleScope.launch {
+            binding.tvTotalCierres.text = getString(R.string.precio_selector).format(viewModel.getTotalTickets())
+        }
     }
 
 }
