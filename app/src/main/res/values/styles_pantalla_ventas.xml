@@ -5,6 +5,7 @@
         <item name="cardBackgroundColor">@color/background_layout_cardviewButtons</item>
     </style>
 
+    <style name="StyleVentas.TituloGrilla" parent="StyleTitulosGrillas"/>
 
 
 </resources>

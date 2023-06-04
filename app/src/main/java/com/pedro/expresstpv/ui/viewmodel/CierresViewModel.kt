@@ -3,33 +3,40 @@ package com.pedro.expresstpv.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pedro.expresstpv.data.usecase.LineaTicketUseCases
+import com.pedro.expresstpv.data.usecase.MetodoPagoUseCase
 import com.pedro.expresstpv.data.usecase.TicketUseCase
 import com.pedro.expresstpv.domain.model.Ticket
+import com.pedro.expresstpv.ui.adapters.GrillaMetodosPagoCierresListAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CierresViewModel @Inject constructor(
-    private val ticketUseCases: TicketUseCase
+    private val ticketUseCases: TicketUseCase,
+    private val metodoPagoUseCase: MetodoPagoUseCase
 ) : ViewModel() {
 
-    private lateinit var _listaTicketsActivo : List<Ticket>
 
-    init {
-        onCreate()
-    }
-
-    private fun onCreate(){
-        viewModelScope.launch {
-            _listaTicketsActivo = ticketUseCases.getAllTicketFromCierreActivo()
+    private val _flowTotalMetodoPago : Flow<List<GrillaMetodosPagoCierresListAdapter.MetodosPagoYTotalesTicket>> = metodoPagoUseCase.getAllFlow()
+        .map {
+            it.map { metodoPago ->
+                GrillaMetodosPagoCierresListAdapter.MetodosPagoYTotalesTicket(metodoPago, ticketUseCases.getTotalTicketPorMetodoPagoParaCierreActivo(metodoPago))
+            }
         }
-    }
 
-    fun getListaTickets() = _listaTicketsActivo
+    suspend fun getListaTickets() = ticketUseCases.getAllTicketFromCierreActivoFlow()
 
     suspend fun getTotalTickets() = ticketUseCases.getSumOfTicketsFromCierreActivo()
+
+    fun getTotalPorMetodoPagoFlow() = _flowTotalMetodoPago
+
+
 
 }

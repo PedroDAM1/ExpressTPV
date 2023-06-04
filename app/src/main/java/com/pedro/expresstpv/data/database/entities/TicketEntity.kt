@@ -1,6 +1,7 @@
 package com.pedro.expresstpv.data.database.entities
 
 import androidx.room.*
+import com.pedro.expresstpv.data.database.LocalDateTimeConverter
 import com.pedro.expresstpv.domain.model.Ticket
 import java.time.LocalDateTime
 
@@ -31,6 +32,7 @@ data class TicketEntity(
     @ColumnInfo(name = "id_metodopago")
     val idMetodopago: Int,
     @ColumnInfo(defaultValue = "CURRENT_TIMESTAMP")
+    @TypeConverters(LocalDateTimeConverter::class)
     val fecha: LocalDateTime? = LocalDateTime.now(),
     @ColumnInfo(name = "subtotal", defaultValue = "0.00")
     val subtotal : Double = 0.0,

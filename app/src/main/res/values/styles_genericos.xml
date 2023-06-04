@@ -43,5 +43,20 @@
         <item name="android:background">@color/background_layout_cardviewButtons</item>
     </style>
 
+    <style name="StyleTitulosGrillas" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/background_subtitulos</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="StyleGrillaTextViewRow" parent="Widget.MaterialComponents.TextView">
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">center</item>
+        <item name="maxLines">1</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:maxWidth">25dp</item>
+        <item name="android:textColor">@color/foreground_textviews</item>
+        <item name="android:background">@drawable/item_grilla_columna_derecha</item>
+    </style>
 
 </resources>

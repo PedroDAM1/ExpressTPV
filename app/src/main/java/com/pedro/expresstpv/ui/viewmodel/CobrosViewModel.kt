@@ -26,7 +26,8 @@ class CobrosViewModel @Inject constructor(
 
     fun crearTicket(metodoPago: MetodoPago){
         viewModelScope.launch (Dispatchers.IO){
-            ticketUseCases.crearTicket(metodoPago, getTotalTicket(), 0.00)
+            val ticket = ticketUseCases.crearTicket(metodoPago, getTotalTicket(), 0.00)
+            lineaTicketUseCases.updateLineaTicketsActivoToNewTicket(ticket)
             //Una vez que creemos el ticket deberemos de actualizar las lineasTickets actuales para apuntar a ese ticket
         }
     }

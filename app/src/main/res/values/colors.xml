@@ -17,6 +17,8 @@
     <color name="gris_sepa">#323232</color>
     <color name="textViewsColor">@color/gris_sepa</color>
     <color name="verde_oliva">#74FF74</color>
+    <color name="green">#4CAF50</color>
+
 
     <color name="fondo_boton_cantidad_clicada">@color/secundary_color</color>
     <color name="fondo_boton_cantidad_noclicada">@android:color/transparent</color>

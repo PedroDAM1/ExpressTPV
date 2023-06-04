@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.pedro.expresstpv.data.database.AccesoDatos
 import com.pedro.expresstpv.data.database.dao.ArticuloDaoI

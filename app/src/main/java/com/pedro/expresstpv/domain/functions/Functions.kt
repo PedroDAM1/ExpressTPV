@@ -8,6 +8,8 @@ import com.pedro.expresstpv.ui.viewmodel.UIState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class Functions {
     companion object{
@@ -49,6 +51,15 @@ class Functions {
             val blue = Color.blue(color)
             val yiq = (red * 299 + green * 587 + blue * 114) / 1000
             return if (yiq >= 128) Color.BLACK else Color.WHITE
+        }
+
+        /**
+         * Cambia el formato de un LocalDateTime recibido a yyyy-MM-dd HH:mm:ss
+         */
+        fun formatLocalDateTime(localDateTime: LocalDateTime?) : LocalDateTime{
+            val pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+            val sFormated = localDateTime?.format(pattern)
+            return LocalDateTime.parse(sFormated, pattern)
         }
 
         /**

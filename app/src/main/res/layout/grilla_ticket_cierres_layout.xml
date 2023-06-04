@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutGrillaTicketCierres"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="40dp"
+    >
+
+    <TextView
+        android:id="@+id/tvNumTicketGrillaTicketsCierre"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.4"
+        android:textColor="@color/gris_sepa"
+        android:background="@drawable/item_grilla_columna_derecha"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxWidth="25dp"
+        android:maxLines="1"
+        android:text="TextView"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tvMetodoPagoGrillaTicketCierres"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:textColor="@color/gris_sepa"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:background="@drawable/item_grilla_columna_derecha"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="TextView"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tvFechaGrillaTicketCierres"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/item_grilla_columna_derecha"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="TextView"
+        android:textColor="@color/gris_sepa"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tvTotalGrillaTicketsCierres"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.6"
+        android:background="@drawable/item_grilla_solo_bottom"
+        android:ellipsize="start"
+        android:gravity="center|end"
+        android:maxLines="2"
+        android:minWidth="40dp"
+        android:text="@string/precio_selector"
+        android:textColor="@color/gris_sepa"
+        android:textSize="20sp" />
+</LinearLayout>

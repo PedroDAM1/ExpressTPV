@@ -14,9 +14,10 @@ object UseCaseModule {
 
     @Singleton
     @Provides
-    fun provideLineaTicketUseCase(lineaTicketRepository: LineaTicketRepository, ticketUseCase: TicketUseCase) :LineaTicketUseCases {
+    fun provideLineaTicketUseCase(lineaTicketRepository: LineaTicketRepository, ticketUseCase: TicketUseCase) :LineaTicketUseCases{
         return LineaTicketUseCases(lineaTicketRepository, ticketUseCase)
     }
+
 
     @Singleton
     @Provides

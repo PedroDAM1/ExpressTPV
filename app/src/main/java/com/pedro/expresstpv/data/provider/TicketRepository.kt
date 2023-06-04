@@ -5,11 +5,13 @@ import com.pedro.expresstpv.data.database.dao.TicketDao
 import com.pedro.expresstpv.data.database.entities.TicketEntity
 import com.pedro.expresstpv.data.usecase.CierreUseCase
 import com.pedro.expresstpv.data.usecase.MetodoPagoUseCase
+import com.pedro.expresstpv.domain.functions.Functions
 import com.pedro.expresstpv.domain.model.Cierre
 import com.pedro.expresstpv.domain.model.MetodoPago
 import com.pedro.expresstpv.domain.model.Ticket
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.time.LocalDateTime
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -45,13 +47,18 @@ class TicketRepository @Inject constructor(
         val cierre : Cierre = cierreUseCase.getCierreByNumCierre(entity.numCierre) ?: cierreUseCase.getCierreActivo()
         val metodoPago : MetodoPago = metodoPagoUseCase.getById(entity.idMetodopago) ?: metodoPagoUseCase.getMetodoPagoByDefault()
 
+        var fecha = entity.fecha
+        if(fecha!=null){
+            fecha = Functions.formatLocalDateTime(fecha)
+        }
+        Log.d("FECHA", "$fecha")
 
         val ticket = Ticket(
             id = entity.id,
             numTicket = entity.numTicket,
             cierre = cierre,
             metodoPago = metodoPago,
-            fecha = entity.fecha,
+            fecha = fecha,
             total = entity.total
 
         )

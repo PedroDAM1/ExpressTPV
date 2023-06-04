@@ -13,11 +13,17 @@
         android:layout_width="0dp"
         android:layout_height="180dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvSubtituloCierres" />
+        app:layout_constraintTop_toBottomOf="@+id/tvSubtituloCierres">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvGrillaTicketsCierres"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/tvSubtituloCierres"
@@ -37,7 +43,13 @@
         android:layout_marginTop="50dp"
         app:layout_constraintEnd_toEndOf="@+id/cvListaTicketCierres"
         app:layout_constraintStart_toStartOf="@+id/cvListaTicketCierres"
-        app:layout_constraintTop_toBottomOf="@+id/cvListaTicketCierres" />
+        app:layout_constraintTop_toBottomOf="@+id/cvListaTicketCierres">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvMetodosPagoCierres"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvDescuadresCierres"
@@ -78,7 +90,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvTotalCierresTxt" />
 
             <TextView
-                android:id="@+id/tvDescuentoCierresTxt"
+                android:id="@+id/tvRecuentoCierresTxt"
                 style="@style/StyleCierres.cvTotalesYDescuadres.tvTextos"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -88,14 +100,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvTotalCierres" />
 
             <TextView
-                android:id="@+id/tvDescuentoCierres"
+                android:id="@+id/tvRecuentoCierres"
                 style="@style/StyleCierres.cvTotalesYDescuadres.tvValores"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/precio_selector"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvDescuentoCierresTxt" />
+                app:layout_constraintTop_toBottomOf="@+id/tvRecuentoCierresTxt" />
 
             <TextView
                 android:id="@+id/tvDescuadreCierresTxt"
@@ -105,7 +117,7 @@
                 android:text="Descuadre:"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvDescuentoCierres" />
+                app:layout_constraintTop_toBottomOf="@+id/tvRecuentoCierres" />
 
             <TextView
                 android:id="@+id/tvDescuadreCierres"
@@ -123,12 +135,25 @@
         android:id="@+id/btnCierreCierres"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="10dp"
         android:text="Cierre"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnArqueoCierres"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cvDescuadresCierres"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <!--    <Button-->
+    <!--        android:id="@+id/btnRecuentoCierres"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="Recuento"-->
+    <!--        app:layout_constraintBottom_toBottomOf="@+id/btnArqueoCierres"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.5"-->
+    <!--        app:layout_constraintStart_toEndOf="@+id/btnArqueoCierres"-->
+    <!--        app:layout_constraintTop_toTopOf="@+id/btnArqueoCierres" />-->
 
     <Button
         android:id="@+id/btnArqueoCierres"
@@ -136,19 +161,81 @@
         android:layout_height="wrap_content"
         android:text="Arqueo"
         app:layout_constraintBottom_toBottomOf="@+id/btnCierreCierres"
-        app:layout_constraintEnd_toStartOf="@+id/btnRecuentoCierres"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btnCierreCierres"
         app:layout_constraintTop_toTopOf="@+id/btnCierreCierres" />
 
-    <Button
-        android:id="@+id/btnRecuentoCierres"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Recuento"
-        app:layout_constraintBottom_toBottomOf="@+id/btnArqueoCierres"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnArqueoCierres"
-        app:layout_constraintTop_toTopOf="@+id/btnArqueoCierres" />
+        android:layout_marginBottom="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/cvListaTicketCierres"
+        app:layout_constraintEnd_toEndOf="@+id/cvListaTicketCierres"
+        app:layout_constraintStart_toStartOf="@+id/cvListaTicketCierres">
+
+        <TextView
+            style="@style/StyleCierres.TitulosGrillas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:text="REF" />
+
+        <TextView
+            style="@style/StyleCierres.TitulosGrillas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="PAGO" />
+
+        <TextView
+            style="@style/StyleCierres.TitulosGrillas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="FECHA" />
+
+        <TextView
+            style="@style/StyleCierres.TitulosGrillas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:text="TOTAL" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/cvListaMetodosPagoCierres"
+        app:layout_constraintEnd_toEndOf="@+id/cvListaMetodosPagoCierres"
+        app:layout_constraintStart_toStartOf="@+id/cvListaMetodosPagoCierres">
+
+        <TextView
+            style="@style/StyleCierres.TitulosGrillas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="FORMA DE PAGO" />
+
+        <TextView
+            style="@style/StyleCierres.TitulosGrillas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="TOTAL" />
+
+        <TextView
+            style="@style/StyleCierres.TitulosGrillas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="RECUENTO" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.pedro.expresstpv.data.provider
 
+import android.util.Log
 import com.pedro.expresstpv.data.database.dao.IBaseDao
 import com.pedro.expresstpv.data.database.entities.IBaseEntity
 import com.pedro.expresstpv.domain.model.IBaseModel

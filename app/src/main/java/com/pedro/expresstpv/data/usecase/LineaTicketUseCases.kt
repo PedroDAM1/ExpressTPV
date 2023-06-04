@@ -2,7 +2,6 @@ package com.pedro.expresstpv.data.usecase
 
 import android.util.Log
 import com.pedro.expresstpv.data.provider.LineaTicketRepository
-import com.pedro.expresstpv.data.provider.TicketRepository
 import com.pedro.expresstpv.domain.model.Articulo
 import com.pedro.expresstpv.domain.model.LineaTicket
 import com.pedro.expresstpv.domain.model.Ticket
@@ -17,10 +16,6 @@ class LineaTicketUseCases @Inject constructor(
     private val lineaTicketRepository: LineaTicketRepository,
     private val ticketUseCase: TicketUseCase
 ) : BaseUseCase<LineaTicket>(lineaTicketRepository) {
-
-
-//    @Inject
-//    lateinit var ticketUseCase: TicketUseCase
 
 
     /**
@@ -99,7 +94,9 @@ class LineaTicketUseCases @Inject constructor(
         lista.forEach {
             it.ticket = ticket
         }
+//        ticket.total = getTotalFromLineaTicketsActivo()
         updateAll(lista)
+//        ticketUseCase.update(ticket)
     }
 
 }

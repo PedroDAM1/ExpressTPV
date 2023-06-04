@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutGrillaMetodoPagoCierres"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="40dp"
+    >
+
+    <TextView
+        android:id="@+id/tvNombreGrillaMetodoPagoCierres"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="EFECTIVO"
+        style="@style/StyleCierres.RowColumnTextView"
+       />
+
+    <TextView
+        android:id="@+id/tvTotalPagadoGrillaMetodoPagoCierres"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        style="@style/StyleCierres.RowColumnTextView"
+        android:layout_weight="0.6"
+        android:text="@string/precio_selector"/>
+
+    <EditText
+        android:id="@+id/etCantidadGrillaMetodoPagoCierres"
+        style="@style/StyleCierres.RowColumnEditText"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.6"
+        tools:ignore="LabelFor"
+         />
+
+
+</LinearLayout>
