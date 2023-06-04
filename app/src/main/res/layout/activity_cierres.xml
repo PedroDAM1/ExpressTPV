@@ -11,13 +11,15 @@
         android:id="@+id/cvListaTicketCierres"
         style="@style/StyleCierres.CardViews"
         android:layout_width="0dp"
-        android:layout_height="180dp"
+        android:layout_height="0dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toTopOf="@id/cvListaMetodosPagoCierres"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvSubtituloCierres">
+        app:layout_constraintTop_toBottomOf="@+id/tvSubtituloCierres"
+        app:layout_constraintVertical_bias="1.0">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvGrillaTicketsCierres"
@@ -39,9 +41,12 @@
         android:id="@+id/cvListaMetodosPagoCierres"
         style="@style/StyleCierres.CardViews"
         android:layout_width="0dp"
-        android:layout_height="180dp"
-        android:layout_marginTop="50dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintBottom_toTopOf="@id/cvDescuadresCierres"
         app:layout_constraintEnd_toEndOf="@+id/cvListaTicketCierres"
+        app:layout_constraintHeight_default="percent"
+        app:layout_constraintHeight_max="180dp"
         app:layout_constraintStart_toStartOf="@+id/cvListaTicketCierres"
         app:layout_constraintTop_toBottomOf="@+id/cvListaTicketCierres">
 
@@ -56,7 +61,8 @@
         style="@style/StyleCierres.cvTotalesYDescuadres"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnCancelarCierres"
         app:layout_constraintEnd_toEndOf="@+id/cvListaMetodosPagoCierres"
         app:layout_constraintStart_toStartOf="@+id/cvListaMetodosPagoCierres"
         app:layout_constraintTop_toBottomOf="@+id/cvListaMetodosPagoCierres">
@@ -128,43 +134,75 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvDescuadreCierresTxt" />
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/tvCambioCajaCierresTxt"-->
+            <!--                style="@style/StyleCierres.cvTotalesYDescuadres.tvTextos"-->
+            <!--                android:layout_width="0dp"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="Cambio en caja"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@+id/tvDescuadreCierres" />-->
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/tvCambioCajaCierres"-->
+            <!--                style="@style/StyleCierres.cvTotalesYDescuadres.tvValores"-->
+            <!--                android:layout_width="0dp"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="@string/precio_selector"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@+id/tvCambioCajaCierresTxt" />-->
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/tvRetiradaCajaCierresTxt"-->
+            <!--                style="@style/StyleCierres.cvTotalesYDescuadres.tvTextos"-->
+            <!--                android:layout_width="0dp"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="Retirada de caja"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@+id/tvCambioCajaCierres" />-->
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/tvRetiradaCajaCierres"-->
+            <!--                style="@style/StyleCierres.cvTotalesYDescuadres.tvValores"-->
+            <!--                android:layout_width="0dp"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="@string/precio_selector"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@+id/tvRetiradaCajaCierresTxt" />-->
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/btnCierreCierres"
-        android:layout_width="wrap_content"
+        style="@style/StyleButtons"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
         android:text="Cierre"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnArqueoCierres"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cvDescuadresCierres"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <!--    <Button-->
-    <!--        android:id="@+id/btnRecuentoCierres"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:text="Recuento"-->
-    <!--        app:layout_constraintBottom_toBottomOf="@+id/btnArqueoCierres"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.5"-->
-    <!--        app:layout_constraintStart_toEndOf="@+id/btnArqueoCierres"-->
-    <!--        app:layout_constraintTop_toTopOf="@+id/btnArqueoCierres" />-->
-
-    <Button
-        android:id="@+id/btnArqueoCierres"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Arqueo"
-        app:layout_constraintBottom_toBottomOf="@+id/btnCierreCierres"
+        app:layout_constraintBottom_toBottomOf="@+id/btnCancelarCierres"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnCierreCierres"
-        app:layout_constraintTop_toTopOf="@+id/btnCierreCierres" />
+        app:layout_constraintStart_toEndOf="@+id/btnCancelarCierres"
+        app:layout_constraintTop_toTopOf="@+id/btnCancelarCierres" />
+
+    <Button
+        android:id="@+id/btnCancelarCierres"
+        style="@style/StyleButtonsCancelar"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnCierreCierres"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cvDescuadresCierres" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -226,7 +264,7 @@
             style="@style/StyleCierres.TitulosGrillas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.6"
             android:gravity="center"
             android:text="TOTAL" />
 
@@ -234,7 +272,7 @@
             style="@style/StyleCierres.TitulosGrillas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.6"
             android:gravity="center"
             android:text="RECUENTO" />
     </LinearLayout>

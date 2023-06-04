@@ -2,7 +2,6 @@ package com.pedro.expresstpv.ui.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,7 +11,6 @@ import com.pedro.expresstpv.ui.adapters.GrillaMetodosPagoCierresListAdapter
 import com.pedro.expresstpv.ui.adapters.GrillaTicketsCierreListAdapter
 import com.pedro.expresstpv.ui.viewmodel.CierresViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -35,7 +33,23 @@ class CierresActivity : AppCompatActivity() {
         binding = ActivityCierresBinding.inflate(layoutInflater)
         setContentView(binding.root)
         loadData()
+        setListeners()
     }
+
+    private fun setListeners(){
+        binding.btnCierreCierres.setOnClickListener {
+            crearCierre()
+        }
+        binding.btnCancelarCierres.setOnClickListener {
+            finish()
+        }
+    }
+
+    private fun crearCierre(){
+        viewModel.crearCierre()
+        finish()
+    }
+
 
     private fun loadData(){
         loadTotales()
@@ -67,10 +81,9 @@ class CierresActivity : AppCompatActivity() {
 
     private fun loadGrillaMetodosPago(){
         val layoutManager = LinearLayoutManager(this)
-        adapterMetodoPago = GrillaMetodosPagoCierresListAdapter { txt, idMetodo ->
-            onTextChangeListener(txt, idMetodo)
-        }
-
+        adapterMetodoPago = GrillaMetodosPagoCierresListAdapter(
+            onEditTextChange = { txt, idMetodo -> onTextChangeListener(txt, idMetodo) }
+        )
         binding.rvMetodosPagoCierres.layoutManager = layoutManager
         binding.rvMetodosPagoCierres.adapter = adapterMetodoPago
 

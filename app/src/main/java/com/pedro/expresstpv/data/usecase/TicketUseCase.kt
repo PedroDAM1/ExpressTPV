@@ -1,6 +1,7 @@
 package com.pedro.expresstpv.data.usecase
 
 import com.pedro.expresstpv.data.provider.TicketRepository
+import com.pedro.expresstpv.domain.model.Cierre
 import com.pedro.expresstpv.domain.model.MetodoPago
 import com.pedro.expresstpv.domain.model.Ticket
 import kotlinx.coroutines.Dispatchers
@@ -91,5 +92,13 @@ class TicketUseCase @Inject constructor(
         }
     }
 
+    suspend fun updateTicketsFromCierreActivoToNewCierre(cierre : Cierre){
+        val lista = getAllTicketFromCierreActivo()
+        lista.forEach {
+            it.cierre = cierre
+        }
+        updateAll(lista)
+
+    }
 
 }

@@ -59,4 +59,13 @@
         <item name="android:background">@drawable/item_grilla_columna_derecha</item>
     </style>
 
+    <style name="StyleButtons" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">12dp</item>
+    </style>
+
+    <style name="StyleButtonsCancelar" parent="StyleButtons">
+        <item name="android:backgroundTint">#F44336</item>
+        <item name="android:text">Cancelar</item>
+    </style>
+
 </resources>

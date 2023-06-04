@@ -13,9 +13,8 @@ import com.pedro.expresstpv.databinding.GrillaMetodosPagoCierresLayoutBinding
 import com.pedro.expresstpv.domain.model.MetodoPago
 
 class GrillaMetodosPagoCierresListAdapter (
-    private val onEditTextChange : (String, Int) -> Unit
-        ) :
-    ListAdapter<GrillaMetodosPagoCierresListAdapter.MetodosPagoYTotalesTicket,
+    private val onEditTextChange : (String, Int) -> Unit,
+    ) : ListAdapter<GrillaMetodosPagoCierresListAdapter.MetodosPagoYTotalesTicket,
     GrillaMetodosPagoCierresListAdapter.GrillaMetodosPagosCierresViewHolder>(
      DiffCallback) {
 
@@ -30,7 +29,6 @@ class GrillaMetodosPagoCierresListAdapter (
     override fun onBindViewHolder(holder: GrillaMetodosPagosCierresViewHolder, position: Int) {
         holder.bind(getItem(position), onEditTextChange)
     }
-
 
     companion object{
         val DiffCallback = object : DiffUtil.ItemCallback<MetodosPagoYTotalesTicket>(){
@@ -56,18 +54,19 @@ class GrillaMetodosPagoCierresListAdapter (
 
         private val binding = GrillaMetodosPagoCierresLayoutBinding.bind(v)
 
-        fun bind(metodosPagoYTotalesTicket: MetodosPagoYTotalesTicket, onEditTextChange: (String, Int) -> Unit){
+        fun bind(
+            metodosPagoYTotalesTicket: MetodosPagoYTotalesTicket,
+            onEditTextChange: (String, Int) -> Unit,
+        ){
             binding.tvNombreGrillaMetodoPagoCierres.text = metodosPagoYTotalesTicket.metodoPago.nombre
             binding.tvTotalPagadoGrillaMetodoPagoCierres.text = binding.root.context.getString(R.string.precio_selector).format(metodosPagoYTotalesTicket.total)
 
+
             binding.etCantidadGrillaMetodoPagoCierres.addTextChangedListener(object : TextWatcher{
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
                 }
-
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 }
-
                 override fun afterTextChanged(p0: Editable?) {
                     onEditTextChange(p0.toString(), metodosPagoYTotalesTicket.metodoPago.id)
                 }
@@ -80,6 +79,12 @@ class GrillaMetodosPagoCierresListAdapter (
                 }
             }
         }
+
+//        fun isEditTextEmpty(){
+//            if (binding.etCantidadGrillaMetodoPagoCierres.text.toString().isEmpty()){
+//                binding.etCantidadGrillaMetodoPagoCierres.error = "Debes introducir una cantidad"
+//            }
+//        }
 
     }
 

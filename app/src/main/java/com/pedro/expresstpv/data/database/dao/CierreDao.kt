@@ -6,18 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CierreDao : IBaseDao<CierreEntity> {
-//    @Insert
-//    override suspend fun insert(entity: CierreEntity)
-//
-//    @Insert(onConflict = OnConflictStrategy.REPLACE)
-//    suspend fun insertOrUpdateAll(listCierre: List<CierreEntity>)
-//
-//    @Update
-//    suspend fun update(cierre: CierreEntity)
-//
-//    @Delete
-//    suspend fun delete(cierre: CierreEntity)
-
     @Query("DELETE FROM tb_cierre")
     override suspend fun deleteAll()
 
@@ -26,4 +14,7 @@ interface CierreDao : IBaseDao<CierreEntity> {
 
     @Query("SELECT * FROM tb_cierre")
     override fun getAll(): Flow<List<CierreEntity>>
+
+    @Query("SELECT num_cierre FROM tb_cierre ORDER BY num_cierre DESC LIMIT 1")
+    suspend fun getLastNumCierre() : Int
 }

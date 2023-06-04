@@ -8,17 +8,17 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ArticuloDaoI : IBaseDao<ArticuloEntity> {
-    @Insert
-    override suspend fun insert(entity: ArticuloEntity)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertOrUpdateAll(listArticulo: List<ArticuloEntity>)
-
-    @Update
-    override suspend fun update(entity: ArticuloEntity)
-
-    @Delete
-    override suspend fun delete(entity: ArticuloEntity)
+//    @Insert
+//    override suspend fun insert(entity: ArticuloEntity)
+//
+//    @Insert(onConflict = OnConflictStrategy.REPLACE)
+//    suspend fun insertOrUpdateAll(listArticulo: List<ArticuloEntity>)
+//
+//    @Update
+//    override suspend fun update(entity: ArticuloEntity)
+//
+//    @Delete
+//    override suspend fun delete(entity: ArticuloEntity)
 
     @Query("DELETE FROM tb_articulo")
     override suspend fun deleteAll()

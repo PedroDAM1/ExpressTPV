@@ -19,6 +19,7 @@ class CierresRepository @Inject constructor(
         return domain.toEntity()
     }
 
+    suspend fun getLastNumCierre() : Int = cierreDao.getLastNumCierre()
     private fun CierreEntity.toDomain() : Cierre{
         return Cierre(
             id = id,
