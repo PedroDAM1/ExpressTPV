@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.pedro.expresstpv.R
 import com.pedro.expresstpv.databinding.GrillaMetodosPagoCierresLayoutBinding
+import com.pedro.expresstpv.domain.functions.Functions
 import com.pedro.expresstpv.domain.model.MetodoPago
 
 class GrillaMetodosPagoCierresListAdapter (
@@ -27,7 +28,7 @@ class GrillaMetodosPagoCierresListAdapter (
     }
 
     override fun onBindViewHolder(holder: GrillaMetodosPagosCierresViewHolder, position: Int) {
-        holder.bind(getItem(position), onEditTextChange)
+        holder.bind(getItem(position), onEditTextChange, position)
     }
 
     companion object{
@@ -57,6 +58,7 @@ class GrillaMetodosPagoCierresListAdapter (
         fun bind(
             metodosPagoYTotalesTicket: MetodosPagoYTotalesTicket,
             onEditTextChange: (String, Int) -> Unit,
+            pos : Int
         ){
             binding.tvNombreGrillaMetodoPagoCierres.text = metodosPagoYTotalesTicket.metodoPago.nombre
             binding.tvTotalPagadoGrillaMetodoPagoCierres.text = binding.root.context.getString(R.string.precio_selector).format(metodosPagoYTotalesTicket.total)
@@ -78,7 +80,11 @@ class GrillaMetodosPagoCierresListAdapter (
                     binding.etCantidadGrillaMetodoPagoCierres.setText(binding.root.context.getString(R.string.precio_selector).format(value))
                 }
             }
+
+            Functions.pintarBackgroundSegunLineaGrilla(pos, binding.layoutGrillaMetodoPagoCierres)
         }
+
+
 
 //        fun isEditTextEmpty(){
 //            if (binding.etCantidadGrillaMetodoPagoCierres.text.toString().isEmpty()){

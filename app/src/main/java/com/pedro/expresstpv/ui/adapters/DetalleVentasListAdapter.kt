@@ -5,12 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.pedro.expresstpv.R
 import com.pedro.expresstpv.databinding.GrillaDetalleVentasLayoutBinding
+import com.pedro.expresstpv.domain.functions.Functions
 import com.pedro.expresstpv.domain.model.LineaTicket
-import com.pedro.expresstpv.ui.viewmodel.DetalleVentasViewModel
 
 class DetalleVentasListAdapter : ListAdapter<LineaTicket, DetalleVentasListAdapter.DetalleVentasViewHolder>(DiffCallback) {
 
@@ -47,12 +46,9 @@ class DetalleVentasListAdapter : ListAdapter<LineaTicket, DetalleVentasListAdapt
             binding.tvTotalGrillaDetalleVentas.text = binding.root.context.getString(R.string.precio_selector).format(lineaTicket.total)
 
             //Si es par pintamos la row de una forma diferente para que se pinte una par y otra impar
-            if (pos %2 == 0){
-                binding.layoutGrillaDetalleVentas.setBackgroundColor(binding.root.context.getColor(R.color.background_elements))
-            } else {
-                binding.layoutGrillaDetalleVentas.setBackgroundColor(binding.root.context.getColor(R.color.white))
-            }
+            Functions.pintarBackgroundSegunLineaGrilla(pos, binding.layoutGrillaDetalleVentas)
         }
+
 
     }
 

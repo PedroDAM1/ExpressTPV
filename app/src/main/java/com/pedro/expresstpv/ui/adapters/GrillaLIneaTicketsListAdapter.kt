@@ -10,9 +10,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.pedro.expresstpv.R
 import com.pedro.expresstpv.databinding.GrillaLineaticketCalculadoraLayoutBinding
+import com.pedro.expresstpv.domain.functions.Functions
 import com.pedro.expresstpv.domain.model.LineaTicket
 
-class GrillaLIneaTicketsListAdapter (private val onItemClick : (LineaTicket?) -> Unit) : ListAdapter<LineaTicket, GrillaLIneaTicketsListAdapter.GrillaLineaTicketsViewHolder>(
+class GrillaLIneaTicketsListAdapter (
+    private val onItemClick : (LineaTicket?) -> Unit)
+    : ListAdapter<LineaTicket, GrillaLIneaTicketsListAdapter.GrillaLineaTicketsViewHolder>(
     DiffCallback) {
 
     // Si hay algun item seleccionado tendra un valor, en caso de que no tendra un nulo
@@ -31,7 +34,7 @@ class GrillaLIneaTicketsListAdapter (private val onItemClick : (LineaTicket?) ->
     @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: GrillaLineaTicketsViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        holder.bind(item, position)
         // Hacer click notificaremos al viewmodel para que actualice los botones para añadir y eliminar
         holder.itemView.setOnClickListener {
             // Si selectedItem no tiene valor le asignamos el valor correspondiente
@@ -66,26 +69,22 @@ class GrillaLIneaTicketsListAdapter (private val onItemClick : (LineaTicket?) ->
         private val binding = GrillaLineaticketCalculadoraLayoutBinding.bind(v)
 
         // Pintamos los articulos
-        fun bind(lineaTicket: LineaTicket){
+        fun bind(lineaTicket: LineaTicket, pos : Int){
             binding.tvCantidadGrillaLineaTickets.text = lineaTicket.cantidad.toString()
             binding.tvNombreGrillaLineaTickets.text = lineaTicket.descripcion
             binding.tvCategoriaGrillaLineaTickets.text = lineaTicket.categoriaVenta
             binding.tvTotalGrillaLineaTickets.text = binding.root.context.getString(R.string.precio_selector).format(lineaTicket.total)
 
+            Functions.pintarBackgroundSegunLineaGrilla(pos, binding.layoutGrillaLineaTicket)
+
             if (selectedItem == lineaTicket){
                 //Pintamos el color del item seleccionado
                 lineaTicketSelected()
-            } else {
-                // Despintamos el color del articulo seleccionado
-                lineaTicketUnselected()
             }
         }
 
         private fun lineaTicketSelected(){
             binding.layoutGrillaLineaTicket.setBackgroundColor(binding.root.context.getColor(R.color.orange))
-        }
-        private fun lineaTicketUnselected(){
-            binding.layoutGrillaLineaTicket.setBackgroundColor(binding.root.context.getColor(R.color.white))
         }
 
     }

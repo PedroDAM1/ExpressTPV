@@ -45,7 +45,7 @@
     </style>
 
     <style name="StyleTitulosGrillas" parent="Widget.MaterialComponents.TextView">
-        <item name="android:textColor">@color/background_subtitulos</item>
+        <item name="android:textColor">@color/foreground_textviews</item>
         <item name="android:textSize">18sp</item>
         <item name="android:gravity">center</item>
     </style>

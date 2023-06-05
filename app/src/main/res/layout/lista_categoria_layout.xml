@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/size_cardview_lista_items"
     app:cardCornerRadius="0dp"
     app:cardElevation="0dp"
     >
@@ -11,36 +11,33 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/separator_listas_activities"
-        >
+        android:background="@drawable/separator_listas_activities">
 
         <TextView
             android:id="@+id/tvNombreCategoriaListaCategorias"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            style="@style/StyleTextViews"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:gravity="center_vertical"
-            android:text="Categoria"
-            android:textColor="@color/textViewsColor"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="@+id/cbListaCategorias"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tvColorCategoriaListaCategorias"
-            app:layout_constraintStart_toEndOf="@id/cbListaCategorias"
-            app:layout_constraintTop_toTopOf="@+id/cbListaCategorias" />
+            app:layout_constraintStart_toEndOf="@+id/cbListaCategorias"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Categoria" />
 
         <TextView
             android:id="@+id/tvColorCategoriaListaCategorias"
+            style="@style/StyleTextViews"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginTop="5dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="15dp"
             android:layout_marginBottom="5dp"
             android:gravity="center"
-            android:textColor="@color/textViewsColor"
-            android:textSize="16sp"
-            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -50,7 +47,7 @@
             android:id="@+id/cbListaCategorias"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

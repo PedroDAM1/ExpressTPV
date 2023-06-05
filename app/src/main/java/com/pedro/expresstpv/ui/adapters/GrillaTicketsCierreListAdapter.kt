@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.pedro.expresstpv.R
 import com.pedro.expresstpv.databinding.GrillaTicketCierresLayoutBinding
-import com.pedro.expresstpv.domain.model.Articulo
+import com.pedro.expresstpv.domain.functions.Functions
 import com.pedro.expresstpv.domain.model.Ticket
 
 class GrillaTicketsCierreListAdapter : ListAdapter<Ticket ,GrillaTicketsCierreListAdapter.GrillaTicketsCierreViewHolder>(
@@ -23,7 +23,7 @@ class GrillaTicketsCierreListAdapter : ListAdapter<Ticket ,GrillaTicketsCierreLi
     }
 
     override fun onBindViewHolder(holder: GrillaTicketsCierreViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), position)
     }
 
 
@@ -42,11 +42,13 @@ class GrillaTicketsCierreListAdapter : ListAdapter<Ticket ,GrillaTicketsCierreLi
     inner class GrillaTicketsCierreViewHolder(v : View) : ViewHolder(v){
         private val binding = GrillaTicketCierresLayoutBinding.bind(v)
 
-        fun bind(ticket : Ticket){
+        fun bind(ticket : Ticket, pos: Int){
             binding.tvNumTicketGrillaTicketsCierre.text = ticket.numTicket.toString()
             binding.tvFechaGrillaTicketCierres.text = ticket.fecha?.dayOfYear.toString()
             binding.tvMetodoPagoGrillaTicketCierres.text = ticket.metodoPago.nombre
             binding.tvTotalGrillaTicketsCierres.text = binding.root.context.getString(R.string.precio_selector).format(ticket.total)
+
+            Functions.pintarBackgroundSegunLineaGrilla(pos, binding.layoutGrillaTicketCierres)
         }
     }
 

@@ -3,7 +3,9 @@ package com.pedro.expresstpv.domain.functions
 import android.content.Context
 import android.graphics.Color
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AlertDialog
+import com.pedro.expresstpv.R
 import com.pedro.expresstpv.ui.viewmodel.UIState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -65,7 +67,7 @@ class Functions {
         /**
          * La funcion nos devolvera un MutableState sabiendo que nos llegara un UIState.
          *
-         * @param corrrutina donde correra nuestro escuchador
+         * @param scope donde correra nuestro escuchador
          * @param flow Flow que se encontrara en el repositorio del que queramos obtener el MutableState
          */
         fun <T> getStateFlow(scope : CoroutineScope, flow : Flow<T>) : MutableStateFlow<UIState> {
@@ -93,5 +95,13 @@ class Functions {
                 .create()
                 .show()
         }
+        fun pintarBackgroundSegunLineaGrilla(pos : Int, v: View){
+            if (pos % 2 == 0){
+                v.setBackgroundColor(v.context.getColor(R.color.background_elements))
+            } else {
+                v.setBackgroundColor(v.context.getColor(R.color.white))
+            }
+        }
+
     }
 }

@@ -7,5 +7,9 @@
 
     <style name="StyleVentas.TituloGrilla" parent="StyleTitulosGrillas"/>
 
+    <style name="StyleVentas.GrillaLineaTicketTextViewRow" parent="StyleGrillaTextViewRow">
+        <item name="android:maxLines">2</item>
+        <item name="android:minWidth">40dp</item>
+    </style>
 
 </resources>

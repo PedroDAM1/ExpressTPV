@@ -2,6 +2,7 @@ package com.pedro.expresstpv.ui.view
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -41,7 +42,6 @@ class DetalleVentasActivity : AppCompatActivity() {
         subscribeFlow()
     }
 
-    @SuppressLint("SetTextI18n")
     private fun setListeners(){
         binding.etDateInicioDetalleVentas.setOnClickListener {
             datePickerDialogInicio.show()
@@ -49,20 +49,27 @@ class DetalleVentasActivity : AppCompatActivity() {
         binding.etDateFinDetalleVentas.setOnClickListener {
             datePickerDialogFin.show()
         }
-        datePickerDialogInicio.setOnDateSetListener { _, year, month, dayOfMonth ->
-            val mes = month+1
-            binding.etDateInicioDetalleVentas.setText("$dayOfMonth/$mes/$year")
+        datePickerDialogInicio.setOnDateSetListener(onClickDatePickerFechaInicio)
 
-            val newFecha = LocalDate.of(year, mes, dayOfMonth)
-            viewModel.updateFechas(newFecha, viewModel.getFechaFin())
-        }
-        datePickerDialogFin.setOnDateSetListener { _, year, month, dayOfMonth ->
-            val mes = month+1
-            binding.etDateFinDetalleVentas.setText("$dayOfMonth/$mes/$year")
+        datePickerDialogFin.setOnDateSetListener(onClickDatePickerFechaFin)
+    }
 
-            val newFecha = LocalDate.of(year, mes, dayOfMonth)
-            viewModel.updateFechas(viewModel.getFechaInicio(), newFecha)
-        }
+    @SuppressLint("SetTextI18n")
+    private val onClickDatePickerFechaInicio = OnDateSetListener{ _, year, month, dayOfMonth ->
+        val mes = month+1
+        binding.etDateInicioDetalleVentas.setText("$dayOfMonth/$mes/$year")
+
+        val newFecha = LocalDate.of(year, mes, dayOfMonth)
+        viewModel.updateFechas(newFecha, viewModel.getFechaFin())
+    }
+
+    @SuppressLint("SetTextI18n")
+    private val onClickDatePickerFechaFin = OnDateSetListener{ _, year, month, dayOfMonth ->
+        val mes = month+1
+        binding.etDateFinDetalleVentas.setText("$dayOfMonth/$mes/$year")
+
+        val newFecha = LocalDate.of(year, mes, dayOfMonth)
+        viewModel.updateFechas(viewModel.getFechaInicio(), newFecha)
     }
 
     private fun loadDatesDialogs(){

@@ -6,7 +6,7 @@
         <item name="colorPrimaryVariant">@color/orange</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/orange_tenue</item>
+        <item name="colorSecondary">@color/orange_tenue2</item>
         <item name="colorSecondaryVariant">@color/old_lace</item>
         <item name="colorOnSecondary">@color/gris_sepa</item>
         <!-- Status bar color. -->

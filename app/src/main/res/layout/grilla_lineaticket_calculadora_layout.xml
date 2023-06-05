@@ -10,53 +10,36 @@
         android:id="@+id/tvCantidadGrillaLineaTickets"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        style="@style/StyleVentas.GrillaLineaTicketTextViewRow"
         android:layout_weight="0.4"
-        android:textColor="@color/gris_sepa"
-        android:background="@drawable/item_grilla_columna_derecha"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:maxWidth="25dp"
-        android:maxLines="1"
-        android:text="TextView"
-        android:textSize="20sp" />
+        android:text="0"
+        />
 
     <TextView
         android:id="@+id/tvNombreGrillaLineaTickets"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:textColor="@color/gris_sepa"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:background="@drawable/item_grilla_columna_derecha"
+        style="@style/StyleVentas.GrillaLineaTicketTextViewRow"
         android:layout_weight="1"
-        android:gravity="center"
-        android:text="TextView"
-        android:textSize="20sp" />
+        android:text="Nombre"
+        />
 
     <TextView
         android:id="@+id/tvCategoriaGrillaLineaTickets"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        style="@style/StyleVentas.GrillaLineaTicketTextViewRow"
         android:layout_weight="1"
-        android:background="@drawable/item_grilla_columna_derecha"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:maxLines="1"
-        android:text="TextView"
-        android:textColor="@color/gris_sepa"
-        android:textSize="20sp" />
+        android:text="Categoria"
+        />
 
     <TextView
         android:id="@+id/tvTotalGrillaLineaTickets"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        style="@style/StyleVentas.GrillaLineaTicketTextViewRow"
         android:layout_weight="0.6"
-        android:background="@drawable/item_grilla_solo_bottom"
-        android:ellipsize="start"
         android:gravity="center|end"
-        android:maxLines="2"
-        android:minWidth="40dp"
         android:text="@string/precio_selector"
-        android:textColor="@color/gris_sepa"
-        android:textSize="20sp" />
+        />
 </LinearLayout>

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="48dp"
     app:cardCornerRadius="0dp"
     app:cardElevation="0dp"
     >
@@ -11,39 +11,38 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/separator_listas_activities"
-        >
+        android:background="@drawable/separator_listas_activities">
 
         <TextView
             android:id="@+id/tvNombreArticuloListaArticulos"
+            style="@style/StyleTextViews"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
             android:layout_marginBottom="10dp"
             android:gravity="center_vertical"
-            android:text="Categoria"
-            android:textColor="@color/textViewsColor"
-            android:textSize="18sp"
+            android:text="Articulo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tvPrecioListaArticulos"
+            app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toEndOf="@+id/cbListaArticulos"
-            app:layout_constraintTop_toTopOf="@+id/cbListaArticulos" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/tvPrecioListaArticulos"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="0dp"
+            app:layout_constraintHorizontal_weight="0.3"
             android:layout_marginTop="5dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="15dp"
             android:layout_marginBottom="5dp"
-            android:gravity="center"
-            android:textColor="@color/textViewsColor"
-            android:textSize="16sp"
-            android:visibility="visible"
+            style="@style/StyleTextViews"
+            android:gravity="end|center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvNombreArticuloListaArticulos"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/precio_selector" />
 
@@ -51,7 +50,7 @@
             android:id="@+id/cbListaArticulos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
