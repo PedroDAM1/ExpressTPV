@@ -19,7 +19,7 @@ class LineaTicketRepository @Inject constructor(
     private fun LineaTicket.toEntity() : LineaTicketEntity{
         return LineaTicketEntity(
             id = this.id,
-            numTicket = this.ticket.numTicket,
+            numTicket = this.ticket!!.numTicket,
             descripcion = this.descripcion,
             categoriaVenta = this.categoriaVenta,
             cantidad = this.cantidad,

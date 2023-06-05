@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="StyleDetalleVentas.TituloGrillas" parent="StyleTitulosGrillas"/>
+    <style name="StyleDetalleVentas.CardView" parent="StyleCardViews"/>
+
+    <style name="StyleDetalleVentas.tvFechas" parent="StyleTextViews">
+        <item name="android:background">@color/background_elements</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingStart">5dp</item>
+    </style>
+
+    <style name="StyleDetalleVentas.editTextFecha" parent="StyleDetalleVentas.editTextTotales">
+        <item name="android:hint">01/01/2023</item>
+        <item name="android:inputType">datetime</item>
+        <item name="android:gravity">start|center</item>
+    </style>
+
+    <style name="StyleDetalleVentas.editTextTotales" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/edit_text_fechas</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">false</item>
+        <item name="android:inputType">text</item>
+        <item name="android:textColor">@color/foreground_textviews</item>
+        <item name="android:gravity">end|center</item>
+    </style>
+
+</resources>

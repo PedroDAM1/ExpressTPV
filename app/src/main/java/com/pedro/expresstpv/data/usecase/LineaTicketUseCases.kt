@@ -35,7 +35,7 @@ class LineaTicketUseCases @Inject constructor(
             cantidad = 1,
             valorIva = articulo.tipoIva.porcentaje,
             subTotal = subtotal,
-            total = articulo.precio*cantidad
+            total = articulo.precio * cantidad
         )
 
         Log.d("CREAR LINEATICKET", "Se ha creado la lineaTicket: $lineaTicket")
@@ -45,31 +45,43 @@ class LineaTicketUseCases @Inject constructor(
     /**
      * Aumenta la cantidad indicada por parametro
      */
-    suspend fun aumentarCantidadLineaTicket(lineaTicket: LineaTicket, cantidad : Int){
-        val precioIndividual = (lineaTicket.total/lineaTicket.cantidad) //Obtenemos el precio individual de la linea
+    suspend fun aumentarCantidadLineaTicket(lineaTicket: LineaTicket, cantidad: Int) {
+        val precioIndividual =
+            (lineaTicket.total / lineaTicket.cantidad) //Obtenemos el precio individual de la linea
         lineaTicket.cantidad += cantidad //Aumentamos la cantidad que le pasemos por parametro
-        lineaTicket.total = (precioIndividual * lineaTicket.cantidad) // Actualizamos el total una vez que se haya aumentado la cantidad
+        lineaTicket.total =
+            (precioIndividual * lineaTicket.cantidad) // Actualizamos el total una vez que se haya aumentado la cantidad
         //TODO a implementar el subtotal de la linea
         lineaTicketRepository.update(lineaTicket)
     }
 
-    suspend fun reducirCantidadLineaTicket(lineaTicket: LineaTicket, cantidad: Int){
-        if (lineaTicket.cantidad == 1){
+    /**
+     * Reduce la cantidad de las lineatickets en funcion de la cantidad
+     */
+    suspend fun reducirCantidadLineaTicket(lineaTicket: LineaTicket, cantidad: Int) {
+        if (lineaTicket.cantidad <= cantidad) {
             // Si nos llega la ultima linea ticket deberemos de eliminar la row
-           this.delete(lineaTicket)
+            this.delete(lineaTicket)
         } else {
             aumentarCantidadLineaTicket(lineaTicket, -cantidad)
         }
     }
 
-    suspend fun getLineaTicketActivo() : List<LineaTicket> = withContext(Dispatchers.Default){
+    /**
+     * Obtiene la lista de lineatickets cuyo ticket sea 0
+     */
+    suspend fun getLineaTicketActivo(): List<LineaTicket> = withContext(Dispatchers.Default) {
         return@withContext lineaTicketRepository.getAll()
             .filter {
                 it.ticket == ticketUseCase.getTicketActivo()
             }
     }
 
-    fun getLineaTicketActivoFlow() : Flow<List<LineaTicket>>{
+    /**
+     * Obtiene todas las linea tickets cuyo ticket sea 0.
+     * Devuelve un flow
+     */
+    fun getLineaTicketActivoFlow(): Flow<List<LineaTicket>> {
         return lineaTicketRepository.getAllFlow()
             .map {
                 it.filter { it.ticket == ticketUseCase.getTicketActivo() }
@@ -77,26 +89,81 @@ class LineaTicketUseCases @Inject constructor(
             .flowOn(Dispatchers.Default)
     }
 
-    suspend fun eliminarTicketActivo(){
+    /**
+     * Elimina todas las lineatickets que tengan el ticket 0
+     */
+    suspend fun eliminarTicketActivo() {
         val listaActivo = getLineaTicketActivo()
         Log.d("LINEATICKET USECASE", "Eliminando lista: $listaActivo")
         deleteList(listaActivo)
     }
 
-    suspend fun getTotalFromLineaTicketsActivo() : Double{
-        return getLineaTicketActivo().sumOf {
-            it.total
-        }
-    }
+    /**
+     * Obtiene el total de sumar todas las lineatickets con el ticket 0
+     */
+    suspend fun getTotalFromLineaTicketsActivo() = getTotalFromLineaTickets(getLineaTicketActivo())
 
-    suspend fun updateLineaTicketsActivoToNewTicket(ticket: Ticket){
+    suspend fun getSubtotalFromLineaTicketActivo() = getSubtotalFromLineaTickets(getLineaTicketActivo())
+
+    fun getTotalFromLineaTickets(list : List<LineaTicket>) = list.sumOf { it.total }
+
+    fun getSubtotalFromLineaTickets(list : List<LineaTicket>) = list.sumOf { it.subTotal }
+
+    /**
+     * Actualiza todas las lineatickets con el ticket 0 al nuevo ticket pasado por parametro
+     */
+    suspend fun updateLineaTicketsActivoToNewTicket(ticket: Ticket) {
         val lista = getLineaTicketActivo()
         lista.forEach {
             it.ticket = ticket
         }
-//        ticket.total = getTotalFromLineaTicketsActivo()
         updateAll(lista)
-//        ticketUseCase.update(ticket)
     }
 
+    suspend fun getLineaTicketAcumuladosFromTickets(listaTickets: List<Ticket>) : List<LineaTicket> = withContext(Dispatchers.Default){
+        val lista : List<LineaTicket> = getAll()
+            .filter {linea ->
+                listaTickets.contains(linea.ticket)
+            }
+            .map {
+                it.copy(
+                    ticket = null
+                )
+            }
+
+        Log.d("LISTA DEVUELTA", lista.toString())
+
+        return@withContext acumularLineasTickets(lista)
+    }
+
+    fun getLineaTicketsAcumuladosFromTicketsFlow(listaTickets: List<Ticket>): Flow<List<LineaTicket>> {
+        return getAllFlow().map {
+            it.filter { linea ->
+                //Comprobamos si la lineaticket pertenece a alguno de los tickets que se han pasado
+                listaTickets.contains(linea.ticket)
+            }
+        }
+            .map {
+                acumularLineasTickets(it)
+            }
+            .flowOn(Dispatchers.Default)
+    }
+
+    suspend fun acumularLineasTickets(lista: List<LineaTicket>): List<LineaTicket> = withContext(Dispatchers.Default){
+        val grouped = lista.groupBy {
+            //Agrupamos cada lineaticket por los campos que lo definen
+            it.descripcion + it.categoriaVenta + it.valorIva
+        }.map { (_, lineas) ->
+            //Mapeamos las lineas haciendo que los campos de cantidad, subtotal y total se sumen en uno solo
+            /* De esta forma para una lineaticket cuya descripcion, categoria y iva sean iguales, sumaremos las cantidades y los totales */
+            lineas.reduce { acc, linea ->
+                acc.cantidad += linea.cantidad
+                acc.subTotal += linea.subTotal
+                acc.total += linea.total
+
+                acc
+            }
+        }
+        return@withContext grouped
+    }
 }

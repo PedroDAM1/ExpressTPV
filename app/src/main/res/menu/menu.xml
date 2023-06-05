@@ -13,4 +13,7 @@
     <item
         android:id="@+id/miHacerCierre"
         android:title="Hacer Cierre" />
+    <item
+        android:id="@+id/miDetalleVentas"
+        android:title="Detalle de Ventas" />
 </menu>

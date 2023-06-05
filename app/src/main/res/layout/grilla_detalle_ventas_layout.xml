@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutGrillaDetalleVentas"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="40dp"
+    >
+
+    <TextView
+        android:id="@+id/tvCantidadGrillaDetalleVentas"
+        style="@style/StyleGrillaTextViewRow"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.4"
+        android:text="0"
+        />
+
+    <TextView
+        android:id="@+id/tvNombreGrillaDetalleVentas"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        style="@style/StyleGrillaTextViewRow"
+        android:layout_weight="1"
+        android:text="Nombre"
+        />
+
+    <TextView
+        android:id="@+id/tvIvaGrillaDetalleVentas"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        style="@style/StyleGrillaTextViewRow"
+        android:layout_weight="0.4"
+        android:text="10%"
+        />
+
+    <TextView
+        android:id="@+id/tvTotalGrillaDetalleVentas"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.6"
+        style="@style/StyleGrillaTextViewRow"
+        android:gravity="end|center"
+        android:text="@string/precio_selector"
+        />
+</LinearLayout>

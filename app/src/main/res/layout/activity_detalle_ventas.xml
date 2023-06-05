@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/StyleLayoutsActivities"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/etDateFinDetalleVentas"
+        style="@style/StyleDetalleVentas.editTextFecha"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/etDateInicioDetalleVentas"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/etDateInicioDetalleVentas"
+        app:layout_constraintTop_toTopOf="@+id/etDateInicioDetalleVentas" />
+
+    <TextView
+        android:id="@+id/tvSubtituloDetalleVentas"
+        style="@style/StyleTextViewSubtitlesActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Detalle de Ventas"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etDateInicioDetalleVentas"
+        style="@style/StyleDetalleVentas.editTextFecha"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/etDateFinDetalleVentas"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSubtituloDetalleVentas" />
+
+
+    <TextView
+        style="@style/StyleDetalleVentas.tvFechas"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Fecha Inicio"
+        app:layout_constraintBottom_toTopOf="@+id/etDateInicioDetalleVentas"
+        app:layout_constraintEnd_toEndOf="@+id/etDateInicioDetalleVentas"
+        app:layout_constraintStart_toStartOf="@+id/etDateInicioDetalleVentas" />
+
+    <TextView
+        style="@style/StyleDetalleVentas.tvFechas"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Fecha Final"
+        app:layout_constraintBottom_toTopOf="@+id/etDateFinDetalleVentas"
+        app:layout_constraintEnd_toEndOf="@+id/etDateFinDetalleVentas"
+        app:layout_constraintStart_toStartOf="@+id/etDateFinDetalleVentas" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvListaArticulosDetalleVentas"
+        style="@style/StyleDetalleVentas.CardView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@id/etSubTotalDetalleVentas"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etDateInicioDetalleVentas">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvListaArticulosDetalleVentas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/cvListaArticulosDetalleVentas"
+        app:layout_constraintEnd_toEndOf="@+id/cvListaArticulosDetalleVentas"
+        app:layout_constraintStart_toStartOf="@+id/cvListaArticulosDetalleVentas">
+
+        <TextView
+            style="@style/StyleDetalleVentas.TituloGrillas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:text="CANT" />
+
+        <TextView
+            style="@style/StyleDetalleVentas.TituloGrillas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="DESCRIPCIÓN" />
+
+        <TextView
+            style="@style/StyleDetalleVentas.TituloGrillas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:gravity="center"
+            android:text="IVA" />
+
+        <TextView
+            style="@style/StyleDetalleVentas.TituloGrillas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:text="TOTAL" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/etSubTotalDetalleVentas"
+        style="@style/StyleDetalleVentas.editTextTotales"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="25dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="0.00€"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/etTotalDetalleVentas"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cvListaArticulosDetalleVentas"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <EditText
+        android:id="@+id/etTotalDetalleVentas"
+        style="@style/StyleDetalleVentas.editTextTotales"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:ems="10"
+        android:hint=" "
+        android:inputType="textPersonName"
+        android:text="0.00€"
+        app:layout_constraintBottom_toBottomOf="@id/etSubTotalDetalleVentas"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/etSubTotalDetalleVentas"
+        app:layout_constraintTop_toTopOf="@id/etSubTotalDetalleVentas" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="SUBTOTAL"
+        style="@style/StyleDetalleVentas.tvFechas"
+        app:layout_constraintBottom_toTopOf="@id/etSubTotalDetalleVentas"
+        app:layout_constraintStart_toStartOf="@id/etSubTotalDetalleVentas"
+        app:layout_constraintEnd_toEndOf="@id/etSubTotalDetalleVentas"
+        />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="TOTAL"
+        style="@style/StyleDetalleVentas.tvFechas"
+        app:layout_constraintBottom_toTopOf="@id/etTotalDetalleVentas"
+        app:layout_constraintStart_toStartOf="@id/etTotalDetalleVentas"
+        app:layout_constraintEnd_toEndOf="@id/etTotalDetalleVentas"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,7 +19,6 @@ import com.pedro.expresstpv.ui.adapters.GrillaLIneaTicketsListAdapter
 import com.pedro.expresstpv.ui.adapters.VentasCalculadoraListAdapter
 import com.pedro.expresstpv.ui.viewmodel.VentasViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -71,6 +70,9 @@ class VentasActivity() : AppCompatActivity() {
 
             R.id.miHacerCierre -> {
                 startActivity(Intent(this, CierresActivity::class.java))
+            }
+            R.id.miDetalleVentas -> {
+                startActivity(Intent(this, DetalleVentasActivity::class.java))
             }
         }
 

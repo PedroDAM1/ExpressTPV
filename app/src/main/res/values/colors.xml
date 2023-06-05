@@ -29,6 +29,7 @@
     <color name="background_layout_cardviewButtons">@color/old_lace</color>
     <color name="background_elements">@color/orange_tenue</color>
     <color name="background_recyclers">@color/piel_casiblanco</color>
+    <color name="background_edit_text">@color/piel_casiblanco</color>
     <color name="background_activities">@color/buttons_color</color>
     <color name="background_subtitulos">@color/gris_sepa</color>
 

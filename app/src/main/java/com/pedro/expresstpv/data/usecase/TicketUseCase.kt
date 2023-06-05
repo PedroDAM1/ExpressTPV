@@ -6,10 +6,10 @@ import com.pedro.expresstpv.domain.model.MetodoPago
 import com.pedro.expresstpv.domain.model.Ticket
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import java.time.LocalDateTime
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -100,5 +100,23 @@ class TicketUseCase @Inject constructor(
         updateAll(lista)
 
     }
+
+    suspend fun getTicketBetweenFechas(fechaInicio : LocalDateTime, fechaFin : LocalDateTime) : List<Ticket> = withContext(Dispatchers.Default){
+        val lista = this@TicketUseCase.getAll()
+            .filter {
+                //Devolveremos la lista de tickets cuya fecha este entre la fecha de inicio y la fecha de fin
+                //Si la fecha trae valores nulos, no devolveremos ese ticket
+                return@filter fechaInicio.isBefore(it.fecha) && fechaFin.isAfter(it.fecha)
+            }
+        return@withContext lista
+    }
+
+    fun getTicketBetweenFechasFlow(fechaInicio : LocalDateTime, fechaFin : LocalDateTime) =
+        this.getAllFlow().map {
+            it.filter { ticket ->
+                ticket.fecha?.isAfter(fechaInicio) ?: false && ticket.fecha?.isBefore(fechaFin) ?: false
+            }
+        }
+            .flowOn(Dispatchers.Default)
 
 }
