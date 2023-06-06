@@ -86,6 +86,9 @@ class Functions {
             return state
         }
 
+        /**
+         * Forma resumida de mostrar un AlertDialog con solo un boton de aceptar
+         */
         fun mostrarMensajeError(context : Context, titulo : String, mensaje : String){
             Log.d("EXCEPCION", mensaje)
             AlertDialog.Builder(context)
@@ -95,11 +98,20 @@ class Functions {
                 .create()
                 .show()
         }
+
+        /**
+         * La funcion se encargara de pintar de forma "coja" cualquier grilla que la use, es decir
+         * la idea de esta funcion es que una row se pinte de blanco y la siguiente se pinte de otro color
+         * para diferenciarlas mejor
+         * @param pos Como esta pensado para los adapters de los recyclers, deberemos de pasar la posicion del recycler en el que estamos
+         * actualmente
+         * @param v Sera la vista (normalemente el layout) que deberemos de repintar
+         */
         fun pintarBackgroundSegunLineaGrilla(pos : Int, v: View){
             if (pos % 2 == 0){
-                v.setBackgroundColor(v.context.getColor(R.color.background_elements))
-            } else {
                 v.setBackgroundColor(v.context.getColor(R.color.white))
+            } else {
+                v.setBackgroundColor(v.context.getColor(R.color.background_elements))
             }
         }
 

@@ -10,5 +10,6 @@ class TipoIvaUseCase @Inject constructor(
     private val tipoIvaRepository: TipoIvaRepository
 ) : BaseUseCase<TipoIva>(tipoIvaRepository) {
 
+    fun getAllFlowWithId0() = tipoIvaRepository.getAllFlow()
 
 }

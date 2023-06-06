@@ -46,10 +46,17 @@ class ListaArticulosActivity : AppCompatActivity() {
 
     private fun setRecycler(){
         val layoutManager = LinearLayoutManager(this)
-        adapter = ListaArticulosAdapter()
+        adapter = ListaArticulosAdapter{ onItemClickListener(it) }
 
         binding.rvListaArticulos.layoutManager = layoutManager
         binding.rvListaArticulos.adapter = adapter
+    }
+
+    private fun onItemClickListener(id : Int){
+        val i = Intent(this, ArticuloEditorActivity::class.java).apply {
+            putExtra("ID", id)
+        }
+        startActivity(i)
     }
 
     private fun enlazarFlow(){
@@ -87,7 +94,6 @@ class ListaArticulosActivity : AppCompatActivity() {
         }
             .flowOn(Dispatchers.Main)
         .collect{
-            Log.d("ADAPTER", "Actualizando el adapter del ListArticulo")
             adapter.submitList(it)
         }
     }

@@ -12,7 +12,7 @@ import com.pedro.expresstpv.databinding.ListaArticulosLayoutBinding
 import com.pedro.expresstpv.domain.model.Articulo
 
 
-class ListaArticulosAdapter :
+class ListaArticulosAdapter (private val onItemClickListener : (Int) -> Unit) :
     ListAdapter<Articulo, ListaArticulosAdapter.ListaArticulosViewHodel>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListaArticulosViewHodel {
@@ -22,6 +22,9 @@ class ListaArticulosAdapter :
 
     override fun onBindViewHolder(holder: ListaArticulosViewHodel, position: Int) {
         holder.bind(getItem(position))
+        holder.itemView.setOnClickListener {
+            onItemClickListener(getItem(position).id)
+        }
     }
 
     companion object {

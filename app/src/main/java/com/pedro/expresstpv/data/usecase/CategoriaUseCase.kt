@@ -10,6 +10,7 @@ class CategoriaUseCase @Inject constructor(
     private val categoriaRepository: CategoriaRepository
 ) : BaseUseCase<Categoria>(categoriaRepository) {
 
+    fun getAllFlowWithId0() = categoriaRepository.getAllFlow()
 
     suspend fun insertCategoria(nombre : String, color : String){
         val categoria = Categoria(nombre = nombre, color = color)

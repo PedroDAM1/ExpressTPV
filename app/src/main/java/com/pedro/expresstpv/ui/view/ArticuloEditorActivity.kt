@@ -1,22 +1,22 @@
 package com.pedro.expresstpv.ui.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.pedro.expresstpv.R
 import com.pedro.expresstpv.databinding.ActivityArticuloEditorBinding
 import com.pedro.expresstpv.domain.model.Categoria
 import com.pedro.expresstpv.domain.model.TipoIva
 import com.pedro.expresstpv.ui.viewmodel.ArticuloEditorViewModel
-import com.pedro.expresstpv.ui.viewmodel.UIState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -39,8 +39,22 @@ class ArticuloEditorActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityArticuloEditorBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        loadData()
         setListeners()
-        cargarDatosSpinner()
+    }
+
+    private fun loadData(){
+        lifecycleScope.launch {
+            cargarDatosSpinner()
+            val id = intent.getIntExtra("ID", 0)
+            if (id != 0){
+                val articulo = viewModel.getArticuloById(id) ?: return@launch
+                binding.etNombreArticuloEditor.setText(articulo.nombre)
+                binding.etPrecioArticuloEditor.setText("${articulo.precio}")
+                binding.spCategoriaArticuloEditor.setSelection(articulo.categoria.id)
+                binding.spTipoIvaArticuloEditor.setSelection(articulo.tipoIva.id)
+            }
+        }
     }
 
     /**
@@ -48,6 +62,7 @@ class ArticuloEditorActivity : AppCompatActivity() {
      */
     private fun setListeners(){
         binding.btnAceptarArticuloEditor.setOnClickListener {
+            if (!validarDatos()) return@setOnClickListener
             recuperarDatos()
             enviarDatos()
             finish()
@@ -61,6 +76,9 @@ class ArticuloEditorActivity : AppCompatActivity() {
      * Antes de convertir ningun tipo de datos vamos a pasar las validaciones difentes
      */
     private fun validarDatos() : Boolean{
+        binding.tvErrorSpCategoriaArticuloEditor.visibility = View.INVISIBLE
+        binding.tvErrorSpTipoIvaArticuloEditor.visibility = View.INVISIBLE
+
         var isValido = true
         if (binding.etNombreArticuloEditor.text.toString().isEmpty()){
             binding.etNombreArticuloEditor.error = "Debes rellenar este campo"
@@ -71,12 +89,22 @@ class ArticuloEditorActivity : AppCompatActivity() {
             isValido = false
         }
 
+        // Si la categoria es la predefinida, no dejaremos crearlo
+        if(binding.spCategoriaArticuloEditor.selectedItemPosition == 0){
+            binding.tvErrorSpCategoriaArticuloEditor.visibility = View.VISIBLE
+            isValido = false
+        }
+
+        // Si el tipo de iva es el predefinido, no dejaremos crearlo
+        if (binding.spTipoIvaArticuloEditor.selectedItemPosition == 0){
+            binding.tvErrorSpTipoIvaArticuloEditor.visibility = View.VISIBLE
+            isValido = false
+        }
+
         return isValido
     }
 
     private fun recuperarDatos(){
-        if (!validarDatos()) return
-
         try {
             nombre = binding.etNombreArticuloEditor.text.toString().trim()
             precio = binding.etPrecioArticuloEditor.text.toString().toDouble()
@@ -86,7 +114,6 @@ class ArticuloEditorActivity : AppCompatActivity() {
             //Obtenemos los datos de los spinners
             categoria = binding.spCategoriaArticuloEditor.selectedItem as Categoria
             tipoIva = binding.spTipoIvaArticuloEditor.selectedItem as TipoIva
-
         } catch (e : java.lang.NumberFormatException){
             Log.d("EXCEPCION", "Error al tratar de convertir un string en double en el activity de editor de articulos: ${e.message}")
         }
@@ -102,18 +129,19 @@ class ArticuloEditorActivity : AppCompatActivity() {
      * para mostrarlo aqui correctamente sin necesidad de obtener los nombres, directamente sobreescribi el toString de cada clase para que
      * solo me proporcionara el nombre
      */
-    private fun cargarDatosSpinner(){
-        lifecycleScope.launch (Dispatchers.Main){
-            viewModel.getListaCategorias()
-                .collect{
-                    binding.spCategoriaArticuloEditor.adapter = ArrayAdapter(this@ArticuloEditorActivity, R.layout.elemento_spinner_textview, it)
-                }
-        }
-        lifecycleScope.launch (Dispatchers.Main) {
-            viewModel.getListaTipoIva()
-                .collect{
-                    binding.spTipoIvaArticuloEditor.adapter = ArrayAdapter(this@ArticuloEditorActivity, R.layout.elemento_spinner_textview, it)
-                }
-        }
+    private suspend fun cargarDatosSpinner() = withContext(Dispatchers.Main){
+//            viewModel.getListaCategorias()
+//                .collect{
+//                    binding.spCategoriaArticuloEditor.adapter = ArrayAdapter(this@ArticuloEditorActivity, R.layout.elemento_spinner_textview, it)
+//                }
+        val listaCategorias = viewModel.getListaCategorias().first()
+        binding.spCategoriaArticuloEditor.adapter = ArrayAdapter(this@ArticuloEditorActivity, R.layout.elemento_spinner_textview, listaCategorias)
+
+//            viewModel.getListaTipoIva()
+//                .collect{
+//                    binding.spTipoIvaArticuloEditor.adapter = ArrayAdapter(this@ArticuloEditorActivity, R.layout.elemento_spinner_textview, it)
+//                }
+        val listaTipoIva = viewModel.getListaTipoIva().first()
+        binding.spTipoIvaArticuloEditor.adapter = ArrayAdapter(this@ArticuloEditorActivity, R.layout.elemento_spinner_textview, listaTipoIva)
     }
 }
