@@ -33,5 +33,10 @@ class ArticulosUseCase @Inject constructor(
         articuloRepository.insert(articulo)
     }
 
+    suspend fun updateArticulo(id: Int, nombre : String, precio : Double, categoria: Categoria, tipoIva: TipoIva){
+        val articulo = Articulo(id = id, nombre = nombre, precio = precio, categoria = categoria, tipoIva = tipoIva)
+        articuloRepository.update(articulo)
+    }
+
 
 }

@@ -13,6 +13,8 @@ interface IBaseRepository <Domain> {
 
     suspend fun insertAll(list: List<Domain>)
 
+    suspend fun insertOrUpdate(domain: Domain)
+
     suspend fun update(domain: Domain)
 
     suspend fun updateAll(list: List<Domain>)

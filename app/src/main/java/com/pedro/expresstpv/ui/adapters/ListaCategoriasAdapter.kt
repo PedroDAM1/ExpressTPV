@@ -1,6 +1,5 @@
 package com.pedro.expresstpv.ui.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,9 @@ import com.pedro.expresstpv.databinding.ListaCategoriaLayoutBinding
 import com.pedro.expresstpv.domain.functions.Functions
 import com.pedro.expresstpv.domain.model.Categoria
 
-class ListaCategoriasAdapter
+class ListaCategoriasAdapter (
+    private val onItemClick : (Categoria) -> Unit
+        )
     : ListAdapter<Categoria, ListaCategoriasAdapter.ListaCategoriasViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(
@@ -28,6 +29,9 @@ class ListaCategoriasAdapter
         position: Int
     ) {
         holder.bind(getItem(position))
+        holder.itemView.setOnClickListener {
+            onItemClick(getItem(position))
+        }
     }
 
     companion object {

@@ -2,6 +2,7 @@ package com.pedro.expresstpv.data.database.dao
 
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
@@ -11,6 +12,9 @@ interface IBaseDao<Entity> {
 
     @Insert
     suspend fun insert(entity: Entity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOrUpdate(entity: Entity)
 
     @Insert
     suspend fun insertAll(list: List<Entity>)

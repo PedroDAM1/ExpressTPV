@@ -29,9 +29,14 @@ class ArticuloEditorViewModel @Inject constructor(
     fun getListaTipoIva() = tipoIvaUseCase.getAllFlowWithId0()
 
     suspend fun getArticuloById(id : Int) = articulosUseCase.getById(id)
-    fun guardarArticulo(nombre : String, precio : Double, categoria : Categoria, tipoIva : TipoIva){
+    fun guardarArticulo(id : Int, nombre : String, precio : Double, categoria : Categoria, tipoIva : TipoIva){
         viewModelScope.launch (Dispatchers.IO) {
-            articulosUseCase.insertArticulo(nombre, precio, categoria, tipoIva)
+            //Si nos llega un id 0 es por que estamos creando una nueva categoria
+            if (id == 0){
+                articulosUseCase.insertArticulo(nombre, precio, categoria, tipoIva)
+            } else {
+                articulosUseCase.updateArticulo(id, nombre, precio, categoria, tipoIva)
+            }
         }
     }
 

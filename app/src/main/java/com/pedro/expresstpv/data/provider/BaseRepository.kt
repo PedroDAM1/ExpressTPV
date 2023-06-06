@@ -1,6 +1,5 @@
 package com.pedro.expresstpv.data.provider
 
-import android.util.Log
 import com.pedro.expresstpv.data.database.dao.IBaseDao
 import com.pedro.expresstpv.data.database.entities.IBaseEntity
 import com.pedro.expresstpv.domain.model.IBaseModel
@@ -30,22 +29,24 @@ abstract class BaseRepository <Domain: IBaseModel, Entity : IBaseEntity> (
 
 
     protected open suspend fun loadCache(list: List<Entity>){
+        //Al usar copias evitamos tener el concurrent Exception que salta a veces en la aplicacion
         val mapEntityCopy = mapEntity.toMap()
+        val listCopy = list.toList()
         //Recorreremos la lista que nos llegue de la base de datos
-        list.forEach {
-            val entry = mapEntity[it.id]
+        listCopy.forEach {
+            val entry = mapEntityCopy[it.id]
             if (entry == null || entry != it){
                 mapEntity[it.id] = it
                 mapTempEntity[it.id] = it
             }
         }
         //Si por lo que sea la lista nos devuelve vacia deberemos de limpiar todos los mapas
-        if (list.isEmpty()){
+        if (listCopy.isEmpty()){
             clearMaps()
         }
         //Si el diccionario tiene elementos que no se encuentran en la lista, entonces deberemos de eliminar esos articulos concretos
-        val filtrado = mapEntity.values.toList().filterNot {map ->
-            list.contains(map)
+        val filtrado = mapEntityCopy.values.toList().filterNot {map ->
+            listCopy.contains(map)
         }
         filtrado.forEach {
             mapEntity.remove(it.id)
@@ -97,6 +98,10 @@ abstract class BaseRepository <Domain: IBaseModel, Entity : IBaseEntity> (
 
     override suspend fun insertAll(list: List<Domain>) {
         dao.insertAll(list.map { toEntity(it) })
+    }
+
+    override suspend fun insertOrUpdate(domain: Domain) {
+        dao.insertOrUpdate(toEntity(domain))
     }
 
     override suspend fun update(domain: Domain) {

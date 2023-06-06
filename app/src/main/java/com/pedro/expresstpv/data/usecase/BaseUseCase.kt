@@ -38,6 +38,10 @@ abstract class BaseUseCase <Domain : IBaseModel> (private val repositoryBase: IB
         repositoryBase.insertAll(list)
     }
 
+    suspend fun insertOrUpdate(domain: Domain){
+        repositoryBase.insertOrUpdate(domain)
+    }
+
     suspend fun update(domain: Domain){
         repositoryBase.update(domain)
     }

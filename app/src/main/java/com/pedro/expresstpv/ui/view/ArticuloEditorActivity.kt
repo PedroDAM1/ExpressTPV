@@ -27,6 +27,7 @@ class ArticuloEditorActivity : AppCompatActivity() {
     private lateinit var binding : ActivityArticuloEditorBinding
 
     //Atributos
+    private var id = 0
     private var nombre = ""
     private var precio = 0.0
     private var categoria: Categoria? = null
@@ -46,7 +47,7 @@ class ArticuloEditorActivity : AppCompatActivity() {
     private fun loadData(){
         lifecycleScope.launch {
             cargarDatosSpinner()
-            val id = intent.getIntExtra("ID", 0)
+            id = intent.getIntExtra("ID", 0)
             if (id != 0){
                 val articulo = viewModel.getArticuloById(id) ?: return@launch
                 binding.etNombreArticuloEditor.setText(articulo.nombre)
@@ -121,7 +122,7 @@ class ArticuloEditorActivity : AppCompatActivity() {
 
 
     private fun enviarDatos(){
-        viewModel.guardarArticulo(nombre, precio, categoria!!, tipoIva!!)
+        viewModel.guardarArticulo(id, nombre, precio, categoria!!, tipoIva!!)
     }
     /**
      * Obtendremos los datos del viewModel y los cargaremos en el spinner.

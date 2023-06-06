@@ -16,7 +16,11 @@ class CategoriaUseCase @Inject constructor(
         val categoria = Categoria(nombre = nombre, color = color)
 
         categoriaRepository.insert(categoria)
+    }
 
+    suspend fun updateCategoria(id: Int, nombre : String, color : String){
+        val cat = Categoria(id, nombre, color)
+        categoriaRepository.update(cat)
     }
 
 }

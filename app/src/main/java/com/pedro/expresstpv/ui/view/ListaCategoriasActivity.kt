@@ -82,10 +82,17 @@ class ListaCategoriasActivity : AppCompatActivity() {
 
     private fun cargarRecycler(){
         val layoutManager = LinearLayoutManager(this)
-        adapter = ListaCategoriasAdapter()
+        adapter = ListaCategoriasAdapter { onItemClickListener(it) }
 
         binding.rvListaCategorias.layoutManager = layoutManager
         binding.rvListaCategorias.adapter = adapter
+    }
+
+    private fun onItemClickListener(cat : Categoria){
+        val i = Intent(this, CategoriaEditorActivity::class.java).apply {
+            putExtra("CATEGORIA", cat)
+        }
+        startActivity(i)
     }
 
     private suspend fun subscribeToFlow(flow : Flow<List<Categoria>>){
