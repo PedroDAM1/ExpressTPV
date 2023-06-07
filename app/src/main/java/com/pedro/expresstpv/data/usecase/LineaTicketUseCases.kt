@@ -17,7 +17,6 @@ class LineaTicketUseCases @Inject constructor(
     private val ticketUseCase: TicketUseCase
 ) : BaseUseCase<LineaTicket>(lineaTicketRepository) {
 
-
     /**
      * Crearemos una nueva LineaTicket con la cantidad iniciada en 1
      */
@@ -32,27 +31,49 @@ class LineaTicketUseCases @Inject constructor(
             ticket = ticket,
             descripcion = articulo.nombre,
             categoriaVenta = articulo.categoria.nombre,
-            cantidad = 1,
+            cantidad = cantidad,
             valorIva = articulo.tipoIva.porcentaje,
             subTotal = subtotal,
             total = articulo.precio * cantidad
         )
 
-        Log.d("CREAR LINEATICKET", "Se ha creado la lineaTicket: $lineaTicket")
-        lineaTicketRepository.insert(lineaTicket)
+        this.insert(lineaTicket)
+    }
+
+    suspend fun crearLineaTicketActivo(articulo: Articulo){
+        val linea = getLineaTicketWhenFeaturesActivo(articulo.nombre, articulo.categoria.nombre, articulo.tipoIva.porcentaje)
+        //Si la liena existe, debemos actualizarla
+        if (linea != null){
+            aumentarCantidadLineaTicket(linea, 1)
+        } else {
+            crearLineaTicket(articulo)
+        }
+    }
+
+    suspend fun getLineaTicketWhenFeaturesActivo(descripcion : String, categoriaVenta : String, valorIva : Double) : LineaTicket?{
+        return getLineaTicketWhenFeatures(descripcion, categoriaVenta, valorIva, ticketUseCase.getTicketActivo())
+    }
+
+    suspend fun getLineaTicketWhenFeatures(descripcion : String, categoriaVenta : String, valorIva : Double, ticket : Ticket) : LineaTicket?{
+        return this.getAll()
+            .firstOrNull {
+                it.descripcion == descripcion &&
+                it.categoriaVenta == categoriaVenta &&
+                it.valorIva == valorIva &&
+                it.ticket == ticket
+            }
     }
 
     /**
      * Aumenta la cantidad indicada por parametro
      */
     suspend fun aumentarCantidadLineaTicket(lineaTicket: LineaTicket, cantidad: Int) {
-        val precioIndividual =
-            (lineaTicket.total / lineaTicket.cantidad) //Obtenemos el precio individual de la linea
-        lineaTicket.cantidad += cantidad //Aumentamos la cantidad que le pasemos por parametro
-        lineaTicket.total =
-            (precioIndividual * lineaTicket.cantidad) // Actualizamos el total una vez que se haya aumentado la cantidad
+        val copyLineaTicket = lineaTicket.copy()
+        val precioIndividual = (copyLineaTicket.total / copyLineaTicket.cantidad) //Obtenemos el precio individual de la linea
+        copyLineaTicket.cantidad += cantidad //Aumentamos la cantidad que le pasemos por parametro
+        copyLineaTicket.total = (precioIndividual * copyLineaTicket.cantidad) // Actualizamos el total una vez que se haya aumentado la cantidad
         //TODO a implementar el subtotal de la linea
-        lineaTicketRepository.update(lineaTicket)
+        this.update(copyLineaTicket)
     }
 
     /**
@@ -71,9 +92,10 @@ class LineaTicketUseCases @Inject constructor(
      * Obtiene la lista de lineatickets cuyo ticket sea 0
      */
     suspend fun getLineaTicketActivo(): List<LineaTicket> = withContext(Dispatchers.Default) {
+        val ticketActivo = ticketUseCase.getTicketActivo()
         return@withContext lineaTicketRepository.getAll()
             .filter {
-                it.ticket == ticketUseCase.getTicketActivo()
+                it.ticket == ticketActivo
             }
     }
 
@@ -113,10 +135,12 @@ class LineaTicketUseCases @Inject constructor(
      * Actualiza todas las lineatickets con el ticket 0 al nuevo ticket pasado por parametro
      */
     suspend fun updateLineaTicketsActivoToNewTicket(ticket: Ticket) {
-        val lista = getLineaTicketActivo()
-        lista.forEach {
-            it.ticket = ticket
-        }
+        val lista = this.getLineaTicketActivo()
+            .map {
+                it.copy(
+                    ticket = ticket
+                )
+            }
         updateAll(lista)
     }
 

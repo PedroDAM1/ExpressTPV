@@ -33,7 +33,7 @@ class TicketUseCase @Inject constructor(
             total = total
         )
 
-        ticketRepository.insert(ticket)
+        this@TicketUseCase.insert(ticket)
 
         return@withContext getByNumTicket(newNumTicket)!!
     }
@@ -69,7 +69,8 @@ class TicketUseCase @Inject constructor(
     }
 
     suspend fun getTicketActivo() : Ticket = withContext(Dispatchers.IO) {
-        return@withContext getByNumTicket(0)!!
+//        return@withContext getByNumTicket(0)!!
+        return@withContext getById(0)!!
     }
 
     /**

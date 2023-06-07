@@ -47,7 +47,7 @@ class LineaTicketRepository @Inject constructor(
             total = entity.total
         )
 
-        Log.d("GET LINEATICKET", "Se esta mapeando la linea ticket: $lineaTicket")
+//        Log.d("GET LINEATICKET", "Se esta mapeando la linea ticket: $lineaTicket")
 
         return lineaTicket
     }

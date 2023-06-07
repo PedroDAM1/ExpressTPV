@@ -1,7 +1,6 @@
 package com.pedro.expresstpv.ui.adapters
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,7 +37,7 @@ class GrillaLIneaTicketsListAdapter (
         // Hacer click notificaremos al viewmodel para que actualice los botones para añadir y eliminar
         holder.itemView.setOnClickListener {
             // Si selectedItem no tiene valor le asignamos el valor correspondiente
-            selectedItem = if(selectedItem != item || selectedItem==null){
+            selectedItem = if(selectedItem != item){
                 item
             // Si selectedItem tiene un valor, y clicamos de nuevo, es para desmarcarlo
             } else {
@@ -50,15 +49,14 @@ class GrillaLIneaTicketsListAdapter (
         }
     }
 
+
     companion object {
         private val DiffCallback = object : DiffUtil.ItemCallback<LineaTicket>() {
             override fun areItemsTheSame(oldItem: LineaTicket, newItem: LineaTicket): Boolean {
-                Log.d("ADAPTER", "Comprobando las diferencias entre la id ${oldItem.id} y la id ${newItem.id} ")
                 return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(oldItem: LineaTicket, newItem: LineaTicket): Boolean {
-                Log.d("ADAPTER", "Comparando los objetos $oldItem y $newItem")
                 return oldItem == newItem
             }
         }

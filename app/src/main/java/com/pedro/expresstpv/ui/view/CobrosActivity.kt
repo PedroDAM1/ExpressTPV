@@ -65,11 +65,18 @@ class CobrosActivity : AppCompatActivity() {
             .setMessage("¿Desea pagar el ticket usando ${metodoPago.nombre.lowercase()}?")
             .setNegativeButton("Cancelar", null)
             .setPositiveButton("Aceptar") { _, _ ->
-                viewModel.crearTicket(metodoPago)
-                finish()
+                crearTicket(metodoPago)
             }
             .create()
             .show()
+    }
+
+    private fun crearTicket(metodoPago: MetodoPago){
+        lifecycleScope.launch {
+            viewModel.crearTicket(metodoPago)
+            finish()
+        }
+
     }
 
     private fun setListeners() {
@@ -113,38 +120,6 @@ class CobrosActivity : AppCompatActivity() {
     }
 
     private val onAddClickListener = OnClickListener {
-//        try{
-//            val decimalFormat = DecimalFormat("0.00")
-//
-//            if (modoBilletes){
-//                totalEntrega = 0.00
-//            }
-//            validarSizeEntrega()
-//
-//            //Comprobaremos si la entrega estaba alterada por los billetes o no
-//            val content = it.contentDescription
-//
-//            var strTotal = decimalFormat.format(totalEntrega)
-//            val substr = strTotal.split(",")
-//
-//            var parteEntera = substr[0]
-//            var parteDecimal = substr[1]
-//            //Comprobaremos si estamos en la comma o no
-//
-//            if (!modoDecimal){
-//                parteEntera+=content
-//            } else {
-//                parteDecimal += content
-//            }
-//            strTotal = "$parteEntera.$parteDecimal"
-//
-//            totalEntrega = decimalFormat.parse(strTotal)?.toDouble() ?: 0.00
-//            modoBilletes = false
-//            updateViewsTotales()
-//        } catch (e : java.lang.NumberFormatException){
-//            Log.d("ERROR", "Error al parsear en la pantalla de cobros: ${e.message}")
-//        }
-
         if (modoBilletes) {
             totalEntrega = 0.0
         }
@@ -160,7 +135,6 @@ class CobrosActivity : AppCompatActivity() {
             totalEntrega = temp + parteDecimal
         }
         updateDecimalPart(parsedValue)
-
 
         modoBilletes = false
         updateViewsTotales()

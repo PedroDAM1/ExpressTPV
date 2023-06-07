@@ -8,7 +8,9 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pedro.expresstpv.R
@@ -19,8 +21,10 @@ import com.pedro.expresstpv.ui.adapters.GrillaLIneaTicketsListAdapter
 import com.pedro.expresstpv.ui.adapters.VentasCalculadoraListAdapter
 import com.pedro.expresstpv.ui.viewmodel.VentasViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class VentasActivity() : AppCompatActivity() {
@@ -157,39 +161,44 @@ class VentasActivity() : AppCompatActivity() {
                         "Error",
                         "Hubo un error al cargar los datos: ${it.message}")
                 }
-                .collect{
-                    adapterVentas.submitList(it)
+                .collectLatest{
+                    val list = it.toList()
+                    adapterVentas.submitList(list)
                 }
+
+
         }
 
-        lifecycleScope.launch {
+        lifecycleScope.launch (Dispatchers.IO) {
             ventasViewModel.getLineaTicketActivo()
                 .catch {
-                    Log.d("LINEA TICKET ACTIVO", "Excepcion al subscribirnos al flow en ventas viewmodel: ${it.stackTrace}")
+                    Log.d(
+                        "LINEA TICKET ACTIVO",
+                        "Excepcion al subscribirnos al flow en ventas viewmodel: ${it.stackTrace}"
+                    )
                     Functions.mostrarMensajeError(
                         this@VentasActivity,
                         "Error",
                         "Hubo un error al cargar las lineas de tickets: $it"
                     )
                 }
-                .collect{
-                    //Actualizamos la grilla de lineas tickets
-                    adapterGrillaLineaTickets.submitList(it)
-
-                    actualizarTotal()
-
-                    //Habilitar o deshabilitar el boton de borrado
-                    checkearBotonesLineasTickets(it)
+                .collectLatest{
+                    withContext(Dispatchers.Main) {
+                        val list = it.toList()
+                        //Actualizamos la grilla de lineas tickets
+                        adapterGrillaLineaTickets.submitList(list)
+                        actualizarTotal()
+                        //Habilitar o deshabilitar el boton de borrado
+                        checkearBotonesLineasTickets(list)
+                    }
                 }
         }
     }
 
-    private fun actualizarTotal(){
-        lifecycleScope.launch {
-            //Marcamos el total en el textView
-            val total = ventasViewModel.getTotalesTicket()
-            binding.tvTotal.text = getString(R.string.precio_selector).format(total)
-        }
+    private suspend fun actualizarTotal(){
+        //Marcamos el  total en el textView
+        val total = ventasViewModel.getTotalesTicket()
+        binding.tvTotal.text = getString(R.string.precio_selector).format(total)
     }
 
     private fun onLineaTicketItemClick(lineaTicket: LineaTicket?){

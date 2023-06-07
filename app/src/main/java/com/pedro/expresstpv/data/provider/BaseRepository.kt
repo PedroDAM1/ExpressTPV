@@ -3,6 +3,7 @@ package com.pedro.expresstpv.data.provider
 import com.pedro.expresstpv.data.database.dao.IBaseDao
 import com.pedro.expresstpv.data.database.entities.IBaseEntity
 import com.pedro.expresstpv.domain.model.IBaseModel
+import com.pedro.expresstpv.domain.model.LineaTicket
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
@@ -20,6 +21,7 @@ abstract class BaseRepository <Domain: IBaseModel, Entity : IBaseEntity> (
     private val domainFlow : Flow<List<Domain>> = entityFlow
         .onEach {
             loadCache(it)
+
         }
         .map {
             mapDomain()
@@ -30,23 +32,24 @@ abstract class BaseRepository <Domain: IBaseModel, Entity : IBaseEntity> (
 
     protected open suspend fun loadCache(list: List<Entity>){
         //Al usar copias evitamos tener el concurrent Exception que salta a veces en la aplicacion
-        val mapEntityCopy = mapEntity.toMap()
-        val listCopy = list.toList()
+//        val mapEntityCopy = mapEntity.toMap()
+//        val listCopy = list.toList()
         //Recorreremos la lista que nos llegue de la base de datos
-        listCopy.forEach {
-            val entry = mapEntityCopy[it.id]
+        list.forEach {
+            val entry = mapEntity[it.id]
             if (entry == null || entry != it){
                 mapEntity[it.id] = it
                 mapTempEntity[it.id] = it
             }
         }
         //Si por lo que sea la lista nos devuelve vacia deberemos de limpiar todos los mapas
-        if (listCopy.isEmpty()){
+        if (list.isEmpty()){
             clearMaps()
+            return
         }
-        //Si el diccionario tiene elementos que no se encuentran en la lista, entonces deberemos de eliminar esos articulos concretos
-        val filtrado = mapEntityCopy.values.toList().filterNot {map ->
-            listCopy.contains(map)
+        //Si el diccionario tiene elementos que no se encuentran en la lista, entonces deberemos de eliminar esos elementos concretos
+        val filtrado = mapEntity.values.toList().filterNot {map ->
+            list.contains(map)
         }
         filtrado.forEach {
             mapEntity.remove(it.id)
@@ -56,11 +59,6 @@ abstract class BaseRepository <Domain: IBaseModel, Entity : IBaseEntity> (
     }
 
     private suspend fun mapDomain() = withContext(Dispatchers.Default){
-//        val iterator = mapTempEntity.iterator()
-//        while (iterator.hasNext()){
-//            val domain = toDomain(iterator.next().value)
-//            mapDomain[domain.id] = domain
-//        }
         val mapTempEntityCopy = mapTempEntity.toMap()
         mapTempEntityCopy.forEach{ (key, value) ->
             val domain = toDomain(value)
