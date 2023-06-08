@@ -10,6 +10,8 @@ import com.pedro.expresstpv.R
 import com.pedro.expresstpv.databinding.GrillaTicketCierresLayoutBinding
 import com.pedro.expresstpv.domain.functions.Functions
 import com.pedro.expresstpv.domain.model.Ticket
+import java.time.format.DateTimeFormatter
+
 
 class GrillaTicketsCierreListAdapter : ListAdapter<Ticket ,GrillaTicketsCierreListAdapter.GrillaTicketsCierreViewHolder>(
     DiffCallback) {
@@ -42,9 +44,10 @@ class GrillaTicketsCierreListAdapter : ListAdapter<Ticket ,GrillaTicketsCierreLi
     inner class GrillaTicketsCierreViewHolder(v : View) : ViewHolder(v){
         private val binding = GrillaTicketCierresLayoutBinding.bind(v)
 
+        private val formatter = DateTimeFormatter.ofPattern("dd/MM HH:mm")
         fun bind(ticket : Ticket, pos: Int){
             binding.tvNumTicketGrillaTicketsCierre.text = ticket.numTicket.toString()
-            binding.tvFechaGrillaTicketCierres.text = ticket.fecha?.dayOfYear.toString()
+            binding.tvFechaGrillaTicketCierres.text = ticket.fecha?.format(formatter)
             binding.tvMetodoPagoGrillaTicketCierres.text = ticket.metodoPago.nombre
             binding.tvTotalGrillaTicketsCierres.text = binding.root.context.getString(R.string.precio_selector).format(ticket.total)
 

@@ -12,4 +12,11 @@
         <item name="android:minWidth">40dp</item>
     </style>
 
+    <style name="StyleVentas.tvTotales" parent="StyleTextViews">
+        <item name="android:contextClickable">false</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

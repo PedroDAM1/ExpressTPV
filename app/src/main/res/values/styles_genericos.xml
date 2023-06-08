@@ -20,6 +20,8 @@
     <style name="StyleTextViews" parent="android:Widget.Material.TextView">
         <item name="android:textColor">@color/gris_sepa</item>
         <item name="android:textSize">@dimen/size_contents_textviews</item>
+        <item name="android:paddingStart">2dp</item>
+        <item name="android:paddingEnd">2dp</item>
     </style>
 
     <style name="StyleIconsButtons" parent="Widget.Material3.Button">
@@ -71,6 +73,27 @@
     <style name="StyleButtonsCancelar" parent="StyleButtons">
         <item name="android:backgroundTint">#F44336</item>
         <item name="android:text">Cancelar</item>
+    </style>
+
+
+    <style name="StyleMuestrario.layout" parent="android:Theme">
+        <item name="android:background">@drawable/all_bordes</item>
+    </style>
+
+    <style name="StyleMuestrario.tvValores" parent="@style/StyleTextViews">
+        <item name="android:gravity">end</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:layout_marginEnd">1dp</item>
+        <item name="android:layout_marginStart">1dp</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="StyleMuestrario.tvTextos" parent="@style/StyleTextViews">
+        <item name="android:gravity">start</item>
+        <item name="android:background">@color/background_elements</item>
+        <item name="android:layout_marginEnd">1dp</item>
+        <item name="android:layout_marginStart">1dp</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
 </resources>

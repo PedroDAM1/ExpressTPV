@@ -8,12 +8,13 @@
     tools:context=".ui.view.VentasActivity">
 
     <LinearLayout
+        android:id="@+id/layoutTituloGrillaLineaTicketVentas"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/cvGrillaLineaTickets"
         app:layout_constraintEnd_toEndOf="@id/cvGrillaLineaTickets"
-        app:layout_constraintStart_toStartOf="@id/cvGrillaLineaTickets">
+        app:layout_constraintStart_toStartOf="@id/cvGrillaLineaTickets"
+        app:layout_constraintTop_toBottomOf="@id/tvSubtituloActionBarVentas"
+        app:layout_constraintVertical_bias="0.0">
 
         <TextView
             style="@style/StyleVentas.TituloGrilla"
@@ -23,27 +24,25 @@
             android:text="UDS" />
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="DESCRIPCION"
-            style="@style/StyleVentas.TituloGrilla" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="CATEGORIA"
             style="@style/StyleVentas.TituloGrilla"
-            />
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="DESCRIPCION" />
 
         <TextView
+            style="@style/StyleVentas.TituloGrilla"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="CATEGORIA" />
+
+        <TextView
+            style="@style/StyleVentas.TituloGrilla"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.6"
-            android:text="PRECIO"
-            style="@style/StyleVentas.TituloGrilla"
-            />
+            android:text="PRECIO" />
     </LinearLayout>
 
 
@@ -52,12 +51,14 @@
         style="@style/StyleCardViews"
         android:layout_width="0dp"
         android:layout_height="180dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintVertical_bias="0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutTituloGrillaLineaTicketVentas"
+        app:layout_constraintBottom_toTopOf="@id/cvArticulosCalculadora"
+        >
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvGridLineasTickets"
@@ -67,43 +68,42 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvTotalVentasTxt"
         android:layout_width="0dp"
         android:layout_height="35dp"
-        android:contextClickable="false"
+        style="@style/StyleVentas.tvTotales"
+        android:layout_marginStart="5dp"
         android:gravity="center_vertical|start"
         android:text="@string/total"
-        android:textAllCaps="true"
-        android:textColor="@color/background_subtitulos"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/cvArticulosCalculadora"
+        app:layout_constraintEnd_toStartOf="@id/tvTotal"
         app:layout_constraintStart_toStartOf="@id/cvGrillaLineaTickets"
-        app:layout_constraintTop_toBottomOf="@id/cvGrillaLineaTickets" />
+        app:layout_constraintTop_toBottomOf="@id/cvGrillaLineaTickets"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/tvTotal"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="35dp"
-        android:contextClickable="false"
+        style="@style/StyleVentas.tvTotales"
+        android:layout_marginEnd="5dp"
         android:gravity="center_vertical|end"
-        android:text="@string/precio_selector"
-        android:textAllCaps="true"
-        android:textColor="@color/background_subtitulos"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:text="0,00€"
+        app:layout_constraintTop_toBottomOf="@id/cvGrillaLineaTickets"
         app:layout_constraintEnd_toEndOf="@id/cvGrillaLineaTickets"
-        app:layout_constraintTop_toBottomOf="@id/cvGrillaLineaTickets" />
+        app:layout_constraintStart_toEndOf="@id/tvTotalVentasTxt"
+        />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvArticulosCalculadora"
         style="@style/StyleCardViews"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="80dp"
         app:layout_constraintBottom_toTopOf="@id/btnCobrarVentasActivity"
         app:layout_constraintEnd_toEndOf="@id/cvGrillaLineaTickets"
         app:layout_constraintStart_toStartOf="@id/cvGrillaLineaTickets"
-        app:layout_constraintTop_toBottomOf="@id/cvGrillaLineaTickets">
+        app:layout_constraintTop_toBottomOf="@id/tvTotalVentasTxt">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvArticulosCalculadora"
@@ -117,31 +117,31 @@
         style="@style/StyleIconsButtons"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:layout_marginEnd="5dp"
         android:enabled="false"
         app:icon="@drawable/ic_menos_nuevo"
+        app:layout_constraintEnd_toEndOf="@id/cvArticulosCalculadora"
         app:layout_constraintBottom_toTopOf="@id/cvArticulosCalculadora"
-        app:layout_constraintEnd_toEndOf="@id/cvArticulosCalculadora" />
+        />
 
     <Button
         android:id="@+id/btnMasVentasActivity"
         style="@style/StyleIconsButtons"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginEnd="10dp"
         android:enabled="false"
         app:icon="@drawable/ic_add_nuevo"
         app:layout_constraintBottom_toTopOf="@id/cvArticulosCalculadora"
-        app:layout_constraintEnd_toStartOf="@id/btnMenosVentasActivity"
-        tools:layout_editor_absoluteX="275dp"
-        tools:layout_editor_absoluteY="310dp" />
+        app:layout_constraintEnd_toStartOf="@id/btnMenosVentasActivity" />
 
     <Button
         android:id="@+id/btnEliminarTodoVentasActivity"
         style="@style/StyleIconsButtons"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:layout_marginStart="5dp"
         android:enabled="false"
-        app:cornerRadius="12dp"
         app:icon="@drawable/ic_delete_papelera"
         app:layout_constraintBottom_toTopOf="@id/cvArticulosCalculadora"
         app:layout_constraintStart_toStartOf="@id/cvArticulosCalculadora" />
@@ -159,18 +159,21 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:icon="@drawable/ic_dinero_cobrar"
+        app:iconGravity="start"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cvArticulosCalculadora"
+        app:layout_constraintVertical_bias="1" />
 
     <TextView
         android:id="@+id/tvSubtituloActionBarVentas"
         style="@style/StyleTextViewSubtitlesActionBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_height_subtitle_actionbar"
-        android:text="Pantalla de ventas"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="Pantalla de ventas" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
