@@ -2,23 +2,21 @@ package com.pedro.expresstpv.ui.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.pedro.expresstpv.R
 import com.pedro.expresstpv.databinding.ActivityListaArticulosBinding
-import com.pedro.expresstpv.domain.functions.Functions
-import com.pedro.expresstpv.domain.model.Articulo
 import com.pedro.expresstpv.ui.adapters.ListaArticulosAdapter
 import com.pedro.expresstpv.ui.viewmodel.ListaArticulosViewModel
-import com.pedro.expresstpv.ui.viewmodel.UIState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
 
@@ -33,10 +31,50 @@ class ListaArticulosActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityListaArticulosBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        onBack()
         setListeners()
         setRecycler()
         enlazarFlow()
     }
+    //============================= MENU ====================================//
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_lista_items, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.miSeleccionarTodoListaCategorias -> {
+                viewModel.seleccionarTodo()
+            }
+            R.id.miQuitarSeleccionesListaCategoria ->{
+                viewModel.quitarSeleccionar()
+            }
+            R.id.miBorrarListaCategoria -> {
+                viewModel.borrar()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+
+    //============================= FUNCIONES BASICAS ====================================//
+    private fun onBack(){
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (viewModel.isSelectedMode()) {
+                    viewModel.quitarSeleccionar()
+                } else {
+                    super.isEnabled = false
+                    this@ListaArticulosActivity.onBackPressedDispatcher.onBackPressed()
+                }
+            }
+
+        }
+
+        this.onBackPressedDispatcher.addCallback(this, callback)
+    }
+
 
     private fun setListeners(){
         binding.fabAddArticulo.setOnClickListener{
@@ -44,59 +82,61 @@ class ListaArticulosActivity : AppCompatActivity() {
         }
     }
 
+
+    //============================= RECYCLER ====================================//
+
     private fun setRecycler(){
         val layoutManager = LinearLayoutManager(this)
-        adapter = ListaArticulosAdapter{ onItemClickListener(it) }
+        adapter = ListaArticulosAdapter({onItemClickListener(it)}, {onLongItemClick(it)})
 
         binding.rvListaArticulos.layoutManager = layoutManager
         binding.rvListaArticulos.adapter = adapter
     }
 
-    private fun onItemClickListener(id : Int){
-        val i = Intent(this, ArticuloEditorActivity::class.java).apply {
-            putExtra("ID", id)
+    private fun onItemClickListener(articulosIsSelected: ListaArticulosViewModel.ArticulosIsSelected){
+        //Si estamos en modo seleccion, pasaremos directamente a editar la pantalla
+        if (!viewModel.isSelectedMode()){
+            val i = Intent(this, ArticuloEditorActivity::class.java).apply {
+                putExtra("ID", articulosIsSelected.articulo.id)
+            }
+            startActivity(i)
+            // Si no lo marcamos para editar
+        } else {
+            viewModel.uploadCategoriaSelected(articulosIsSelected)
         }
-        startActivity(i)
     }
 
+    private fun onLongItemClick(articulo : ListaArticulosViewModel.ArticulosIsSelected){
+        // Marcamos directamente la categoria para editar
+        viewModel.uploadCategoriaSelected(articulo)
+    }
+
+    //=============================UI STATE====================================//
     private fun enlazarFlow(){
         lifecycleScope.launch {
-            viewModel.listaArticulos
+            repeatOnLifecycle(Lifecycle.State.STARTED){
                 //Nos susbscribimos al estado del uiState para saber si han cargado ya los datos
-                .collect { flow ->
-                    when(flow){
-                        //En caso de error mostraremos el mensaje de error
-                        is UIState.Error -> {
-                            binding.pbListaArticulos.visibility = View.GONE
-                            Functions.mostrarMensajeError(
-                                this@ListaArticulosActivity, "Error",
-                                "Hubo un error al cargar\n: ${flow.msg}"
-                            )
+                viewModel.uiState.collect{
+                    when (it) {
+                        ListaArticulosViewModel.UiState.Loading -> {
+                            onUiStateLoading()
                         }
-                        //Si no ocurre nada, cargaremos los datos en el adapter
-                        is UIState.Succes<*> -> {
-                            //Al estar subscritos al viewmodel sabemos que lo que nos llega sera un flow de ListArticulos
-                            binding.pbListaArticulos.visibility = View.GONE
-                            subscribeToFlow(flow.flow as Flow<List<Articulo>>)
-                        }
-                        //Si aun sigue cargando dejaremos la progressBar visible
-                        UIState.Loading -> {
-                            binding.pbListaArticulos.visibility = View.VISIBLE
+                        is ListaArticulosViewModel.UiState.Success -> {
+                            onUiStateSucces(it.list)
                         }
                     }
                 }
+            }
         }
     }
 
-    private suspend fun subscribeToFlow(flow : Flow<List<Articulo>>){
-        flow.catch {
-            Functions.mostrarMensajeError(this@ListaArticulosActivity, "Error en los datos", "Hubo un error al cargar los datos")
-        }
-            .flowOn(Dispatchers.Main)
-        .collect{
-            adapter.submitList(it)
-        }
+    private fun onUiStateSucces(list : List<ListaArticulosViewModel.ArticulosIsSelected>){
+        binding.pbListaArticulos.visibility = View.GONE
+        adapter.submitList(list)
     }
 
+    private fun onUiStateLoading (){
+        binding.pbListaArticulos.visibility = View.VISIBLE
+    }
 
 }

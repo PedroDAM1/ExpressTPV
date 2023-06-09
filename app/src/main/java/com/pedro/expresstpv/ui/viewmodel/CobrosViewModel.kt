@@ -1,16 +1,12 @@
 package com.pedro.expresstpv.ui.viewmodel
 
-import android.app.PendingIntent.CanceledException
-import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.pedro.expresstpv.data.usecase.LineaTicketUseCases
 import com.pedro.expresstpv.data.usecase.MetodoPagoUseCase
 import com.pedro.expresstpv.data.usecase.TicketUseCase
 import com.pedro.expresstpv.domain.model.MetodoPago
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel

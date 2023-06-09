@@ -24,11 +24,11 @@ class ListaCategoriasViewModel @Inject constructor(
     private val _uiState : MutableStateFlow<UiState> = MutableStateFlow(UiState.Loading)
     val uiState : StateFlow<UiState> = _uiState
 
-    private var _listaCategoriasSelected : MutableMap<Int, CategoriaIsSelected> = mutableMapOf()
+    private val _listaCategoriasSelected : MutableMap<Int, CategoriaIsSelected> = mutableMapOf()
 
     private var isSelectionMode = false
 
-    fun getIsSelected() = isSelectionMode
+    fun isSelectedMode() = isSelectionMode
 
     init {
         subscribeFlow()

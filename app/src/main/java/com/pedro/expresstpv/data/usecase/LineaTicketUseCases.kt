@@ -1,6 +1,5 @@
 package com.pedro.expresstpv.data.usecase
 
-import android.util.Log
 import com.pedro.expresstpv.data.provider.LineaTicketRepository
 import com.pedro.expresstpv.domain.functions.Functions
 import com.pedro.expresstpv.domain.model.Articulo
@@ -108,8 +107,8 @@ class LineaTicketUseCases @Inject constructor(
      */
     fun getLineaTicketActivoFlow(): Flow<List<LineaTicket>> {
         return lineaTicketRepository.getAllFlow()
-            .map {
-                it.filter { it.ticket == ticketUseCase.getTicketActivo() }
+            .map { list ->
+                list.filter { it.ticket == ticketUseCase.getTicketActivo() }
             }
             .flowOn(Dispatchers.Default)
     }
@@ -119,7 +118,6 @@ class LineaTicketUseCases @Inject constructor(
      */
     suspend fun eliminarTicketActivo() {
         val listaActivo = getLineaTicketActivo()
-        Log.d("LINEATICKET USECASE", "Eliminando lista: $listaActivo")
         deleteList(listaActivo)
     }
 
@@ -157,9 +155,6 @@ class LineaTicketUseCases @Inject constructor(
                     ticket = null
                 )
             }
-
-        Log.d("LISTA DEVUELTA", lista.toString())
-
         return@withContext acumularLineasTickets(lista)
     }
 

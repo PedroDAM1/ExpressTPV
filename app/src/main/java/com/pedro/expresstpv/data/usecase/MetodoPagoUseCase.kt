@@ -3,14 +3,13 @@ package com.pedro.expresstpv.data.usecase
 import com.pedro.expresstpv.data.provider.MetodoPagoRepository
 import com.pedro.expresstpv.domain.model.MetodoPago
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class MetodoPagoUseCase @Inject constructor(
-    private val metodoPagoRepository: MetodoPagoRepository
+    metodoPagoRepository: MetodoPagoRepository
 ) : BaseUseCase<MetodoPago>(metodoPagoRepository) {
 
     suspend fun getMetodoPagoByDefault() : MetodoPago = withContext(Dispatchers.IO){

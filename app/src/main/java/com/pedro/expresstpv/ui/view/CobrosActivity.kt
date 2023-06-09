@@ -174,10 +174,9 @@ class CobrosActivity : AppCompatActivity() {
             totalEntrega += valor
             updateViewsTotales()
 
-            Log.d("TOTAL ENTREGA", "Dinero entregado: $totalEntrega")
 
         } catch (e: java.lang.NumberFormatException) {
-            Log.d("ERROR", "Error al parsear en la pantalla de cobros: ${e.message}")
+            Log.d("EXCEPCION", "Error al parsear en la pantalla de cobros: ${e.message}")
         }
     }
 

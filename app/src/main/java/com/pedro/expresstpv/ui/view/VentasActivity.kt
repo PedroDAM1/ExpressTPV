@@ -154,7 +154,7 @@ class VentasActivity : AppCompatActivity() {
         lifecycleScope.launch {
             ventasViewModel.getArticulosConCantidad()
                 .catch {
-                    Log.d("ARTICULOS CON CANTIDAD", "Excepcion al subscribirnos al flow en ventas viewmodel: ${it.stackTrace}")
+                    Log.d("EXCEPCION", "Excepcion al subscribirnos al flow en ventas viewmodel: ${it.stackTrace}")
                     Functions.mostrarMensajeError(
                         this@VentasActivity,
                         "Error",

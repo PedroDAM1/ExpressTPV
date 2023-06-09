@@ -1,6 +1,5 @@
 package com.pedro.expresstpv.data.provider
 
-import android.util.Log
 import com.pedro.expresstpv.data.database.dao.LineaTicketDao
 import com.pedro.expresstpv.data.database.entities.LineaTicketEntity
 import com.pedro.expresstpv.data.usecase.TicketUseCase
@@ -11,7 +10,7 @@ import javax.inject.Singleton
 
 @Singleton
 class LineaTicketRepository @Inject constructor(
-    private val lineaTicketDao: LineaTicketDao,
+    lineaTicketDao: LineaTicketDao,
     private val ticketUseCase: TicketUseCase
 ) : BaseRepository<LineaTicket, LineaTicketEntity>(lineaTicketDao) {
 
@@ -34,9 +33,10 @@ class LineaTicketRepository @Inject constructor(
     }
 
     override suspend fun toDomain(entity: LineaTicketEntity): LineaTicket {
-        val ticket : Ticket = ticketUseCase.getByNumTicket(entity.numTicket) ?: ticketUseCase.getTicketActivo()
+        val ticket: Ticket =
+            ticketUseCase.getByNumTicket(entity.numTicket) ?: ticketUseCase.getTicketActivo()
 
-        val lineaTicket = LineaTicket(
+        return LineaTicket(
             id = entity.id,
             ticket = ticket,
             descripcion = entity.descripcion,
@@ -46,10 +46,6 @@ class LineaTicketRepository @Inject constructor(
             subTotal = entity.subtotal,
             total = entity.total
         )
-
-//        Log.d("GET LINEATICKET", "Se esta mapeando la linea ticket: $lineaTicket")
-
-        return lineaTicket
     }
 
 }

@@ -131,17 +131,9 @@ class ArticuloEditorActivity : AppCompatActivity() {
      * solo me proporcionara el nombre
      */
     private suspend fun cargarDatosSpinner() = withContext(Dispatchers.Main){
-//            viewModel.getListaCategorias()
-//                .collect{
-//                    binding.spCategoriaArticuloEditor.adapter = ArrayAdapter(this@ArticuloEditorActivity, R.layout.elemento_spinner_textview, it)
-//                }
         val listaCategorias = viewModel.getListaCategorias().first()
         binding.spCategoriaArticuloEditor.adapter = ArrayAdapter(this@ArticuloEditorActivity, R.layout.elemento_spinner_textview, listaCategorias)
 
-//            viewModel.getListaTipoIva()
-//                .collect{
-//                    binding.spTipoIvaArticuloEditor.adapter = ArrayAdapter(this@ArticuloEditorActivity, R.layout.elemento_spinner_textview, it)
-//                }
         val listaTipoIva = viewModel.getListaTipoIva().first()
         binding.spTipoIvaArticuloEditor.adapter = ArrayAdapter(this@ArticuloEditorActivity, R.layout.elemento_spinner_textview, listaTipoIva)
     }

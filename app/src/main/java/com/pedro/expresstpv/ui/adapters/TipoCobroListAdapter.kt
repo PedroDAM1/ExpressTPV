@@ -1,6 +1,5 @@
 package com.pedro.expresstpv.ui.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.pedro.expresstpv.R
 import com.pedro.expresstpv.databinding.TiposCobroLayoutBinding
-import com.pedro.expresstpv.domain.model.LineaTicket
 import com.pedro.expresstpv.domain.model.MetodoPago
 
 class TipoCobroListAdapter (private val onItemClick : (MetodoPago) -> Unit) : ListAdapter<MetodoPago, TipoCobroListAdapter.TipoCobroViewHolder>(

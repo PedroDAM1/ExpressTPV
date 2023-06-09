@@ -11,7 +11,6 @@ import com.pedro.expresstpv.domain.model.MetodoPago
 import com.pedro.expresstpv.domain.model.Ticket
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.time.LocalDateTime
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.pedro.expresstpv.domain.model.Cierre
 import java.time.LocalDateTime
 
 @Entity(tableName = "tb_cierre",

@@ -2,7 +2,6 @@ package com.pedro.expresstpv.data.database.entities
 
 import androidx.room.*
 import com.pedro.expresstpv.data.database.LocalDateTimeConverter
-import com.pedro.expresstpv.domain.model.Ticket
 import java.time.LocalDateTime
 
 @Entity(

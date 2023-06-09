@@ -3,7 +3,6 @@ package com.pedro.expresstpv.data.provider
 import com.pedro.expresstpv.data.database.dao.IBaseDao
 import com.pedro.expresstpv.data.database.entities.IBaseEntity
 import com.pedro.expresstpv.domain.model.IBaseModel
-import com.pedro.expresstpv.domain.model.LineaTicket
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext

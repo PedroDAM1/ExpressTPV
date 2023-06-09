@@ -30,9 +30,11 @@
             android:exported="false" />
         <activity
             android:name=".ui.view.CategoriaEditorActivity"
+            android:parentActivityName=".ui.view.ListaCategoriasActivity"
             android:exported="false" />
         <activity
             android:name=".ui.view.ArticuloEditorActivity"
+            android:parentActivityName=".ui.view.ListaArticulosActivity"
             android:exported="false" />
         <activity
             android:name=".ui.view.ListaArticulosActivity"

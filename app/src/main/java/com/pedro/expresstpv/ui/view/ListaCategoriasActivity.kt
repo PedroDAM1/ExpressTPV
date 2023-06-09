@@ -3,10 +3,10 @@ package com.pedro.expresstpv.ui.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -33,9 +33,31 @@ class ListaCategoriasActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityListaCategoriasBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        onBack()
         cargarRecycler()
         onUiState()
         setListeners()
+    }
+
+
+    //=======================FUNCIONES BASICAS===============================//
+    /**
+     * Al presionar la tecla de atras, primero desmarcaremos todos, y al darle de nuevo saldra de la actividad
+     */
+   private fun onBack(){
+            val callback = object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (viewModel.isSelectedMode()) {
+                        viewModel.quitarSeleccionar()
+                    } else {
+                        super.isEnabled = false
+                        this@ListaCategoriasActivity.onBackPressedDispatcher.onBackPressed()
+                    }
+                }
+
+            }
+
+            this.onBackPressedDispatcher.addCallback(this, callback)
     }
 
     private fun setListeners(){
@@ -83,7 +105,6 @@ class ListaCategoriasActivity : AppCompatActivity() {
                             binding.pbListaCategorias.visibility = View.VISIBLE
                         }
                         is ListaCategoriasViewModel.UiState.Succes -> {
-                            Log.d("PRUEBAS", "LISTA RECIBIDA")
                             onUiStateSucces(it.list.toList())
                         }
                         is ListaCategoriasViewModel.UiState.OnDeleteResponsive -> {
@@ -101,9 +122,6 @@ class ListaCategoriasActivity : AppCompatActivity() {
 
     private fun onUiStateSucces(list: List<ListaCategoriasViewModel.CategoriaIsSelected>){
         binding.pbListaCategorias.visibility = View.INVISIBLE
-        list.forEach {
-            Log.d("LINEA LISTA", "item : $it")
-        }
         adapter.submitList(list)
     }
 
@@ -120,7 +138,7 @@ class ListaCategoriasActivity : AppCompatActivity() {
 
     private fun onItemClickListener(cat : ListaCategoriasViewModel.CategoriaIsSelected){
         //Si estamos en modo seleccion, pasaremos directamente a editar la pantalla
-        if (!viewModel.getIsSelected()){
+        if (!viewModel.isSelectedMode()){
             val i = Intent(this, CategoriaEditorActivity::class.java).apply {
                 putExtra("CATEGORIA", cat.categoria)
             }

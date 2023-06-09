@@ -1,14 +1,11 @@
 package com.pedro.expresstpv.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pedro.expresstpv.data.usecase.ArticulosUseCase
 import com.pedro.expresstpv.data.usecase.LineaTicketUseCases
 import com.pedro.expresstpv.data.usecase.TicketUseCase
-import com.pedro.expresstpv.domain.model.Articulo
 import com.pedro.expresstpv.domain.model.LineaTicket
-import com.pedro.expresstpv.domain.model.Ticket
 import com.pedro.expresstpv.ui.adapters.VentasCalculadoraListAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +21,7 @@ class VentasViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _listaArticulos = articulosUseCase.getAllArticulosFlow()
-    private val _lineaTicketActivoFlow = lineaTicketUseCases.getLineaTicketActivoFlow().onEach { Log.d("GRILLA", "Activo") }
+    private val _lineaTicketActivoFlow = lineaTicketUseCases.getLineaTicketActivoFlow()
 
     private var _articuloConCantidadFlow : Flow<List<VentasCalculadoraListAdapter.ArticuloYCantidad>> = _listaArticulos.combine(_lineaTicketActivoFlow) { listaArticulos, _ ->
         listaArticulos.map { articulo ->
