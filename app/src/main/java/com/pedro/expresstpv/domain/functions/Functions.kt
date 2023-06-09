@@ -10,8 +10,12 @@ import com.pedro.expresstpv.ui.viewmodel.UIState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import java.math.RoundingMode
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 class Functions {
     companion object{
@@ -113,6 +117,32 @@ class Functions {
             } else {
                 v.setBackgroundColor(v.context.getColor(R.color.background_elements))
             }
+        }
+
+        fun calcultarSubtotal(total : Double, iva : Double) : Double{
+            val formula = 1 + (iva / 100)
+            val subtotal = total / formula
+
+            val decimalFormatSymbols = DecimalFormatSymbols(Locale.getDefault())
+            decimalFormatSymbols.decimalSeparator = '.'
+
+            val decimalFormat = DecimalFormat("#.####")
+            decimalFormat.decimalFormatSymbols = decimalFormatSymbols
+            decimalFormat.roundingMode = RoundingMode.UP
+
+            return decimalFormat.format(subtotal).toDouble()
+        }
+
+        fun calcularTotal(subtotal : Double, iva : Double) : Double{
+            val formula = 1 + (iva/100)
+            val total = subtotal*formula
+            val decimalFormat = DecimalFormat("#.####")
+            return decimalFormat.format(total).toDouble()
+        }
+
+        fun redondearDecimal(decimal : Double) : String{
+            val decimalFormat = DecimalFormat("#.##")
+            return decimalFormat.format(decimal)
         }
 
     }

@@ -5,8 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pedro.expresstpv.data.usecase.ArticulosUseCase
 import com.pedro.expresstpv.data.usecase.LineaTicketUseCases
+import com.pedro.expresstpv.data.usecase.TicketUseCase
 import com.pedro.expresstpv.domain.model.Articulo
 import com.pedro.expresstpv.domain.model.LineaTicket
+import com.pedro.expresstpv.domain.model.Ticket
 import com.pedro.expresstpv.ui.adapters.VentasCalculadoraListAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -18,6 +20,7 @@ import javax.inject.Inject
 class VentasViewModel @Inject constructor(
     articulosUseCase: ArticulosUseCase,
     private val lineaTicketUseCases: LineaTicketUseCases,
+    private val ticketUseCase: TicketUseCase
 ) : ViewModel() {
 
     private val _listaArticulos = articulosUseCase.getAllArticulosFlow()
@@ -31,6 +34,13 @@ class VentasViewModel @Inject constructor(
     }
         .flowOn(Dispatchers.Default)
 
+
+    fun deleteAll(){
+        viewModelScope.launch {
+            lineaTicketUseCases.deleteAll()
+            ticketUseCase.deleteAll()
+        }
+    }
 
     fun getArticulosConCantidad() = _articuloConCantidadFlow
 

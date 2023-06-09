@@ -20,6 +20,12 @@ class TicketUseCase @Inject constructor(
 ) : BaseUseCase<Ticket>(ticketRepository) {
 
 
+    /**
+     * Permite crear un ticket, deberemos de pasar el metodo de pago con el que se pago el ticket, el total y el subtotal(Que lo obtendremos de las lineaTickets)
+     * @param metodoPago MetodoPago
+     * @param total Double
+     * @param subtotal Double
+     */
     suspend fun crearTicket(metodoPago: MetodoPago, total : Double, subtotal : Double) : Ticket = withContext(Dispatchers.IO){
         val cierreActivo = cierreUseCase.getCierreActivo()
         val newNumTicket = getLastNumTicket()+1
@@ -29,6 +35,7 @@ class TicketUseCase @Inject constructor(
             id = 0,
             numTicket = newNumTicket,
             cierre = cierreActivo,
+            subtotal = subtotal,
             metodoPago = metodoPago,
             total = total
         )
@@ -38,14 +45,26 @@ class TicketUseCase @Inject constructor(
         return@withContext getByNumTicket(newNumTicket)!!
     }
 
+    /**
+     * Devuelve el numero de ticket del ultimo ticket
+     * @return Double
+     */
     suspend fun getLastNumTicket() : Int = ticketRepository.getLastNumTicket()
 
+    /**
+     * Devuelve la lista de tickets cuyo cierre sea el activo
+     * @return List<Ticket>
+     */
     suspend fun getAllTicketFromCierreActivo() : List<Ticket> = withContext(Dispatchers.Default) {
         return@withContext this@TicketUseCase.getAll().filter {
             it.cierre == cierreUseCase.getCierreActivo()
         }
     }
 
+    /**
+     * Devuelve el flow de tickets cuyo cierre sea el activo
+     * @return Flow<List<Ticket>>
+     */
     suspend fun getAllTicketFromCierreActivoFlow() : Flow<List<Ticket>>{
         return this.getAllFlow().map {
             it.filter {ticket ->
@@ -55,12 +74,22 @@ class TicketUseCase @Inject constructor(
             .flowOn(Dispatchers.Default)
     }
 
+
+    /**
+     * Devuelve el total de la suma de tickets que sean del cierre activo
+     * @return Double
+     */
     suspend fun getSumOfTicketsFromCierreActivo() : Double = withContext(Dispatchers.Default) {
         return@withContext getAllTicketFromCierreActivo().sumOf {
             it.total
         }
     }
 
+    /**
+     * Devuelve el ticket cuyo numero de ticket sea el pasado por parametro, si no lo encuentra, devolvera nulo
+     * @param num Int. Numero del ticket que queremos buscar
+     * @return Ticket?
+     */
     suspend fun getByNumTicket(num : Int) : Ticket? = withContext(Dispatchers.Default) {
         return@withContext ticketRepository.getAll()
             .firstOrNull {
@@ -68,6 +97,10 @@ class TicketUseCase @Inject constructor(
             }
     }
 
+    /**
+     * Devolveremos el ticket cuyo id sea 0
+     * @return Ticket
+     */
     suspend fun getTicketActivo() : Ticket = withContext(Dispatchers.IO) {
 //        return@withContext getByNumTicket(0)!!
         return@withContext getById(0)!!
@@ -77,6 +110,8 @@ class TicketUseCase @Inject constructor(
      * Retornaremos el total de los tickets segun el metodo de pago que se ha usado,
      * es decir si hemos vendido 200 con efectivo en 3 tickets y 150 con tarjeta en 4 tickets,
      * retornaremos 200 si por parametro le pasamos el metodo de pago efectivo
+     * @param metodoPago MetodoPago. Metodo de pago por el que filtraremos
+     * @param filter Funcion lambda (opcional) por la que podremos meter algun filtro adicional
      */
     suspend fun getTotalTicketPorMetodoPago(metodoPago: MetodoPago, filter : (Ticket) -> Boolean = {true}) : Double{
         return getAll().filter {
@@ -93,6 +128,10 @@ class TicketUseCase @Inject constructor(
         }
     }
 
+    /**
+     * Actualiza la lista de tickets que antes tenian el cierre activo al nuevo cierre pasado por parametro
+     * @param cierre Cierre. Cierre al que queremos actualizar
+     */
     suspend fun updateTicketsFromCierreActivoToNewCierre(cierre : Cierre){
         val lista = getAllTicketFromCierreActivo()
         lista.forEach {
@@ -102,6 +141,12 @@ class TicketUseCase @Inject constructor(
 
     }
 
+    /**
+     * Devuelve una lista de tickets cuya fecha se encuentre entre la fecha de inicio y la fecha de fin
+     * @param fechaInicio LocalDateTime
+     * @param fechaFin LocalDateTime
+     * @return List<Ticket>. Lista de tickets filtrada por fechas
+     */
     suspend fun getTicketBetweenFechas(fechaInicio : LocalDateTime, fechaFin : LocalDateTime) : List<Ticket> = withContext(Dispatchers.Default){
         val lista = this@TicketUseCase.getAll()
             .filter {

@@ -9,12 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pedro.expresstpv.R
 import com.pedro.expresstpv.databinding.ListaCategoriaLayoutBinding
 import com.pedro.expresstpv.domain.functions.Functions
-import com.pedro.expresstpv.domain.model.Categoria
+import com.pedro.expresstpv.ui.viewmodel.ListaCategoriasViewModel
 
 class ListaCategoriasAdapter (
-    private val onItemClick : (Categoria) -> Unit
-        )
-    : ListAdapter<Categoria, ListaCategoriasAdapter.ListaCategoriasViewHolder>(DiffCallback) {
+    private val onItemClick : (ListaCategoriasViewModel.CategoriaIsSelected) -> Unit,
+    private val onLongClick : (ListaCategoriasViewModel.CategoriaIsSelected) -> Unit
+    )
+    : ListAdapter<ListaCategoriasViewModel.CategoriaIsSelected, ListaCategoriasAdapter.ListaCategoriasViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -28,34 +29,61 @@ class ListaCategoriasAdapter (
         holder: ListaCategoriasViewHolder,
         position: Int
     ) {
-        holder.bind(getItem(position))
+        val item = getItem(position)
+        holder.bind(item)
+
         holder.itemView.setOnClickListener {
-            onItemClick(getItem(position))
+            onItemClick(item)
+        }
+        holder.itemView.setOnLongClickListener {
+            onLongClick(item)
+            true
         }
     }
 
     companion object {
-        private val DiffCallback = object : DiffUtil.ItemCallback<Categoria>() {
-            override fun areItemsTheSame(oldItem: Categoria, newItem: Categoria): Boolean {
-                return oldItem.id == newItem.id
+        private val DiffCallback = object : DiffUtil.ItemCallback<ListaCategoriasViewModel.CategoriaIsSelected>() {
+            override fun areItemsTheSame(
+                oldItem: ListaCategoriasViewModel.CategoriaIsSelected,
+                newItem: ListaCategoriasViewModel.CategoriaIsSelected
+            ): Boolean {
+                return oldItem.categoria.id == newItem.categoria.id
             }
 
-            override fun areContentsTheSame(oldItem: Categoria, newItem: Categoria): Boolean {
+            override fun areContentsTheSame(
+                oldItem: ListaCategoriasViewModel.CategoriaIsSelected,
+                newItem: ListaCategoriasViewModel.CategoriaIsSelected
+            ): Boolean {
                 return oldItem == newItem
             }
+
         }
     }
 
     class ListaCategoriasViewHolder(v  : View) : RecyclerView.ViewHolder(v) {
 
         private var binding = ListaCategoriaLayoutBinding.bind(v)
-        fun bind(categoria : Categoria){
-            binding.tvNombreCategoriaListaCategorias.text = categoria.nombre
-            binding.tvColorCategoriaListaCategorias.text = categoria.color
+        fun bind(categoria : ListaCategoriasViewModel.CategoriaIsSelected){
+            pintarSelected(categoria)
+
+            binding.tvNombreCategoriaListaCategorias.text = categoria.categoria.nombre
+            binding.tvColorCategoriaListaCategorias.text = categoria.categoria.color
             binding.tvColorCategoriaListaCategorias.setTextColor(
-                Functions.getContrastColor(
-                    Functions.hexToColorInt(categoria.color)))
-            binding.tvColorCategoriaListaCategorias.setBackgroundColor(Functions.hexToColorInt(categoria.color))
+                Functions.getContrastColor(Functions.hexToColorInt(categoria.categoria.color)))
+
+            binding.tvColorCategoriaListaCategorias.setBackgroundColor(Functions.hexToColorInt(categoria.categoria.color))
+        }
+
+        private fun pintarSelected(categoria: ListaCategoriasViewModel.CategoriaIsSelected){
+            if (categoria.isSelected){
+                binding.cbListaCategorias.visibility = View.VISIBLE
+                binding.cbListaCategorias.isChecked = true
+                binding.layoutListaCategoriaLayout.setBackgroundColor(binding.root.context.getColor(R.color.secundary_color))
+            } else {
+                binding.cbListaCategorias.visibility = View.INVISIBLE
+                binding.cbListaCategorias.isChecked = false
+                binding.layoutListaCategoriaLayout.setBackgroundColor(binding.root.context.getColor(R.color.white))
+            }
         }
 
     }

@@ -23,7 +23,7 @@ class DetalleVentasViewModel @Inject constructor (
     fun getFechaInicio() = fechaInicio
     fun getFechaFin() = fechaFin
 
-    private var fechaInicio: LocalDate = LocalDate.now().minusDays(1)
+    private var fechaInicio: LocalDate = LocalDate.now().minusDays(7)
     private var fechaFin : LocalDate = LocalDate.now()
 
     private var _listaTickets : List<Ticket> = listOf()
@@ -33,7 +33,6 @@ class DetalleVentasViewModel @Inject constructor (
     val uiState : StateFlow<UIStateDetalles> = _mutableStateFlow
 
     init {
-        _mutableStateFlow.value = UIStateDetalles.Loading
         updateFechas(fechaInicio, fechaFin)
 
     }

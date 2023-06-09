@@ -10,7 +10,7 @@
         <item name="colorSecondaryVariant">@color/old_lace</item>
         <item name="colorOnSecondary">@color/gris_sepa</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/gris_sepa</item>
+        <item name="android:statusBarColor">@color/dark_orange</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>

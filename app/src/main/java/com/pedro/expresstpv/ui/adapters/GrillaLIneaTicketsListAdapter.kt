@@ -37,7 +37,7 @@ class GrillaLIneaTicketsListAdapter (
         // Hacer click notificaremos al viewmodel para que actualice los botones para añadir y eliminar
         holder.itemView.setOnClickListener {
             // Si selectedItem no tiene valor le asignamos el valor correspondiente
-            selectedItem = if(selectedItem != item){
+            selectedItem = if(selectedItem?.id != item.id){
                 item
             // Si selectedItem tiene un valor, y clicamos de nuevo, es para desmarcarlo
             } else {
@@ -48,7 +48,6 @@ class GrillaLIneaTicketsListAdapter (
             notifyDataSetChanged()
         }
     }
-
 
     companion object {
         private val DiffCallback = object : DiffUtil.ItemCallback<LineaTicket>() {

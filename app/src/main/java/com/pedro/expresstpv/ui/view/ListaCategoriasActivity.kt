@@ -1,29 +1,24 @@
-@file:Suppress("UNCHECKED_CAST")
-
 package com.pedro.expresstpv.ui.view
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.pedro.expresstpv.R
 import com.pedro.expresstpv.databinding.ActivityListaCategoriasBinding
 import com.pedro.expresstpv.domain.functions.Functions
-import com.pedro.expresstpv.domain.functions.Functions.Companion.mostrarMensajeError
-import com.pedro.expresstpv.domain.model.Articulo
 import com.pedro.expresstpv.ui.adapters.ListaCategoriasAdapter
 import com.pedro.expresstpv.ui.viewmodel.ListaCategoriasViewModel
-import com.pedro.expresstpv.ui.viewmodel.UIState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
-import com.pedro.expresstpv.domain.model.Categoria as Categoria
 
 @AndroidEntryPoint
 class ListaCategoriasActivity : AppCompatActivity() {
@@ -39,7 +34,7 @@ class ListaCategoriasActivity : AppCompatActivity() {
         binding = ActivityListaCategoriasBinding.inflate(layoutInflater)
         setContentView(binding.root)
         cargarRecycler()
-        getState()
+        onUiState()
         setListeners()
     }
 
@@ -49,60 +44,97 @@ class ListaCategoriasActivity : AppCompatActivity() {
         }
     }
 
+
+    //==================OPCIONES DEL MENU===============================//
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_lista_items, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.miSeleccionarTodoListaCategorias -> {
+                viewModel.seleccionarTodo()
+            }
+            R.id.miQuitarSeleccionesListaCategoria -> {
+                viewModel.quitarSeleccionar()
+            }
+            R.id.miBorrarListaCategoria -> {
+                viewModel.borrar()
+            }
+
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+
+    //==================OPCIONES DEL UiState===============================//
+
+
     /**
-     * Obtenemos el UIState para saber si los datos estan ya o no cargados
+     * Obtenemos el estado desde el viewmodel
      */
-    private fun getState(){
-        //Lanzamos el hilo
+    private fun onUiState(){
         lifecycleScope.launch {
-            viewModel.getListaCategoriasUIState()
-                //Nos susbscribimos al estado del uiState para saber si han cargado ya los datos
-                .collect { flow ->
-                    when(flow){
-                        //En caso de error mostraremos el mensaje de error
-                        is UIState.Error -> {
-                            binding.pbListaCategorias.visibility = View.GONE
-                            mostrarMensajeError(this@ListaCategoriasActivity, "Error",
-                            "Hubo un error al cargar\n: ${flow.msg}")
-                        }
-                        //Si no ocurre nada, cargaremos los datos en el adapter
-                        //TODO mejorar el sistema del adapter para que sea un ListAdapter
-                        is UIState.Succes<*> -> {
-                            binding.pbListaCategorias.visibility = View.GONE
-                            subscribeToFlow(flow.flow as Flow<List<Categoria>>)
-                        }
-                        //Si aun sigue cargando dejaremos la progressBar visible
-                        UIState.Loading -> {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.uiState.collect{
+                    when (it) {
+                        ListaCategoriasViewModel.UiState.Loading -> {
                             binding.pbListaCategorias.visibility = View.VISIBLE
+                        }
+                        is ListaCategoriasViewModel.UiState.Succes -> {
+                            Log.d("PRUEBAS", "LISTA RECIBIDA")
+                            onUiStateSucces(it.list.toList())
+                        }
+                        is ListaCategoriasViewModel.UiState.OnDeleteResponsive -> {
+                            onUiStateDelete(it.title, it.message)
                         }
                     }
                 }
+            }
         }
     }
 
+    private fun onUiStateDelete(title : String, msg : String){
+        Functions.mostrarMensajeError(this, title, msg)
+    }
+
+    private fun onUiStateSucces(list: List<ListaCategoriasViewModel.CategoriaIsSelected>){
+        binding.pbListaCategorias.visibility = View.INVISIBLE
+        list.forEach {
+            Log.d("LINEA LISTA", "item : $it")
+        }
+        adapter.submitList(list)
+    }
+
+    //==================OPCIONES DEL RECYCLER===============================//
+
+
     private fun cargarRecycler(){
         val layoutManager = LinearLayoutManager(this)
-        adapter = ListaCategoriasAdapter { onItemClickListener(it) }
+        adapter = ListaCategoriasAdapter(onItemClick = {onItemClickListener(it)}, onLongClick = {onLongItemClickListener(it)} )
 
         binding.rvListaCategorias.layoutManager = layoutManager
         binding.rvListaCategorias.adapter = adapter
     }
 
-    private fun onItemClickListener(cat : Categoria){
-        val i = Intent(this, CategoriaEditorActivity::class.java).apply {
-            putExtra("CATEGORIA", cat)
+    private fun onItemClickListener(cat : ListaCategoriasViewModel.CategoriaIsSelected){
+        //Si estamos en modo seleccion, pasaremos directamente a editar la pantalla
+        if (!viewModel.getIsSelected()){
+            val i = Intent(this, CategoriaEditorActivity::class.java).apply {
+                putExtra("CATEGORIA", cat.categoria)
+            }
+            startActivity(i)
+            // Si no lo marcamos para editar
+        } else {
+            viewModel.uploadCategoriaSelected(cat)
         }
-        startActivity(i)
     }
 
-    private suspend fun subscribeToFlow(flow : Flow<List<Categoria>>){
-        flow.catch {
-            mostrarMensajeError(this@ListaCategoriasActivity, "Error en los datos", "Hubo un error al cargar los datos")
-        }
-            .flowOn(Dispatchers.Main)
-            .collect{
-                adapter.submitList(it)
-            }
+    private fun onLongItemClickListener(cat : ListaCategoriasViewModel.CategoriaIsSelected){
+        // Marcamos directamente la categoria para editar
+        viewModel.uploadCategoriaSelected(cat)
     }
+
 
 }

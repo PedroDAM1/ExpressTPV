@@ -8,9 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pedro.expresstpv.R
@@ -27,7 +25,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
-class VentasActivity() : AppCompatActivity() {
+class VentasActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityVentasBinding
     private lateinit var adapterVentas : VentasCalculadoraListAdapter
@@ -70,6 +68,7 @@ class VentasActivity() : AppCompatActivity() {
 
             R.id.miConfiguracion -> {
                 ventasViewModel.eliminarTicketActual()
+                ventasViewModel.deleteAll()
             }
 
             R.id.miHacerCierre -> {

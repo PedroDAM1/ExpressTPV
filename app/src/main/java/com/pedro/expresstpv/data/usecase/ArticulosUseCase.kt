@@ -26,6 +26,12 @@ class ArticulosUseCase @Inject constructor(
         return@withContext lista
     }
 
+    suspend fun getArticulosByCategoria(categoria: Categoria) : List<Articulo> = withContext(Dispatchers.Default){
+        return@withContext this@ArticulosUseCase.getAll().filter {
+            it.categoria == categoria
+        }
+    }
+
     fun getAllArticulosFlow() = articuloRepository.getAllFlow()
 
     suspend fun insertArticulo(nombre : String, precio : Double, categoria : Categoria, tipoIva : TipoIva){

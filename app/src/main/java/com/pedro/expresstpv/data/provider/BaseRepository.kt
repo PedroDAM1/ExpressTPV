@@ -8,16 +8,28 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 
+/**
+ * Repositorio base del que deben heredar el resto de repositorios
+ * Aqui definiremos el sistema de cache para obtimizar la aplicacion y las funciones comunes a todos los repositorios
+ *
+ * Cada Repositorio que nos herede debera de especificar cual es su objeto de Entidad. Por ejemplo LineaTicketEntity y luego su objeto de dominio como por ejemplo LineaTicket
+ *
+ * La clase hereda de la interfaz IBaseRepository, donde especificaremos las funciones que usaremos en la clase abstracta
+ * @param dao Dao (Debe de heredar de IBaseDao) donde impelementaremos las consultas basicas
+ * @param Domain Especificamos el objeto de dominio
+ * @param Entity Especificamos el objeto de Room
+ */
 abstract class BaseRepository <Domain: IBaseModel, Entity : IBaseEntity> (
     private val dao : IBaseDao<Entity>
 ) : IBaseRepository<Domain> {
 
 
-    private var mapDomain : HashMap<Int, Domain> = hashMapOf()
-    private var mapEntity : HashMap<Int, Entity> = hashMapOf()
-    private var mapTempEntity : HashMap<Int, Entity> = hashMapOf()
+    private var mapDomain : HashMap<Int, Domain> = hashMapOf() //Cache de los objetos de la capa de dominio
+    private var mapEntity : HashMap<Int, Entity> = hashMapOf() //Cache de los objetos de la capa de Room
+    private var mapTempEntity : HashMap<Int, Entity> = hashMapOf() //Cache temporal donde compararemos los cambios para luego ir limpiandola
 
-    private val entityFlow: Flow<List<Entity>> = dao.getAll()
+
+    private val entityFlow: Flow<List<Entity>> = dao.getAll() //Flow obtenido desde la base de datos
     private val domainFlow : Flow<List<Domain>> = entityFlow
         .onEach {
             loadCache(it)
@@ -30,6 +42,12 @@ abstract class BaseRepository <Domain: IBaseModel, Entity : IBaseEntity> (
         .flowOn(Dispatchers.IO)
 
 
+    /**
+     * Comparara la lista obtenida del flow de room para saber donde deberemos aplicar cambios.
+     * Todos los cambios lo escribiremos en la cache temporal, donde luego mapearemos los objetos que no
+     * teniamos correctamente cacheados
+     * @param list Lista de entidades que deberemos de comprobar para cachear
+     */
     protected open suspend fun loadCache(list: List<Entity>){
         //Al usar copias evitamos tener el concurrent Exception que salta a veces en la aplicacion
 //        val mapEntityCopy = mapEntity.toMap()
@@ -58,6 +76,11 @@ abstract class BaseRepository <Domain: IBaseModel, Entity : IBaseEntity> (
         }
     }
 
+    /**
+     * Se encargara de convertir del diccionario temporal al diccionario de dominio todos los objetos.
+     * Si hay objetos en el diccionario temporal es por que no estan cacheados en la capa de dominio.
+     * Por ultimo limpia el diccionario temporal
+     */
     private suspend fun mapDomain() = withContext(Dispatchers.Default){
         val mapTempEntityCopy = mapTempEntity.toMap()
         mapTempEntityCopy.forEach{ (key, value) ->
@@ -67,6 +90,9 @@ abstract class BaseRepository <Domain: IBaseModel, Entity : IBaseEntity> (
         mapTempEntity.clear()
     }
 
+    /**
+     * Limpia los diccionarios, limpiando asi la cache
+     */
     private fun clearMaps(){
         mapEntity.clear()
         mapTempEntity.clear()
@@ -74,6 +100,9 @@ abstract class BaseRepository <Domain: IBaseModel, Entity : IBaseEntity> (
     }
 
 
+    /**
+     * Carga un estado inicial del flow para obtener una cache
+     */
     private suspend fun loadFlow(){
        domainFlow.first()
     }

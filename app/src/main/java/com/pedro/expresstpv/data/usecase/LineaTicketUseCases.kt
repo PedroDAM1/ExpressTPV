@@ -2,6 +2,7 @@ package com.pedro.expresstpv.data.usecase
 
 import android.util.Log
 import com.pedro.expresstpv.data.provider.LineaTicketRepository
+import com.pedro.expresstpv.domain.functions.Functions
 import com.pedro.expresstpv.domain.model.Articulo
 import com.pedro.expresstpv.domain.model.LineaTicket
 import com.pedro.expresstpv.domain.model.Ticket
@@ -23,8 +24,7 @@ class LineaTicketUseCases @Inject constructor(
     suspend fun crearLineaTicket(articulo: Articulo) {
         //La cantidad inicial al crear un ticket siempre sera uno
         val cantidad = 1
-        //TODO, A implementar el subtotal
-        val subtotal = 0.0
+        val subtotal = Functions.calcultarSubtotal(articulo.precio, articulo.tipoIva.porcentaje)
         val ticket = ticketUseCase.getTicketActivo()
 
         val lineaTicket = LineaTicket(
@@ -65,14 +65,17 @@ class LineaTicketUseCases @Inject constructor(
     }
 
     /**
-     * Aumenta la cantidad indicada por parametro
+     * Aumenta la cantidad indicada por parametro, junto con sus respectivos totales y subtotales
+     * @param lineaTicket LineaTicket que queremos aumentar
+     * @param cantidad Cantidad de articulos que queremos establecer
      */
     suspend fun aumentarCantidadLineaTicket(lineaTicket: LineaTicket, cantidad: Int) {
         val copyLineaTicket = lineaTicket.copy()
         val precioIndividual = (copyLineaTicket.total / copyLineaTicket.cantidad) //Obtenemos el precio individual de la linea
         copyLineaTicket.cantidad += cantidad //Aumentamos la cantidad que le pasemos por parametro
-        copyLineaTicket.total = (precioIndividual * copyLineaTicket.cantidad) // Actualizamos el total una vez que se haya aumentado la cantidad
-        //TODO a implementar el subtotal de la linea
+        val totalNuevo = (precioIndividual * copyLineaTicket.cantidad) // Actualizamos el total una vez que se haya aumentado la cantidad
+        copyLineaTicket.total = totalNuevo
+        copyLineaTicket.subTotal = Functions.calcultarSubtotal(totalNuevo, copyLineaTicket.valorIva)
         this.update(copyLineaTicket)
     }
 

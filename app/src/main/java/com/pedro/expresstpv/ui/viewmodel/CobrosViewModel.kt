@@ -25,8 +25,13 @@ class CobrosViewModel @Inject constructor(
         return@withContext lineaTicketUseCases.getTotalFromLineaTicketsActivo()
     }
 
+    suspend fun getSubtotalTicket() : Double = withContext(Dispatchers.Default){
+        return@withContext lineaTicketUseCases.getSubtotalFromLineaTicketActivo()
+    }
+
+
     suspend fun crearTicket(metodoPago: MetodoPago){
-        val ticket =ticketUseCases.crearTicket(metodoPago, getTotalTicket(), 0.00)
+        val ticket =ticketUseCases.crearTicket(metodoPago, getTotalTicket(), getSubtotalTicket())
         lineaTicketUseCases.updateLineaTicketsActivoToNewTicket(ticket)
         //Una vez que creemos el ticket deberemos de actualizar las lineasTickets actuales para apuntar a ese ticket
 

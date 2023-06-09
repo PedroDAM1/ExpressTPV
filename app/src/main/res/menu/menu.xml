@@ -9,8 +9,7 @@
         android:title="Crear Categoria" />
     <item
         android:id="@+id/miConfiguracion"
-        android:title="Configuracion"
-        android:visible="false" />
+        android:title="Configuracion" />
     <item
         android:id="@+id/miHacerCierre"
         android:title="Hacer Cierre" />
