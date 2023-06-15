@@ -57,7 +57,7 @@ class ListaArticulosViewModel @Inject constructor(
     /**
      * Insertaremos un nuevo item para ser marcado como selected
      */
-    fun uploadCategoriaSelected(articulosIsSelected: ArticulosIsSelected){
+    fun uploadArticuloSelected(articulosIsSelected: ArticulosIsSelected){
         isSelectionMode = true
         //Si estaba seleccionada
         if (articulosIsSelected.isSelected){

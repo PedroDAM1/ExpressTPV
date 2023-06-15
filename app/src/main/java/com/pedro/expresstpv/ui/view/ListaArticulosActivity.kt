@@ -102,13 +102,13 @@ class ListaArticulosActivity : AppCompatActivity() {
             startActivity(i)
             // Si no lo marcamos para editar
         } else {
-            viewModel.uploadCategoriaSelected(articulosIsSelected)
+            viewModel.uploadArticuloSelected(articulosIsSelected)
         }
     }
 
     private fun onLongItemClick(articulo : ListaArticulosViewModel.ArticulosIsSelected){
         // Marcamos directamente la categoria para editar
-        viewModel.uploadCategoriaSelected(articulo)
+        viewModel.uploadArticuloSelected(articulo)
     }
 
     //=============================UI STATE====================================//

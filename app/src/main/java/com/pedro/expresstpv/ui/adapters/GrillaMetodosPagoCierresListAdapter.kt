@@ -76,8 +76,15 @@ class GrillaMetodosPagoCierresListAdapter (
 
             binding.etCantidadGrillaMetodoPagoCierres.setOnFocusChangeListener{_, hasFocus ->
                 if (!hasFocus && binding.etCantidadGrillaMetodoPagoCierres.text.toString().isNotEmpty()){
-                    val value = binding.etCantidadGrillaMetodoPagoCierres.text.toString().toDouble()
-                    binding.etCantidadGrillaMetodoPagoCierres.setText(binding.root.context.getString(R.string.precio_selector).format(value))
+                    val value = binding.etCantidadGrillaMetodoPagoCierres.text.toString()
+//                    val formatted = Functions.formatFromFormateadoToDouble(value)
+                    val formatted : Double = try {
+                        // Si al formatearlo de forma normal suelta excepcion, es por que ya lo teniamos formateado
+                        value.toDouble()
+                    } catch (e : java.lang.NumberFormatException){
+                        Functions.formatFromFormateadoToDouble(value)
+                    }
+                    binding.etCantidadGrillaMetodoPagoCierres.setText(binding.root.context.getString(R.string.precio_selector).format(formatted))
                 }
             }
 

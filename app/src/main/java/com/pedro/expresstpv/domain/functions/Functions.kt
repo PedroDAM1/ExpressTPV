@@ -133,16 +133,19 @@ class Functions {
             return decimalFormat.format(subtotal).toDouble()
         }
 
-        fun calcularTotal(subtotal : Double, iva : Double) : Double{
-            val formula = 1 + (iva/100)
-            val total = subtotal*formula
-            val decimalFormat = DecimalFormat("#.####")
-            return decimalFormat.format(total).toDouble()
-        }
+        /**
+         * Se encarga de formatear el valor que suele tener un string formateado del selector de precios, es decir en formato 3,00€
+         * para retornar un double
+         * @param value String. sera el valor que queremos reformatear
+         * @return Devovleremos en valor double el string pasado
+         */
+        fun formatFromFormateadoToDouble(value : String) : Double{
 
-        fun redondearDecimal(decimal : Double) : String{
-            val decimalFormat = DecimalFormat("#.##")
-            return decimalFormat.format(decimal)
+            //Formateamos para eliminar el simbolo del dolar y eliminar el separador de miles. Luego cambiamos el separador de decimales de , a . que es el separador basico de kotlin
+            val formateado = value.replace("€", "").replace(".", "").replace(",", ".")
+
+            //Retornamos el valor del double
+            return formateado.toDouble()
         }
 
     }

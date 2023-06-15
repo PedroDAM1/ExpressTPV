@@ -116,14 +116,14 @@ class VentasActivity : AppCompatActivity() {
     }
 
     private fun reducirLineaTicket(){
-        val item = adapterGrillaLineaTickets.getSelectedItem()
+        val item = adapterGrillaLineaTickets.getSelectedItem()?.copy()
         if (item != null){
             ventasViewModel.reducirCantidadLineaTicket(item)
         }
     }
 
     private fun aumentarLineaTicket(){
-        val item = adapterGrillaLineaTickets.getSelectedItem()
+        val item = adapterGrillaLineaTickets.getSelectedItem()?.copy()
         if (item != null){
             ventasViewModel.aumentarCantidadLineaTicket(item)
         }
@@ -181,7 +181,7 @@ class VentasActivity : AppCompatActivity() {
                         "Hubo un error al cargar las lineas de tickets: $it"
                     )
                 }
-                .collectLatest{
+                .collect{
                     withContext(Dispatchers.Main) {
                         val list = it.toList()
                         //Actualizamos la grilla de lineas tickets

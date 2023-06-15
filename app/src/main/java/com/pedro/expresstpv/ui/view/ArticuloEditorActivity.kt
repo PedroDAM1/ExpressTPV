@@ -33,6 +33,10 @@ class ArticuloEditorActivity : AppCompatActivity() {
     private var categoria: Categoria? = null
     private var tipoIva: TipoIva? = null
 
+    private lateinit var adapterCategoria : ArrayAdapter<Categoria>
+    private lateinit var adapterIva : ArrayAdapter<TipoIva>
+
+
     private val viewModel : ArticuloEditorViewModel by viewModels()
 
 
@@ -52,8 +56,8 @@ class ArticuloEditorActivity : AppCompatActivity() {
                 val articulo = viewModel.getArticuloById(id) ?: return@launch
                 binding.etNombreArticuloEditor.setText(articulo.nombre)
                 binding.etPrecioArticuloEditor.setText("${articulo.precio}")
-                binding.spCategoriaArticuloEditor.setSelection(articulo.categoria.id)
-                binding.spTipoIvaArticuloEditor.setSelection(articulo.tipoIva.id)
+                binding.spCategoriaArticuloEditor.setSelection(adapterCategoria.getPosition(articulo.categoria))
+                binding.spTipoIvaArticuloEditor.setSelection(adapterIva.getPosition(articulo.tipoIva))
             }
         }
     }
@@ -132,9 +136,11 @@ class ArticuloEditorActivity : AppCompatActivity() {
      */
     private suspend fun cargarDatosSpinner() = withContext(Dispatchers.Main){
         val listaCategorias = viewModel.getListaCategorias().first()
-        binding.spCategoriaArticuloEditor.adapter = ArrayAdapter(this@ArticuloEditorActivity, R.layout.elemento_spinner_textview, listaCategorias)
+        adapterCategoria = ArrayAdapter(this@ArticuloEditorActivity, R.layout.elemento_spinner_textview, listaCategorias)
+        binding.spCategoriaArticuloEditor.adapter = adapterCategoria
 
         val listaTipoIva = viewModel.getListaTipoIva().first()
-        binding.spTipoIvaArticuloEditor.adapter = ArrayAdapter(this@ArticuloEditorActivity, R.layout.elemento_spinner_textview, listaTipoIva)
+        adapterIva = ArrayAdapter(this@ArticuloEditorActivity, R.layout.elemento_spinner_textview, listaTipoIva)
+        binding.spTipoIvaArticuloEditor.adapter = adapterIva
     }
 }

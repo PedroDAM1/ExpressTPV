@@ -28,6 +28,9 @@ class VentasViewModel @Inject constructor(
             val lineaTicket = lineaTicketUseCases.getLineaTicketWhenFeaturesActivo(articulo.nombre, articulo.categoria.nombre, articulo.tipoIva.porcentaje)
             VentasCalculadoraListAdapter.ArticuloYCantidad(articulo, lineaTicket?.cantidad ?: 0)
         }
+            .sortedBy {
+                it.articulo.id
+            }
     }
         .flowOn(Dispatchers.Default)
 

@@ -22,11 +22,12 @@ class VentasCalculadoraListAdapter (val onItemClicked : (ArticuloYCantidad) -> U
     }
 
     override fun onBindViewHolder(holder: VentasCalculadoraViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val item = getItem(position)
+        holder.bind(item)
         //Al hacer click sobre un item del adapter
         holder.itemView.setOnClickListener {
             //Obtenemos un entero que sera la cantidad de veces que se ha clicado el boton (Lo equivalente a lineaTicket)
-            onItemClicked(getItem(position))
+            onItemClicked(item)
         }
     }
 
