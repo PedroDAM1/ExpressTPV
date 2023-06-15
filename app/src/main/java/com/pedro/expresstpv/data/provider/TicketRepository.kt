@@ -50,7 +50,6 @@ class TicketRepository @Inject constructor(
         if(fecha!=null){
             fecha = Functions.formatLocalDateTime(fecha)
         }
-        Log.d("FECHA", "$fecha")
 
         val ticket = Ticket(
             id = entity.id,
@@ -61,7 +60,6 @@ class TicketRepository @Inject constructor(
             total = entity.total
 
         )
-        Log.d("GET TICKET", "Se ha mapeado un ticket: $ticket")
         return ticket
     }
 

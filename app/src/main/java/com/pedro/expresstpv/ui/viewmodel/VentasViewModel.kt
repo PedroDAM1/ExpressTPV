@@ -66,12 +66,18 @@ class VentasViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Reduce en uno la cantidad de la linea pasada. La eliminará si ya no quedan mas lineas
+     */
     fun reducirCantidadLineaTicket(lineaTicket: LineaTicket){
         viewModelScope.launch(Dispatchers.IO) {
             lineaTicketUseCases.reducirCantidadLineaTicket(lineaTicket, 1)
         }
     }
 
+    /**
+     * 
+     */
     fun aumentarCantidadLineaTicket(lineaTicket: LineaTicket){
         viewModelScope.launch (Dispatchers.IO) {
             lineaTicketUseCases.aumentarCantidadLineaTicket(lineaTicket, 1)
