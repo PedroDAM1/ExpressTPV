@@ -2,7 +2,8 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-    id 'com.google.dagger.hilt.android'
+    id 'com.google.dagger.hilt.android' //Plugin de uso para hilt
+    id 'org.jetbrains.dokka' //Plugin para generar el kdoc
 }
 
 
